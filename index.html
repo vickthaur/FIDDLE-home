@@ -6,6 +6,7 @@
     <title>Fiddle Bro's | Fidélisation Digitale pour Restaurants</title>
     
     <link rel="icon" type="image/jpeg" href="flavicon.jpg">
+    <link rel="apple-touch-icon" href="flavicon.jpg">
     <meta name="description" content="Transformez vos clients de passage en habitués. Programme de fidélité digital, simple et automatisé pour les restaurants du Vaucluse.">
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -54,10 +55,11 @@
             background: rgba(3, 7, 18, 0.8); backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
             padding: 20px 0;
+            transition: all 0.3s ease;
         }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 20px; font-weight: 800; color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; }
-        .logo img { width: 36px; height: 36px; border-radius: 8px; }
+        .logo img { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; }
         .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 30px; font-size: 14px; font-weight: 600; transition: 0.3s; }
         .nav-links a:hover { color: white; }
         
@@ -174,30 +176,30 @@
     <section class="hero container">
         <div class="badge-hero">🚀 La fidélisation 2.0 pour les restaurateurs</div>
         <h1>Ne perdez plus jamais un client<br><span>après l'addition.</span></h1>
-        <p>Transformez vos visiteurs de passage en clients fidèles grâce à notre système de capture de données automatisé. Zéro effort pour vos serveurs, 100% de résultats.</p>
+        <p>Transformez vos visiteurs de passage en contacts réactivables et fidèles. Une solution simple et automatisée, pensée pour les restaurateurs.</p>
         <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn btn-primary">Planifier une démo physique (30 min)</a>
     </section>
 
     <section id="concept" class="section container">
         <div class="section-header">
-            <h2>Le problème de 90% des restaurants</h2>
+            <h2>Le problème de la restauration</h2>
             <p>Vous générez du trafic, mais vous ne capturez aucune donnée client.</p>
         </div>
         <div class="grid-3">
             <div class="card">
                 <div class="card-icon">👻</div>
                 <h3>Visiteurs fantômes</h3>
-                <p>Un client vient, consomme et repart. Vous n'avez aucun moyen de le recontacter pour le faire revenir un mardi soir calme.</p>
+                <p>Un client vient, consomme et repart. Vous n'avez aucune stratégie de fidélisation ni moyen de le relancer pour annoncer un événement.</p>
             </div>
             <div class="card">
                 <div class="card-icon">⛓️</div>
                 <h3>Dépendance</h3>
-                <p>Vous dépendez des plateformes de réservation externes qui vous facturent des commissions sur vos propres clients.</p>
+                <p>Sans base de données exploitable, vous dépendez fortement des plateformes de réservation externes pour remplir votre salle.</p>
             </div>
             <div class="card">
                 <div class="card-icon">⏳</div>
-                <h3>Manque de temps</h3>
-                <p>Vos serveurs n'ont pas le temps de gérer des cartes de fidélité papier ou de demander des emails à la caisse.</p>
+                <h3>Zéro temps libre</h3>
+                <p>Vos serveurs n'ont pas le temps de gérer des cartes papier. Vous avez besoin d'un système qui tourne sans effort opérationnel.</p>
             </div>
         </div>
     </section>
@@ -205,56 +207,56 @@
     <section id="fonctionnement" class="section container" style="background: rgba(255,255,255,0.01); border-radius: 40px; padding: 100px 40px; border: 1px solid var(--border);">
         <div class="section-header">
             <h2>La méthode Fiddle Bro's</h2>
-            <p>Une mécanique invisible qui travaille pour vous pendant que vous assurez le service.</p>
+            <p>Un fonctionnement simple pour le client, une automatisation complète pour le restaurant.</p>
         </div>
         <div class="grid-3">
             <div class="card">
                 <div class="card-icon" style="color: var(--primary);">1</div>
                 <h3>Scan à table</h3>
-                <p>Le client flashe un QR Code élégant posé sur sa table pour s'inscrire au programme de fidélité en moins de 10 secondes.</p>
+                <p>Le client flashe un QR Code élégant posé sur sa table pour s'inscrire au programme en quelques secondes via son téléphone.</p>
             </div>
             <div class="card">
                 <div class="card-icon" style="color: var(--primary);">2</div>
-                <h3>Validation Pro</h3>
-                <p>Le serveur valide le point d'un simple clic via un scanner sécurisé sur son téléphone. Rapide et infalsifiable.</p>
+                <h3>Validation Instantanée</h3>
+                <p>Le premier point de fidélité est enregistré automatiquement. Rapide, fluide et sans friction pour vos équipes.</p>
             </div>
             <div class="card">
                 <div class="card-icon" style="color: var(--primary);">3</div>
-                <h3>Relance Auto</h3>
-                <p>Notre système envoie des emails stratégiques (bienvenue, relance après 30 jours) pour déclencher une nouvelle visite.</p>
+                <h3>Relance Automatique</h3>
+                <p>Notre système envoie des emails stratégiques pour relancer automatiquement les clients et déclencher une nouvelle visite.</p>
             </div>
         </div>
     </section>
 
     <section id="tarifs" class="section container">
         <div class="section-header">
-            <h2>Un investissement vite rentabilisé</h2>
-            <p>Une tarification claire, transparente, et sans mauvaises surprises.</p>
+            <h2>Un modèle économique transparent</h2>
+            <p>Votre base de données clients vous appartient. Aucun engagement caché.</p>
         </div>
         <div class="pricing-grid">
             
             <div class="pricing-card">
-                <div class="price-title">Frais d'installation</div>
+                <div class="price-title">Installation Clé en Main</div>
                 <div class="price-amount">300 € <span>/ paiement unique</span></div>
-                <p style="color: var(--text-muted); margin-bottom: 25px;">Mise en place complète et clé en main de votre écosystème.</p>
+                <p style="color: var(--text-muted); margin-bottom: 25px;">Mise en place complète et rapide (moins d'1h) de votre écosystème.</p>
                 <ul class="pricing-list">
-                    <li>Création de votre base de données</li>
+                    <li>Création de votre programme fidélité</li>
                     <li>Design & Impression des QR Codes</li>
                     <li>Configuration des emails automatisés</li>
-                    <li>Formation de votre équipe en salle (1h)</li>
+                    <li>Formation rapide des serveurs</li>
                 </ul>
             </div>
 
             <div class="pricing-card highlight">
-                <div class="price-title" style="color: var(--primary);">Abonnement SaaS</div>
+                <div class="price-title" style="color: var(--primary);">Abonnement Logiciel</div>
                 <div class="price-amount">99 € <span>/ mois</span></div>
-                <p style="color: var(--text-muted); margin-bottom: 25px;">Le moteur de votre croissance, sans engagement lourd.</p>
+                <p style="color: var(--text-muted); margin-bottom: 25px;">Le moteur de votre croissance et de vos relances clients.</p>
                 <ul class="pricing-list">
-                    <li>Hébergement Cloud Sécurisé (Supabase)</li>
-                    <li>Envois d'emails illimités (Brevo)</li>
-                    <li>Scanner Pro pour le personnel</li>
-                    <li>100% Propriété de vos données (RGPD)</li>
-                    <li>Support technique prioritaire</li>
+                    <li>Hébergement du système sécurisé</li>
+                    <li>Gestion de votre base clients</li>
+                    <li>Automatisations emails illimitées</li>
+                    <li>100% Propriété de vos données (Conformité RGPD)</li>
+                    <li>Support et maintenance inclus</li>
                 </ul>
                 <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Réserver ma démo</a>
             </div>
@@ -264,8 +266,8 @@
 
     <section class="cta-final">
         <div class="container">
-            <h2 style="font-size: 40px; font-weight: 800; margin-bottom: 20px;">Prêt à digitaliser votre restaurant ?</h2>
-            <p style="color: var(--text-muted); font-size: 18px; margin-bottom: 40px;">Rencontrons-nous directement dans votre établissement pour une démonstration en conditions réelles.</p>
+            <h2 style="font-size: 40px; font-weight: 800; margin-bottom: 20px;">Prêt à développer votre clientèle récurrente ?</h2>
+            <p style="color: var(--text-muted); font-size: 18px; margin-bottom: 40px;">Rencontrons-nous directement dans votre établissement pour vous présenter le système.</p>
             <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn btn-primary" style="padding: 20px 40px; font-size: 18px;">Prendre RDV sur Calendly</a>
         </div>
     </section>
@@ -274,11 +276,17 @@
         <div class="container footer-grid">
             <div class="footer-brand">
                 <h4>Fiddle Bro's</h4>
-                <p>L'agence partenaire des restaurateurs qui veulent innover sans se compliquer la vie.</p>
-                <p style="margin-top: 20px; font-size: 12px; opacity: 0.6;">© 2026 Fiddle Bro's. Tous droits réservés. 100% RGPD Compliant.</p>
+                <p>Créer un système simple permettant aux restaurants de transformer leurs visiteurs en contacts réactivables.</p>
+                <p style="margin-top: 20px; font-size: 12px; opacity: 0.6;">© 2026 Fiddle Bro's. Tous droits réservés. Conformité RGPD.</p>
             </div>
             <div class="footer-contact">
-                <h4 style="color: white; font-weight: 700; margin-bottom: 15px;">Contactez-nous</h4>
+                <h4 style="color: white; font-weight: 700; margin-bottom: 15px;">Nous contacter</h4>
                 <p>📍 Vaucluse (Cavaillon / L'Isle-sur-la-Sorgue)</p>
                 <p>✉️ <a href="mailto:victordetroux2@gmail.com" style="color: var(--text-muted); text-decoration: none;">victordetroux2@gmail.com</a></p>
-                <p>✉️ <a href="mailto:mathys.groy84@gmail.com" style="color: var(--text-muted);
+                <p>✉️ <a href="mailto:mathys.groy84@gmail.com" style="color: var(--text-muted); text-decoration: none;">mathys.groy84@gmail.com</a></p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
