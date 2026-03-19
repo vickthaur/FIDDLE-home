@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiddle Bro's | Fidélisation Digitale pour Restaurants</title>
+    
+    <link rel="icon" type="image/jpeg" href="flavicon.jpg">
+    <meta name="description" content="Transformez vos clients de passage en habitués. Programme de fidélité digital, simple et automatisé pour les restaurants du Vaucluse.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #030712;
+            --surface: #111827;
+            --surface-glass: rgba(17, 24, 39, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --glow: rgba(99, 102, 241, 0.4);
+            --accent: #10b981;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Arrière-plan Tech & Premium */
+        .bg-glow {
+            position: absolute; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            top: -200px; left: -200px; z-index: -1; pointer-events: none;
+        }
+        .bg-glow-2 {
+            position: absolute; width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+            bottom: 10%; right: -100px; z-index: -1; pointer-events: none;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* HEADER */
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(3, 7, 18, 0.8); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+        }
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 20px; font-weight: 800; color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .logo img { width: 36px; height: 36px; border-radius: 8px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 30px; font-size: 14px; font-weight: 600; transition: 0.3s; }
+        .nav-links a:hover { color: white; }
+        
+        /* BOUTONS */
+        .btn {
+            display: inline-block; padding: 16px 32px; border-radius: 100px;
+            font-size: 15px; font-weight: 700; text-decoration: none; text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: none;
+        }
+        .btn-primary {
+            background: var(--primary); color: white;
+            box-shadow: 0 4px 20px var(--glow);
+        }
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px); box-shadow: 0 8px 25px var(--glow);
+        }
+        .btn-nav { padding: 10px 24px; font-size: 14px; margin-left: 30px; }
+
+        /* HERO SECTION */
+        .hero { padding: 180px 0 100px 0; text-align: center; position: relative; }
+        .badge-hero {
+            display: inline-block; padding: 8px 16px; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border); border-radius: 100px; font-size: 13px; font-weight: 600;
+            color: var(--text-muted); margin-bottom: 24px;
+        }
+        .hero h1 {
+            font-size: 56px; font-weight: 800; line-height: 1.1; margin-bottom: 24px; letter-spacing: -1.5px;
+        }
+        .hero h1 span {
+            background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 20px; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px auto;
+        }
+
+        /* SECTION PROBLÈME / SOLUTION */
+        .section { padding: 100px 0; }
+        .section-header { text-align: center; margin-bottom: 70px; }
+        .section-header h2 { font-size: 36px; font-weight: 800; margin-bottom: 16px; }
+        .section-header p { color: var(--text-muted); font-size: 18px; max-width: 600px; margin: 0 auto; }
+
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        
+        .card {
+            background: var(--surface-glass); backdrop-filter: blur(10px);
+            border: 1px solid var(--border); border-radius: 24px; padding: 40px 30px;
+            transition: 0.4s; position: relative; overflow: hidden;
+        }
+        .card:hover { transform: translateY(-5px); border-color: rgba(99, 102, 241, 0.3); }
+        .card-icon {
+            width: 60px; height: 60px; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            border-radius: 16px; display: flex; align-items: center; justify-content: center;
+            font-size: 28px; margin-bottom: 24px; color: var(--primary);
+        }
+        .card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+        .card p { color: var(--text-muted); font-size: 15px; }
+
+        /* TARIFS */
+        .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 900px; margin: 0 auto; }
+        .pricing-card {
+            background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 40px; text-align: left;
+        }
+        .pricing-card.highlight {
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, rgba(17, 24, 39, 1) 100%);
+            border-color: rgba(99, 102, 241, 0.4); position: relative;
+        }
+        .price-title { font-size: 18px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
+        .price-amount { font-size: 48px; font-weight: 800; margin-bottom: 20px; color: white; }
+        .price-amount span { font-size: 18px; color: var(--text-muted); font-weight: 500; }
+        .pricing-list { list-style: none; margin-bottom: 40px; }
+        .pricing-list li { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; color: var(--text-muted); }
+        .pricing-list li::before { content: "✅"; font-size: 14px; }
+
+        /* CTA FINAL */
+        .cta-final { text-align: center; padding: 100px 0; background: linear-gradient(180deg, transparent 0%, rgba(99, 102, 241, 0.05) 100%); border-top: 1px solid var(--border); }
+        
+        /* FOOTER */
+        footer { background: #000; padding: 60px 0; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 14px; }
+        .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .footer-brand h4 { color: white; font-size: 20px; font-weight: 800; margin-bottom: 15px; }
+        .footer-contact p { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 40px; }
+            .grid-3 { grid-template-columns: 1fr; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+
+    <header>
+        <div class="container nav-inner">
+            <a href="#" class="logo">
+                <img src="flavicon.jpg" alt="Fiddle Logo">
+                Fiddle Bro's
+            </a>
+            <div class="nav-links">
+                <a href="#concept">Le Concept</a>
+                <a href="#fonctionnement">Comment ça marche</a>
+                <a href="#tarifs">Tarifs</a>
+                <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn btn-primary btn-nav">Réserver une démo</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero container">
+        <div class="badge-hero">🚀 La fidélisation 2.0 pour les restaurateurs</div>
+        <h1>Ne perdez plus jamais un client<br><span>après l'addition.</span></h1>
+        <p>Transformez vos visiteurs de passage en clients fidèles grâce à notre système de capture de données automatisé. Zéro effort pour vos serveurs, 100% de résultats.</p>
+        <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn btn-primary">Planifier une démo physique (30 min)</a>
+    </section>
+
+    <section id="concept" class="section container">
+        <div class="section-header">
+            <h2>Le problème de 90% des restaurants</h2>
+            <p>Vous générez du trafic, mais vous ne capturez aucune donnée client.</p>
+        </div>
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-icon">👻</div>
+                <h3>Visiteurs fantômes</h3>
+                <p>Un client vient, consomme et repart. Vous n'avez aucun moyen de le recontacter pour le faire revenir un mardi soir calme.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⛓️</div>
+                <h3>Dépendance</h3>
+                <p>Vous dépendez des plateformes de réservation externes qui vous facturent des commissions sur vos propres clients.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⏳</div>
+                <h3>Manque de temps</h3>
+                <p>Vos serveurs n'ont pas le temps de gérer des cartes de fidélité papier ou de demander des emails à la caisse.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="fonctionnement" class="section container" style="background: rgba(255,255,255,0.01); border-radius: 40px; padding: 100px 40px; border: 1px solid var(--border);">
+        <div class="section-header">
+            <h2>La méthode Fiddle Bro's</h2>
+            <p>Une mécanique invisible qui travaille pour vous pendant que vous assurez le service.</p>
+        </div>
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-icon" style="color: var(--primary);">1</div>
+                <h3>Scan à table</h3>
+                <p>Le client flashe un QR Code élégant posé sur sa table pour s'inscrire au programme de fidélité en moins de 10 secondes.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon" style="color: var(--primary);">2</div>
+                <h3>Validation Pro</h3>
+                <p>Le serveur valide le point d'un simple clic via un scanner sécurisé sur son téléphone. Rapide et infalsifiable.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon" style="color: var(--primary);">3</div>
+                <h3>Relance Auto</h3>
+                <p>Notre système envoie des emails stratégiques (bienvenue, relance après 30 jours) pour déclencher une nouvelle visite.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="tarifs" class="section container">
+        <div class="section-header">
+            <h2>Un investissement vite rentabilisé</h2>
+            <p>Une tarification claire, transparente, et sans mauvaises surprises.</p>
+        </div>
+        <div class="pricing-grid">
+            
+            <div class="pricing-card">
+                <div class="price-title">Frais d'installation</div>
+                <div class="price-amount">300 € <span>/ paiement unique</span></div>
+                <p style="color: var(--text-muted); margin-bottom: 25px;">Mise en place complète et clé en main de votre écosystème.</p>
+                <ul class="pricing-list">
+                    <li>Création de votre base de données</li>
+                    <li>Design & Impression des QR Codes</li>
+                    <li>Configuration des emails automatisés</li>
+                    <li>Formation de votre équipe en salle (1h)</li>
+                </ul>
+            </div>
+
+            <div class="pricing-card highlight">
+                <div class="price-title" style="color: var(--primary);">Abonnement SaaS</div>
+                <div class="price-amount">99 € <span>/ mois</span></div>
+                <p style="color: var(--text-muted); margin-bottom: 25px;">Le moteur de votre croissance, sans engagement lourd.</p>
+                <ul class="pricing-list">
+                    <li>Hébergement Cloud Sécurisé (Supabase)</li>
+                    <li>Envois d'emails illimités (Brevo)</li>
+                    <li>Scanner Pro pour le personnel</li>
+                    <li>100% Propriété de vos données (RGPD)</li>
+                    <li>Support technique prioritaire</li>
+                </ul>
+                <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Réserver ma démo</a>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="cta-final">
+        <div class="container">
+            <h2 style="font-size: 40px; font-weight: 800; margin-bottom: 20px;">Prêt à digitaliser votre restaurant ?</h2>
+            <p style="color: var(--text-muted); font-size: 18px; margin-bottom: 40px;">Rencontrons-nous directement dans votre établissement pour une démonstration en conditions réelles.</p>
+            <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn btn-primary" style="padding: 20px 40px; font-size: 18px;">Prendre RDV sur Calendly</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <h4>Fiddle Bro's</h4>
+                <p>L'agence partenaire des restaurateurs qui veulent innover sans se compliquer la vie.</p>
+                <p style="margin-top: 20px; font-size: 12px; opacity: 0.6;">© 2026 Fiddle Bro's. Tous droits réservés. 100% RGPD Compliant.</p>
+            </div>
+            <div class="footer-contact">
+                <h4 style="color: white; font-weight: 700; margin-bottom: 15px;">Contactez-nous</h4>
+                <p>📍 Vaucluse (Cavaillon / L'Isle-sur-la-Sorgue)</p>
+                <p>✉️ <a href="mailto:victordetroux2@gmail.com" style="color: var(--text-muted); text-decoration: none;">victordetroux2@gmail.com</a></p>
+                <p>✉️ <a href="mailto:mathys.groy84@gmail.com" style="color: var(--text-muted);
