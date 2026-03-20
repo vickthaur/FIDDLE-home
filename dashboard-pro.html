@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Pro | Fiddle Bro's</title>
+    
+    <link rel="icon" type="image/jpeg" href="flavicon.jpg">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        body { background-color: #F3F4F6; }
+        
+        /* Navigation haut */
+        .dash-header { background: var(--surface); padding: 20px 40px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .user-info { display: flex; align-items: center; gap: 20px; }
+        .user-email { font-size: 14px; font-weight: 600; color: var(--text-muted); background: #F3F4F6; padding: 8px 16px; border-radius: 100px; }
+        .btn-logout { background: transparent; border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; color: #EF4444; transition: 0.2s; }
+        .btn-logout:hover { background: #FEF2F2; border-color: #FCA5A5; }
+
+        .container-dash { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+
+        /* En-tête de page */
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .page-header h1 { font-size: 28px; font-weight: 800; color: var(--text-main); }
+        .btn-export { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(15, 118, 110, 0.2); }
+        .btn-export:hover { background: var(--primary-hover); transform: translateY(-2px); }
+
+        /* Statistiques */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .stat-card { background: var(--surface); padding: 25px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .stat-card h3 { font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .stat-card .value { font-size: 36px; font-weight: 800; color: var(--text-main); }
+
+        /* Tableau */
+        .table-card { background: var(--surface); border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { background: #F9FAFB; padding: 16px 24px; font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border); }
+        td { padding: 16px 24px; font-size: 14px; border-bottom: 1px solid #F3F4F6; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background: #F9FAFB; }
+        
+        .badge-points { background: rgba(15, 118, 110, 0.1); color: var(--primary); padding: 6px 12px; border-radius: 100px; font-weight: 700; font-size: 13px; }
+
+        /* Écran de chargement sécurisé */
+        #loader { position: fixed; top:0; left:0; width: 100%; height: 100%; background: white; z-index: 999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #F3F4F6; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="spinner"></div>
+        <p style="font-weight: 600; color: #6B7280;">Vérification de l'accès sécurisé...</p>
+    </div>
+
+    <div class="dash-header">
+        <a href="index.html" class="logo">
+            <img src="flavicon.jpg" alt="Logo">
+            Fiddle Bro's Pro
+        </a>
+        <div class="user-info">
+            <span class="user-email" id="displayEmail">chargement...</span>
+            <button class="btn-logout" id="btnLogout">Déconnexion</button>
+        </div>
+    </div>
+
+    <div class="container-dash">
+        <div class="page-header">
+            <div>
+                <h1>Base Clients</h1>
+                <p style="color: var(--text-muted); margin-top: 5px;">Gérez vos contacts et vos points de fidélité.</p>
+            </div>
+            <button class="btn-export" id="btnExport">📥 Exporter (CSV)</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Inscrits</h3>
+                <div class="value" id="statTotalClients">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Points Distribués</h3>
+                <div class="value" id="statTotalPoints">-</div>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Email</th>
+                        <th>Points cumulés</th>
+                        <th>Dernière visite</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr><td colspan="4" style="text-align:center; padding: 40px; color: #6B7280;">Chargement des données...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
