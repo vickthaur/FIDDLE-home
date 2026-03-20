@@ -1,25 +1,21 @@
 /**
  * 🔒 SCRIPT DE CONNEXION B2B - FIDDLE BRO'S
- * Gère l'affichage de la modale et l'authentification avec Supabase
+ * CORRIGÉ : Redirection simplifiée
  */
 
-// 1. INITIALISATION SUPABASE
 const SUPABASE_URL = "https://qawfwbppnbnskxlkwstu.supabase.co";
 const SUPABASE_KEY = "sb_publishable_EbKZkPjtT8rwkEdw3oVRCg_mBJJ_gNJ";
-
-// On l'appelle supabaseApp pour ne pas entrer en conflit avec la bibliothèque
 const supabaseApp = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// 2. GESTION DE LA FENÊTRE (MODAL)
 const modal = document.getElementById('loginModal');
 const btnOpen = document.getElementById('btnOpenModal');
 const btnClose = document.getElementById('btnCloseModal');
 
 if (btnOpen) {
-    btnOpen.addEventListener('click', () => {
+    btnOpen.onclick = () => {
         modal.style.display = 'flex';
         setTimeout(() => modal.classList.add('active'), 10);
-    });
+    };
 }
 
 function closeModal() {
@@ -27,63 +23,41 @@ function closeModal() {
     setTimeout(() => modal.style.display = 'none', 300);
 }
 
-if (btnClose) {
-    btnClose.addEventListener('click', closeModal);
-}
+if (btnClose) btnClose.onclick = closeModal;
 
-if (modal) {
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-}
-
-// 3. LA CONNEXION SUPABASE
 const loginForm = document.getElementById('loginForm');
 const btnSubmit = document.getElementById('btnSubmitLogin');
 const errorMsg = document.getElementById('loginError');
 
 if (loginForm) {
     loginForm.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Empêche la page de se recharger
-        
-        // Récupère les valeurs tapées par le restaurateur
+        event.preventDefault();
         const email = document.getElementById('restoEmail').value.trim();
         const pwd = document.getElementById('restoPwd').value;
 
-        // Cache les anciennes erreurs et met le bouton en mode "Chargement"
         errorMsg.style.display = 'none';
-        const originalText = btnSubmit.innerText;
-        btnSubmit.innerText = "Vérification en cours...";
-        btnSubmit.style.opacity = "0.7";
+        btnSubmit.innerText = "Vérification...";
         btnSubmit.disabled = true;
 
-        // On demande à Supabase de valider
         const { data, error } = await supabaseApp.auth.signInWithPassword({
             email: email,
             password: pwd,
         });
 
         if (error) {
-            // ÉCHEC : Mauvais mot de passe ou email
             errorMsg.style.display = 'block';
-            errorMsg.innerText = "Erreur : " + (error.message === "Invalid login credentials" ? "Identifiants incorrects." : error.message);
-            
-            // On remet le bouton à la normale
-            btnSubmit.innerText = originalText;
-            btnSubmit.style.opacity = "1";
+            errorMsg.innerText = "Identifiants incorrects.";
+            btnSubmit.innerText = "SE CONNECTER";
             btnSubmit.disabled = false;
         } else {
-            // SUCCÈS : Connecté !
             btnSubmit.innerText = "✓ Connexion réussie !";
-            btnSubmit.style.background = "#10b981"; // Vert succès
-            btnSubmit.style.color = "white";
-            
-            // Redirection vers le Dashboard sécurisé
+            btnSubmit.style.background = "#10b981";
+
+            // CORRECTION : On redirige simplement. 
+            // C'est le script du Dashboard qui va identifier le resto via l'email du pro.
             setTimeout(() => {
                 window.location.href = "dashboard-pro.html";
-            }, 1000);
+            }, 800);
         }
     });
 }
