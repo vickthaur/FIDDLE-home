@@ -1,131 +1,92 @@
 /**
- * 📊 SCRIPT DU DASHBOARD - FIDDLE BRO'S
- * Corrigé pour la table unique 'clients'
+ * 🔒 SCRIPT D'AUTHENTIFICATION - FIDDLE BRO'S
+ * Gère la modale et la connexion B2B
  */
 
-// 1. CONNEXION SUPABASE
+// 1. INITIALISATION SUPABASE
 const SUPABASE_URL = "https://qawfwbppnbnskxlkwstu.supabase.co";
 const SUPABASE_KEY = "sb_publishable_EbKZkPjtT8rwkEdw3oVRCg_mBJJ_gNJ";
 const supabaseApp = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let dataClients = [];
+// 2. GESTION DE LA MODALE
+// On attend que le DOM soit chargé pour être sûr que les boutons existent
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('loginModal');
+    const btnOpen = document.getElementById('btnOpenModal');
+    const btnClose = document.getElementById('btnCloseModal');
+    const loginForm = document.getElementById('loginForm');
 
-// --- CONFIGURATION DYNAMIQUE ---
-const urlParams = new URLSearchParams(window.location.search);
-const restoID = urlParams.get('resto') || "villa_saint_antoine"; 
-// On définit la colonne de points selon le resto dans l'URL
-const pointsColumn = (restoID === "bistrot") ? "points_bistrot" : "points_villa";
+    // OUVRIR LA MODALE
+    if (btnOpen) {
+        btnOpen.onclick = () => {
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        };
+    }
 
-// 🛡️ 2. VÉRIFICATION DE LA SESSION
-async function verifierSession() {
-    try {
-        const { data: { session }, error } = await supabaseApp.auth.getSession();
+    // FERMER LA MODALE
+    if (btnClose) {
+        btnClose.onclick = () => {
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 300);
+        };
+    }
 
-        if (!session || error) {
-            window.location.href = "index.html";
-            return;
+    // FERMER AU CLIC EXTÉRIEUR
+    window.onclick = (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 300);
         }
+    };
 
-        const emailEl = document.getElementById('displayEmail');
-        if (emailEl) emailEl.innerText = session.user.email;
-        
-        chargerDonnees(restoID);
-    } catch (e) {
-        console.error("Erreur session:", e);
-        arreterLoader();
+    // 3. TENTATIVE DE CONNEXION
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const btnSubmit = document.getElementById('btnSubmitLogin');
+            const errorMsg = document.getElementById('loginError');
+            const email = document.getElementById('restoEmail').value.trim();
+            const pwd = document.getElementById('restoPwd').value;
+
+            // Préparation du bouton
+            errorMsg.style.display = 'none';
+            const originalText = btnSubmit.innerText;
+            btnSubmit.innerText = "Vérification...";
+            btnSubmit.disabled = true;
+
+            try {
+                const { data, error } = await supabaseApp.auth.signInWithPassword({
+                    email: email,
+                    password: pwd,
+                });
+
+                if (error) {
+                    errorMsg.style.display = 'block';
+                    errorMsg.innerText = "Identifiants incorrects.";
+                    btnSubmit.innerText = originalText;
+                    btnSubmit.disabled = false;
+                } else {
+                    btnSubmit.innerText = "✓ Connexion...";
+                    btnSubmit.style.background = "#10b981";
+
+                    // Détection du resto pour la redirection
+                    let restoID = "villa_saint_antoine";
+                    if (email.toLowerCase().includes("bistrot")) {
+                        restoID = "bistrot";
+                    }
+
+                    // On envoie vers le dashboard
+                    setTimeout(() => {
+                        window.location.href = `dashboard-pro.html?resto=${restoID}`;
+                    }, 800);
+                }
+            } catch (err) {
+                console.error(err);
+                btnSubmit.disabled = false;
+                btnSubmit.innerText = originalText;
+            }
+        });
     }
-}
-
-// 📊 3. CHARGEMENT DES DONNÉES
-async function chargerDonnees(id) {
-    try {
-        const { data, error } = await supabaseApp
-            .from('clients')
-            .select('*')
-            .eq('restaurant_origine', id)
-            .order('created_at', { ascending: false }); 
-
-        if (error) throw error;
-
-        dataClients = data || [];
-        afficherStatistiques(dataClients);
-        afficherTableau(dataClients);
-    } catch (error) {
-        console.error("Erreur de chargement :", error);
-        const tbody = document.getElementById('tableBody');
-        if (tbody) tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: red;">Erreur base de données.</td></tr>`;
-    } finally {
-        arreterLoader();
-    }
-}
-
-// Fonction pour arrêter le "moulinage"
-function arreterLoader() {
-    const loader = document.getElementById('loader') || document.querySelector('.loader-container') || document.querySelector('.loading-overlay');
-    if (loader) loader.style.display = "none";
-}
-
-// 📈 4. STATISTIQUES
-function afficherStatistiques(data) {
-    const totalEl = document.getElementById('statTotalClients');
-    const pointsEl = document.getElementById('statTotalPoints');
-    
-    if (totalEl) totalEl.innerText = data.length;
-    
-    if (pointsEl) {
-        const totalPoints = data.reduce((acc, client) => acc + (client[pointsColumn] || 0), 0);
-        pointsEl.innerText = totalPoints; 
-    }
-}
-
-// 📋 5. AFFICHAGE DU TABLEAU
-function afficherTableau(data) {
-    const tbody = document.getElementById('tableBody');
-    if (!tbody) return;
-    
-    if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: #6B7280;">Aucun client enregistré.</td></tr>`;
-        return;
-    }
-
-    tbody.innerHTML = data.map(client => `
-        <tr>
-            <td style="font-weight: 600;">${client.prenom || 'Client'} ${client.nom || ''}</td>
-            <td style="color: #6B7280;">${client.email}</td>
-            <td><span class="badge-points" style="background:#10b981; color:white; padding:4px 10px; border-radius:8px; font-weight:bold;">
-                ${client[pointsColumn] || 0} pts
-            </span></td>
-            <td style="color: #6B7280;">
-                ${new Date(client.created_at).toLocaleDateString('fr-FR')}
-            </td>
-        </tr>
-    `).join('');
-}
-
-// 📥 6. EXPORT CSV
-const btnExport = document.getElementById('btnExport');
-if (btnExport) {
-    btnExport.addEventListener('click', () => {
-        if (dataClients.length === 0) return alert("Rien à exporter.");
-        const headers = ["Prenom", "Nom", "Email", "Points", "Date"];
-        const rows = dataClients.map(c => [c.prenom || '', c.nom || '', c.email, c[pointsColumn] || 0, new Date(c.created_at).toLocaleDateString()]);
-        let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n" + rows.map(e => e.join(",")).join("\n");
-        const link = document.createElement("a");
-        link.setAttribute("href", encodeURI(csvContent));
-        link.setAttribute("download", `Export_${restoID}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-    });
-}
-
-// 🚪 7. DÉCONNEXION
-const btnLogout = document.getElementById('btnLogout');
-if (btnLogout) {
-    btnLogout.addEventListener('click', async () => {
-        await supabaseApp.auth.signOut();
-        window.location.href = "index.html";
-    });
-}
-
-verifierSession();
+});
