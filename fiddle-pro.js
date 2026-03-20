@@ -1,79 +1,124 @@
 /**
- * 🚀 FIDDLE ENGINE - SOLUTION B2B TOUT-EN-UN
- * Gère : Auth, Multi-Resto, Dashboard, Stats, Export & Recherche
+ * 🚀 FIDDLE ENGINE v2.0 - SYSTÈME B2B UNIFIÉ
+ * Logique complète : Auth, Base de données, Dashboard, Recherche & Export
  */
 
-// 1. CONFIGURATION GLOBALE
-const CONFIG = {
+// ==========================================
+// 1. CONFIGURATION (Pour ajouter tes futurs clients)
+// ==========================================
+const FIDDLE_CONFIG = {
     supabase: {
         url: "https://qawfwbppnbnskxlkwstu.supabase.co",
         key: "sb_publishable_EbKZkPjtT8rwkEdw3oVRCg_mBJJ_gNJ"
     },
+    // Le dictionnaire de tes clients. Pour en ajouter un, copie-colle une ligne.
     restos: {
-        "bistrot": { nom: "Le Bistrot Paris", col: "points_bistrot" },
-        "villa_saint_antoine": { nom: "Villa Saint Antoine", col: "points_villa" }
+        "bistrot": { nom: "Le Bistrot Paris", colPoints: "points_bistrot" },
+        "villa_saint_antoine": { nom: "Villa Saint Antoine", colPoints: "points_villa" }
     }
 };
 
-// INITIALISATION
-const supabaseApp = window.supabase.createClient(CONFIG.supabase.url, CONFIG.supabase.key);
-let dataClients = []; // Stockage global pour la recherche et l'export
+// INITIALISATION DE SUPABASE
+const supabaseApp = window.supabase.createClient(FIDDLE_CONFIG.supabase.url, FIDDLE_CONFIG.supabase.key);
+let dataClientsGlobal = []; // Garde les clients en mémoire pour la recherche rapide
 
 // ==========================================
-// 🔑 SECTION A : AUTHENTIFICATION (LOGIN)
+// 2. ROUTEUR INTELLIGENT (Savoir sur quelle page on est)
 // ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    // Si on trouve le formulaire de login, on est sur la page d'accueil
+    if (document.getElementById('loginForm')) {
+        initialiserPageAccueil();
+    }
+    
+    // Si on trouve le tableau, on est sur le Dashboard
+    if (document.getElementById('tableBody')) {
+        initialiserDashboard();
+    }
+});
 
-function initLogin() {
+// ==========================================
+// 3. LOGIQUE PAGE D'ACCUEIL (Modale & Connexion)
+// ==========================================
+function initialiserPageAccueil() {
     const modal = document.getElementById('loginModal');
     const btnOpen = document.getElementById('btnOpenModal');
     const btnClose = document.getElementById('btnCloseModal');
     const loginForm = document.getElementById('loginForm');
 
-    if (btnOpen) btnOpen.onclick = () => { modal.style.display = 'flex'; setTimeout(() => modal.classList.add('active'), 10); };
-    if (btnClose) btnClose.onclick = () => { modal.classList.remove('active'); setTimeout(() => modal.style.display = 'none', 300); };
-    
+    // Ouverture / Fermeture de la modale
+    if (btnOpen) btnOpen.onclick = () => { modal.classList.add('active'); };
+    if (btnClose) btnClose.onclick = () => { modal.classList.remove('active'); };
+    window.onclick = (e) => { if (e.target === modal) modal.classList.remove('active'); };
+
+    // Soumission du formulaire de connexion
     if (loginForm) {
         loginForm.onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnSubmitLogin');
-            const email = document.getElementById('restoEmail').value.trim();
+            const btnText = btn.querySelector('.btn-text');
+            const email = document.getElementById('restoEmail').value.trim().toLowerCase();
             const pwd = document.getElementById('restoPwd').value;
+            const errorMsg = document.getElementById('loginError');
 
-            btn.innerText = "Vérification...";
+            // État de chargement
+            errorMsg.style.display = 'none';
+            btn.classList.add('loading');
+            btnText.innerText = "Vérification...";
             btn.disabled = true;
 
-            const { data, error } = await supabaseApp.auth.signInWithPassword({ email, password: pwd });
+            try {
+                // Requête Supabase
+                const { data, error } = await supabaseApp.auth.signInWithPassword({ email, password: pwd });
 
-            if (error) {
-                document.getElementById('loginError').style.display = 'block';
-                btn.innerText = "Se connecter";
+                if (error) throw error;
+
+                // Succès : Détection du resto et redirection
+                btnText.innerText = "Connexion réussie !";
+                btn.style.background = "#10b981";
+                
+                let restoID = "villa_saint_antoine"; // Par défaut
+                if (email.includes("bistrot")) restoID = "bistrot";
+                
+                setTimeout(() => {
+                    window.location.href = `dashboard-pro.html?resto=${restoID}`;
+                }, 800);
+
+            } catch (err) {
+                // Échec
+                errorMsg.style.display = 'block';
+                btnText.innerText = "Se connecter au Dashboard";
+                btn.classList.remove('loading');
                 btn.disabled = false;
-            } else {
-                // REDIRECTION INTELLIGENTE
-                const id = email.toLowerCase().includes("bistrot") ? "bistrot" : "villa_saint_antoine";
-                window.location.href = `dashboard-pro.html?resto=${id}`;
             }
         };
     }
 }
 
 // ==========================================
-// 📊 SECTION B : DASHBOARD (DONNÉES)
+// 4. LOGIQUE DASHBOARD PRO (Données & Affichage)
 // ==========================================
-
-async function initDashboard() {
+async function initialiserDashboard() {
+    const loader = document.getElementById('loader');
+    
+    // 4.1 Identification du restaurant via l'URL
     const urlParams = new URLSearchParams(window.location.search);
     const restoID = urlParams.get('resto') || "villa_saint_antoine";
-    const restoConfig = CONFIG.restos[restoID] || CONFIG.restos["villa_saint_antoine"];
+    const currentResto = FIDDLE_CONFIG.restos[restoID] || FIDDLE_CONFIG.restos["villa_saint_antoine"];
 
-    // 1. Vérifier Session
-    const { data: { session } } = await supabaseApp.auth.getSession();
-    if (!session) { window.location.href = "index.html"; return; }
-
-    if (document.getElementById('displayEmail')) document.getElementById('displayEmail').innerText = session.user.email;
-
-    // 2. Charger Données
     try {
+        // 4.2 Vérification de la session
+        const { data: { session }, error: sessionError } = await supabaseApp.auth.getSession();
+        if (sessionError || !session) {
+            window.location.href = "index.html";
+            return;
+        }
+
+        // Afficher l'email du pro connecté
+        const emailDisplay = document.getElementById('displayEmail');
+        if (emailDisplay) emailDisplay.innerText = session.user.email;
+
+        // 4.3 Récupération des données clients
         const { data, error } = await supabaseApp
             .from('clients')
             .select('*')
@@ -81,74 +126,115 @@ async function initDashboard() {
             .order('created_at', { ascending: false });
 
         if (error) throw error;
-        dataClients = data || [];
-
-        renderDashboard(dataClients, restoConfig.col);
+        
+        dataClientsGlobal = data || [];
+        afficherTableau(dataClientsGlobal, currentResto.colPoints, true);
 
     } catch (err) {
-        console.error("Erreur Engine:", err);
+        console.error("Erreur Dashboard:", err);
+        const tbody = document.getElementById('tableBody');
+        if (tbody) tbody.innerHTML = `<tr><td colspan="4" class="empty-state" style="color: #EF4444;">Erreur de chargement de la base de données.</td></tr>`;
     } finally {
-        const loader = document.getElementById('loader');
-        if (loader) loader.style.display = "none";
+        // 🛑 ARRÊT DU MOULINAGE GARANTI
+        if (loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => loader.style.display = 'none', 300);
+        }
     }
 
-    // 3. BARRE DE RECHERCHE (Le truc "plus loin" que tu voulais)
+    // 4.4 Écouteur pour la barre de recherche
     const searchInput = document.getElementById('searchClient');
     if (searchInput) {
-        searchInput.oninput = (e) => {
-            const val = e.target.value.toLowerCase();
-            const filtered = dataClients.filter(c => 
-                (c.prenom + ' ' + c.nom).toLowerCase().includes(val) || c.email.toLowerCase().includes(val)
+        searchInput.addEventListener('input', (e) => {
+            const terme = e.target.value.toLowerCase();
+            const resultats = dataClientsGlobal.filter(c => 
+                (c.prenom && c.prenom.toLowerCase().includes(terme)) || 
+                (c.nom && c.nom.toLowerCase().includes(terme)) || 
+                (c.email && c.email.toLowerCase().includes(terme))
             );
-            renderDashboard(filtered, restoConfig.col, false); // false = ne pas recalculer les stats
-        };
+            afficherTableau(resultats, currentResto.colPoints, false); // false = on ne change pas les stats globales
+        });
+    }
+
+    // 4.5 Écouteur pour l'Export CSV
+    const btnExport = document.getElementById('btnExport');
+    if (btnExport) {
+        btnExport.addEventListener('click', () => exporterCSV(currentResto));
+    }
+
+    // 4.6 Écouteur pour la Déconnexion
+    const btnLogout = document.getElementById('btnLogout');
+    if (btnLogout) {
+        btnLogout.addEventListener('click', async () => {
+            await supabaseApp.auth.signOut();
+            window.location.href = "index.html";
+        });
     }
 }
 
-// FONCTION DE RENDU (Tableau + Stats)
-function renderDashboard(data, colPoints, updateStats = true) {
+// ==========================================
+// 5. FONCTIONS UTILITAIRES
+// ==========================================
+
+// Gère l'affichage des lignes du tableau et la mise à jour des statistiques
+function afficherTableau(data, colPoints, updateStats = true) {
     const tbody = document.getElementById('tableBody');
     if (!tbody) return;
 
+    // Mise à jour des compteurs en haut de page
     if (updateStats) {
-        document.getElementById('statTotalClients').innerText = data.length;
-        const total = data.reduce((acc, c) => acc + (c[colPoints] || 0), 0);
-        document.getElementById('statTotalPoints').innerText = total;
+        const statClients = document.getElementById('statTotalClients');
+        const statPoints = document.getElementById('statTotalPoints');
+        
+        if (statClients) statClients.innerText = data.length;
+        if (statPoints) {
+            const total = data.reduce((acc, c) => acc + (c[colPoints] || 0), 0);
+            statPoints.innerText = total;
+        }
     }
 
+    // Si aucun client
+    if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="empty-state">Aucun client trouvé.</td></tr>`;
+        return;
+    }
+
+    // Remplissage dynamique
     tbody.innerHTML = data.map(c => `
         <tr>
-            <td style="font-weight:600;">${c.prenom || ''} ${c.nom || ''}</td>
-            <td>${c.email}</td>
+            <td style="font-weight: 600;">${c.prenom || ''} ${c.nom || ''}</td>
+            <td>${c.email || 'N/A'}</td>
             <td><span class="badge-points">${c[colPoints] || 0} pts</span></td>
             <td>${new Date(c.created_at).toLocaleDateString('fr-FR')}</td>
         </tr>
     `).join('');
 }
 
-// ==========================================
-// 🚀 SECTION C : INITIALISATION GÉNÉRALE
-// ==========================================
+// Génère et télécharge le fichier CSV
+function exporterCSV(restoConfig) {
+    if (dataClientsGlobal.length === 0) {
+        alert("Aucune donnée à exporter.");
+        return;
+    }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Si on est sur la page index/login
-    if (document.getElementById('loginForm')) initLogin();
+    const headers = ["Prenom", "Nom", "Email", "Telephone", "Points", "Date Inscription"];
+    const rows = dataClientsGlobal.map(c => [
+        `"${c.prenom || ''}"`, 
+        `"${c.nom || ''}"`, 
+        `"${c.email || ''}"`, 
+        `"${c.telephone || ''}"`, 
+        c[restoConfig.colPoints] || 0, 
+        `"${new Date(c.created_at).toLocaleDateString('fr-FR')}"`
+    ]);
+
+    const csvContent = headers.join(",") + "\n" + rows.map(r => r.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
     
-    // Si on est sur le dashboard
-    if (document.getElementById('tableBody')) initDashboard();
-
-    // Bouton Logout
-    const btnLogout = document.getElementById('btnLogout');
-    if (btnLogout) btnLogout.onclick = async () => { await supabaseApp.auth.signOut(); window.location.href = "index.html"; };
-
-    // Bouton Export
-    const btnExport = document.getElementById('btnExport');
-    if (btnExport) btnExport.onclick = () => {
-        if (dataClients.length === 0) return;
-        const csv = ["Prenom,Email,Points", ...dataClients.map(c => `${c.prenom},${c.email},0`)].join("\n");
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = `clients_fiddle.csv`; a.click();
-    };
-});
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `Export_Clients_${restoConfig.nom.replace(/\s+/g, '_')}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
