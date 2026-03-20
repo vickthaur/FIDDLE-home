@@ -12,17 +12,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* DIRECTION ARTISTIQUE : Épurée, Lumineuse et Élégante */
         :root {
-            --bg: #030712;
-            --surface: #111827;
-            --surface-glass: rgba(17, 24, 39, 0.7);
-            --border: rgba(255, 255, 255, 0.08);
-            --text-main: #f9fafb;
-            --text-muted: #9ca3af;
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --glow: rgba(99, 102, 241, 0.4);
-            --accent: #10b981;
+            --bg: #FAFAFA; /* Gris très clair, presque blanc */
+            --surface: #FFFFFF; /* Blanc pur pour les cartes */
+            --border: #E5E7EB; /* Bordure douce */
+            --text-main: #111827; /* Gris très foncé (presque noir) pour la lisibilité */
+            --text-muted: #4B5563; /* Gris moyen pour les paragraphes */
+            --primary: #0F766E; /* Vert Canard élégant (Haut de gamme, Restauration) */
+            --primary-hover: #0D655E;
+            --accent: #D97706; /* Touche d'ambre/orange pour attirer l'oeil */
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
@@ -35,16 +35,16 @@
             overflow-x: hidden;
         }
 
-        /* Arrière-plan Tech & Premium */
-        .bg-glow {
+        /* Formes de fond douces */
+        .bg-shape-1 {
             position: absolute; width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
-            top: -200px; left: -200px; z-index: -1; pointer-events: none;
+            background: radial-gradient(circle, rgba(15, 118, 110, 0.05) 0%, transparent 70%);
+            top: -100px; right: -100px; z-index: -1; pointer-events: none;
         }
-        .bg-glow-2 {
+        .bg-shape-2 {
             position: absolute; width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
-            bottom: 10%; right: -100px; z-index: -1; pointer-events: none;
+            background: radial-gradient(circle, rgba(217, 119, 6, 0.05) 0%, transparent 70%);
+            bottom: 20%; left: -100px; z-index: -1; pointer-events: none;
         }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
@@ -52,50 +52,54 @@
         /* HEADER */
         header {
             position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(3, 7, 18, 0.8); backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
-            padding: 20px 0;
+            padding: 15px 0;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
         }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 20px; font-weight: 800; color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .logo { font-size: 22px; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
         .logo img { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 30px; font-size: 14px; font-weight: 600; transition: 0.3s; }
-        .nav-links a:hover { color: white; }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a.link-text { color: var(--text-muted); text-decoration: none; margin-left: 30px; font-size: 14px; font-weight: 600; transition: 0.3s; }
+        .nav-links a.link-text:hover { color: var(--primary); }
         
         /* BOUTONS */
         .btn {
-            display: inline-block; padding: 16px 32px; border-radius: 100px;
+            display: inline-flex; align-items: center; justify-content: center; padding: 14px 28px; border-radius: 12px;
             font-size: 15px; font-weight: 700; text-decoration: none; text-align: center;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: none;
         }
         .btn-primary {
             background: var(--primary); color: white;
-            box-shadow: 0 4px 20px var(--glow);
+            box-shadow: 0 4px 15px rgba(15, 118, 110, 0.2);
         }
         .btn-primary:hover {
             background: var(--primary-hover);
-            transform: translateY(-2px); box-shadow: 0 8px 25px var(--glow);
+            transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15, 118, 110, 0.3);
         }
-        .btn-nav { padding: 10px 24px; font-size: 14px; margin-left: 30px; }
+        .btn-outline {
+            background: white; color: var(--text-main); border: 1px solid var(--border);
+        }
+        .btn-outline:hover {
+            border-color: var(--primary); color: var(--primary);
+        }
+        .btn-nav { padding: 10px 20px; font-size: 14px; margin-left: 20px; }
 
         /* HERO SECTION */
         .hero { padding: 180px 0 100px 0; text-align: center; position: relative; }
         .badge-hero {
-            display: inline-block; padding: 8px 16px; background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border); border-radius: 100px; font-size: 13px; font-weight: 600;
-            color: var(--text-muted); margin-bottom: 24px;
+            display: inline-block; padding: 8px 16px; background: rgba(15, 118, 110, 0.1);
+            border: 1px solid rgba(15, 118, 110, 0.2); border-radius: 100px; font-size: 13px; font-weight: 700;
+            color: var(--primary); margin-bottom: 24px;
         }
         .hero h1 {
-            font-size: 56px; font-weight: 800; line-height: 1.1; margin-bottom: 24px; letter-spacing: -1.5px;
+            font-size: 56px; font-weight: 800; line-height: 1.15; margin-bottom: 24px; letter-spacing: -1.5px; color: var(--text-main);
         }
-        .hero h1 span {
-            background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .hero p {
-            font-size: 20px; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px auto;
-        }
+        .hero h1 span { color: var(--primary); }
+        .hero p { font-size: 18px; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px auto; }
+        .hero-actions { display: flex; justify-content: center; gap: 15px; }
 
         /* SECTION PROBLÈME / SOLUTION */
         .section { padding: 100px 0; }
@@ -106,78 +110,105 @@
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
         
         .card {
-            background: var(--surface-glass); backdrop-filter: blur(10px);
-            border: 1px solid var(--border); border-radius: 24px; padding: 40px 30px;
-            transition: 0.4s; position: relative; overflow: hidden;
+            background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 40px 30px;
+            transition: 0.4s; position: relative; box-shadow: var(--shadow);
         }
-        .card:hover { transform: translateY(-5px); border-color: rgba(99, 102, 241, 0.3); }
+        .card:hover { transform: translateY(-5px); border-color: rgba(15, 118, 110, 0.3); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
         .card-icon {
-            width: 60px; height: 60px; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            width: 60px; height: 60px; background: rgba(15, 118, 110, 0.05); border: 1px solid rgba(15, 118, 110, 0.1);
             border-radius: 16px; display: flex; align-items: center; justify-content: center;
             font-size: 28px; margin-bottom: 24px; color: var(--primary);
         }
-        .card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+        .card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--text-main); }
         .card p { color: var(--text-muted); font-size: 15px; }
 
         /* TARIFS */
         .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 900px; margin: 0 auto; }
         .pricing-card {
-            background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 40px; text-align: left;
+            background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 40px; text-align: left; box-shadow: var(--shadow);
         }
         .pricing-card.highlight {
-            background: linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, rgba(17, 24, 39, 1) 100%);
-            border-color: rgba(99, 102, 241, 0.4); position: relative;
+            background: var(--primary); color: white; border-color: var(--primary);
         }
-        .price-title { font-size: 18px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
-        .price-amount { font-size: 48px; font-weight: 800; margin-bottom: 20px; color: white; }
-        .price-amount span { font-size: 18px; color: var(--text-muted); font-weight: 500; }
+        .pricing-card.highlight p, .pricing-card.highlight .price-title { color: rgba(255,255,255,0.8); }
+        .pricing-card.highlight .price-amount { color: white; }
+        .pricing-card.highlight .pricing-list li { color: white; }
+        .pricing-card.highlight .btn-primary { background: white; color: var(--primary); box-shadow: none; }
+        .pricing-card.highlight .btn-primary:hover { background: #F3F4F6; }
+
+        .price-title { font-size: 16px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
+        .price-amount { font-size: 48px; font-weight: 800; margin-bottom: 20px; color: var(--text-main); }
+        .price-amount span { font-size: 16px; font-weight: 500; }
         .pricing-list { list-style: none; margin-bottom: 40px; }
-        .pricing-list li { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; color: var(--text-muted); }
-        .pricing-list li::before { content: "✅"; font-size: 14px; }
+        .pricing-list li { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; color: var(--text-muted); font-size: 15px; }
+        .pricing-list li::before { content: "✓"; font-size: 14px; font-weight: 900; color: var(--accent); background: rgba(217, 119, 6, 0.1); width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
 
         /* CTA FINAL */
-        .cta-final { text-align: center; padding: 100px 0; background: linear-gradient(180deg, transparent 0%, rgba(99, 102, 241, 0.05) 100%); border-top: 1px solid var(--border); }
+        .cta-final { text-align: center; padding: 100px 0; background: rgba(15, 118, 110, 0.03); border-top: 1px solid var(--border); }
         
         /* FOOTER */
-        footer { background: #000; padding: 60px 0; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 14px; }
+        footer { background: #111827; padding: 60px 0; color: #9CA3AF; font-size: 14px; }
         .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         .footer-brand h4 { color: white; font-size: 20px; font-weight: 800; margin-bottom: 15px; }
         .footer-contact p { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
 
+        /* MODAL CONNEXION B2B */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(17, 24, 39, 0.6); backdrop-filter: blur(5px); z-index: 1000;
+            justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content {
+            background: white; padding: 40px; border-radius: 24px; width: 100%; max-width: 400px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); position: relative;
+            transform: translateY(20px); transition: transform 0.3s;
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .modal-close { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; }
+        
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+        .form-group input { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 15px; outline: none; transition: border 0.3s; }
+        .form-group input:focus { border-color: var(--primary); }
+
         @media (max-width: 768px) {
-            .nav-links { display: none; }
+            .nav-links .link-text { display: none; }
             .hero h1 { font-size: 40px; }
             .grid-3 { grid-template-columns: 1fr; }
             .pricing-grid { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr; }
+            .hero-actions { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
-    <div class="bg-glow-2"></div>
+    <div class="bg-shape-1"></div>
+    <div class="bg-shape-2"></div>
 
     <header>
         <div class="container nav-inner">
             <a href="#" class="logo">
-                <img src="flavicon.jpg" alt="Fiddle Logo">
+                <img src="flavicon.jpg" alt="Fiddle Bro's Logo">
                 Fiddle Bro's
             </a>
             <div class="nav-links">
-                <a href="#concept">Le Concept</a>
-                <a href="#fonctionnement">Comment ça marche</a>
-                <a href="#tarifs">Tarifs</a>
-                <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn btn-primary btn-nav">Réserver une démo</a>
+                <a href="#concept" class="link-text">Concept</a>
+                <a href="#fonctionnement" class="link-text">Méthode</a>
+                <a href="#tarifs" class="link-text">Tarifs</a>
+                <button onclick="ouvrirModal()" class="btn btn-outline btn-nav">🔑 Espace Restaurateur</button>
             </div>
         </div>
     </header>
 
     <section class="hero container">
-        <div class="badge-hero">🚀 La fidélisation 2.0 pour les restaurateurs</div>
+        <div class="badge-hero">Conçu pour les établissements du Vaucluse</div>
         <h1>Ne perdez plus jamais un client<br><span>après l'addition.</span></h1>
-        <p>Transformez vos visiteurs de passage en contacts réactivables et fidèles. Une solution simple et automatisée, pensée pour les restaurateurs.</p>
-        <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn btn-primary">Planifier une démo physique (30 min)</a>
+        <p>Transformez vos visiteurs de passage en contacts réactivables et fidèles. Une solution claire, élégante et automatisée, pensée par et pour les restaurateurs.</p>
+        <div class="hero-actions">
+            <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn btn-primary">Réserver une démo (30 min)</a>
+        </div>
     </section>
 
     <section id="concept" class="section container">
@@ -187,43 +218,43 @@
         </div>
         <div class="grid-3">
             <div class="card">
-                <div class="card-icon">👻</div>
+                <div class="card-icon">👥</div>
                 <h3>Visiteurs fantômes</h3>
                 <p>Un client vient, consomme et repart. Vous n'avez aucune stratégie de fidélisation ni moyen de le relancer pour annoncer un événement.</p>
             </div>
             <div class="card">
-                <div class="card-icon">⛓️</div>
+                <div class="card-icon">📉</div>
                 <h3>Dépendance</h3>
-                <p>Sans base de données exploitable, vous dépendez fortement des plateformes de réservation externes pour remplir votre salle.</p>
+                <p>Sans base de données exploitable, vous dépendez fortement des plateformes de réservation externes (qui prennent des commissions) pour remplir votre salle.</p>
             </div>
             <div class="card">
-                <div class="card-icon">⏳</div>
+                <div class="card-icon">⏱️</div>
                 <h3>Zéro temps libre</h3>
-                <p>Vos serveurs n'ont pas le temps de gérer des cartes papier. Vous avez besoin d'un système qui tourne sans effort opérationnel.</p>
+                <p>Vos serveurs n'ont pas le temps de gérer des cartes papier. Vous avez besoin d'un système qui tourne sans aucun effort opérationnel.</p>
             </div>
         </div>
     </section>
 
-    <section id="fonctionnement" class="section container" style="background: rgba(255,255,255,0.01); border-radius: 40px; padding: 100px 40px; border: 1px solid var(--border);">
+    <section id="fonctionnement" class="section container">
         <div class="section-header">
             <h2>La méthode Fiddle Bro's</h2>
-            <p>Un fonctionnement simple pour le client, une automatisation complète pour le restaurant.</p>
+            <p>Un fonctionnement élégant pour le client, un pilotage puissant pour le patron.</p>
         </div>
         <div class="grid-3">
             <div class="card">
-                <div class="card-icon" style="color: var(--primary);">1</div>
-                <h3>Scan à table</h3>
-                <p>Le client flashe un QR Code élégant posé sur sa table pour s'inscrire au programme en quelques secondes via son téléphone.</p>
+                <div class="card-icon">📱</div>
+                <h3>1. Scan à table</h3>
+                <p>Le client flashe un QR Code Premium posé sur sa table pour s'inscrire au programme en quelques secondes, sans application à télécharger.</p>
             </div>
             <div class="card">
-                <div class="card-icon" style="color: var(--primary);">2</div>
-                <h3>Validation Instantanée</h3>
-                <p>Le premier point de fidélité est enregistré automatiquement. Rapide, fluide et sans friction pour vos équipes.</p>
+                <div class="card-icon">✨</div>
+                <h3>2. Validation Pro</h3>
+                <p>Le serveur valide les points d'un simple clic via notre outil sécurisé. Rapide, fluide et impossible à frauder.</p>
             </div>
             <div class="card">
-                <div class="card-icon" style="color: var(--primary);">3</div>
-                <h3>Relance Automatique</h3>
-                <p>Notre système envoie des emails stratégiques pour relancer automatiquement les clients et déclencher une nouvelle visite.</p>
+                <div class="card-icon">📊</div>
+                <h3>3. Votre Espace</h3>
+                <p>Connectez-vous à votre Espace Pro pour voir votre base grandir et exporter vos contacts. Les relances clients se font automatiquement.</p>
             </div>
         </div>
     </section>
@@ -231,44 +262,36 @@
     <section id="tarifs" class="section container">
         <div class="section-header">
             <h2>Un modèle économique transparent</h2>
-            <p>Votre base de données clients vous appartient. Aucun engagement caché.</p>
+            <p>Votre base de données vous appartient à 100%. Aucun engagement caché.</p>
         </div>
         <div class="pricing-grid">
             
             <div class="pricing-card">
-                <div class="price-title">Installation Clé en Main</div>
+                <div class="price-title">Installation</div>
                 <div class="price-amount">300 € <span>/ paiement unique</span></div>
-                <p style="color: var(--text-muted); margin-bottom: 25px;">Mise en place complète et rapide (moins d'1h) de votre écosystème.</p>
+                <p style="color: var(--text-muted); margin-bottom: 25px;">Mise en place complète et rapide de votre écosystème sur-mesure.</p>
                 <ul class="pricing-list">
                     <li>Création de votre programme fidélité</li>
                     <li>Design & Impression des QR Codes</li>
                     <li>Configuration des emails automatisés</li>
-                    <li>Formation rapide des serveurs</li>
+                    <li>Formation rapide de l'équipe en salle</li>
                 </ul>
             </div>
 
             <div class="pricing-card highlight">
-                <div class="price-title" style="color: var(--primary);">Abonnement Logiciel</div>
+                <div class="price-title">Abonnement Logiciel</div>
                 <div class="price-amount">99 € <span>/ mois</span></div>
-                <p style="color: var(--text-muted); margin-bottom: 25px;">Le moteur de votre croissance et de vos relances clients.</p>
+                <p style="margin-bottom: 25px;">Le moteur de votre croissance et l'accès à votre espace privé.</p>
                 <ul class="pricing-list">
-                    <li>Hébergement du système sécurisé</li>
-                    <li>Gestion de votre base clients</li>
+                    <li>Accès Espace Restaurateur 24/7</li>
+                    <li>Export illimité de votre base (CSV)</li>
                     <li>Automatisations emails illimitées</li>
-                    <li>100% Propriété de vos données (Conformité RGPD)</li>
-                    <li>Support et maintenance inclus</li>
+                    <li>Hébergement Cloud Sécurisé (RGPD)</li>
+                    <li>Support local & maintenance inclus</li>
                 </ul>
-                <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Réserver ma démo</a>
+                <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Démarrer avec Fiddle Bro's</a>
             </div>
 
-        </div>
-    </section>
-
-    <section class="cta-final">
-        <div class="container">
-            <h2 style="font-size: 40px; font-weight: 800; margin-bottom: 20px;">Prêt à développer votre clientèle récurrente ?</h2>
-            <p style="color: var(--text-muted); font-size: 18px; margin-bottom: 40px;">Rencontrons-nous directement dans votre établissement pour vous présenter le système.</p>
-            <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn btn-primary" style="padding: 20px 40px; font-size: 18px;">Prendre RDV sur Calendly</a>
         </div>
     </section>
 
@@ -276,17 +299,75 @@
         <div class="container footer-grid">
             <div class="footer-brand">
                 <h4>Fiddle Bro's</h4>
-                <p>Créer un système simple permettant aux restaurants de transformer leurs visiteurs en contacts réactivables.</p>
-                <p style="margin-top: 20px; font-size: 12px; opacity: 0.6;">© 2026 Fiddle Bro's. Tous droits réservés. Conformité RGPD.</p>
+                <p>Le partenaire technologique des restaurateurs qui veulent fidéliser sans friction.</p>
+                <p style="margin-top: 20px; font-size: 12px; opacity: 0.6;">© 2026 Fiddle Bro's. Tous droits réservés. Conformité RGPD stricte.</p>
             </div>
             <div class="footer-contact">
                 <h4 style="color: white; font-weight: 700; margin-bottom: 15px;">Nous contacter</h4>
                 <p>📍 Vaucluse (Cavaillon / L'Isle-sur-la-Sorgue)</p>
-                <p>✉️ <a href="mailto:victordetroux2@gmail.com" style="color: var(--text-muted); text-decoration: none;">victordetroux2@gmail.com</a></p>
-                <p>✉️ <a href="mailto:mathys.groy84@gmail.com" style="color: var(--text-muted); text-decoration: none;">mathys.groy84@gmail.com</a></p>
+                <p>✉️ <a href="mailto:victordetroux2@gmail.com" style="color: #9CA3AF; text-decoration: none;">victordetroux2@gmail.com</a></p>
+                <p>✉️ <a href="mailto:mathys.groy84@gmail.com" style="color: #9CA3AF; text-decoration: none;">mathys.groy84@gmail.com</a></p>
             </div>
         </div>
     </footer>
+
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-content">
+            <button onclick="fermerModal()" class="modal-close">&times;</button>
+            <div style="text-align: center; margin-bottom: 25px;">
+                <div style="font-size: 32px; margin-bottom: 10px;">🔐</div>
+                <h2 style="font-size: 24px; font-weight: 800; color: var(--text-main);">Espace Pro</h2>
+                <p style="color: var(--text-muted); font-size: 14px;">Accédez au pilotage de votre restaurant.</p>
+            </div>
+            
+            <form onsubmit="simulerConnexion(event)">
+                <div class="form-group">
+                    <label>Identifiant Restaurant (ex: bistrot)</label>
+                    <input type="text" id="restoId" placeholder="Votre identifiant" required>
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <input type="password" id="restoPwd" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Se connecter au Dashboard</button>
+            </form>
+            <p style="text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 20px;">
+                Un problème de connexion ? <br><a href="mailto:victordetroux2@gmail.com" style="color: var(--primary);">Contactez le support Fiddle Bro's</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Gestion de la modale de connexion
+        const modal = document.getElementById('loginModal');
+
+        function ouvrirModal() {
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+
+        function fermerModal() {
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        // Fermer en cliquant en dehors de la boîte
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) fermerModal();
+        });
+
+        // Simulation de connexion qui redirige vers le Dashboard B2B
+        function simulerConnexion(event) {
+            event.preventDefault();
+            const id = document.getElementById('restoId').value.trim().toLowerCase();
+            const pwd = document.getElementById('restoPwd').value;
+
+            // Redirection vers le dashboard B2B avec l'ID du resto
+            if (id && pwd) {
+                window.location.href = `dashboard-pro.html?resto=${id}`;
+            }
+        }
+    </script>
 
 </body>
 </html>
