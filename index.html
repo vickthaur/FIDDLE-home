@@ -210,5 +210,24 @@
     </div>
 
     <script src="fiddle-pro.js"></script>
+    <script>
+    // On récupère le bouton burger et le menu
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    // On écoute le clic sur le bouton burger
+    menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active'); // Anime les barres en "X"
+        navLinks.classList.toggle('active');   // Fait glisser le menu
+    });
+
+    // Optionnel : Fermer le menu si on clique sur un lien (pour la navigation interne)
+    document.querySelectorAll('.link-text, .btn-nav').forEach(link => {
+        link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+        });
+    });
+</script>
 </body>
 </html>
