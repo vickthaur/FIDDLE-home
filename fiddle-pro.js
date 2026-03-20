@@ -1,12 +1,12 @@
 /**
- * 🚀 FIDDLE ENGINE v4.0 - SYSTÈME B2B 100% DYNAMIQUE
+ * 🚀 FYDELIO ENGINE v4.0 - SYSTÈME B2B 100% DYNAMIQUE
  * Centralise : Auth via base de données, Dashboard, Recherche & Export
  */
 
 // ==========================================================================
 // ⚙️ 1. CONFIGURATION (Pour l'affichage des colonnes)
 // ==========================================================================
-const FIDDLE_CONFIG = {
+const FYDELIO_CONFIG = {
     supabase: {
         url: "https://qawfwbppnbnskxlkwstu.supabase.co",
         key: "sb_publishable_EbKZkPjtT8rwkEdw3oVRCg_mBJJ_gNJ"
@@ -20,7 +20,7 @@ const FIDDLE_CONFIG = {
     }
 };
 
-const supabaseApp = window.supabase.createClient(FIDDLE_CONFIG.supabase.url, FIDDLE_CONFIG.supabase.key);
+const supabaseApp = window.supabase.createClient(FYDELIO_CONFIG.supabase.url, FYDELIO_CONFIG.supabase.key);
 let dataClientsGlobal = []; 
 
 // ==========================================================================
@@ -99,7 +99,7 @@ async function initialiserDashboard() {
     const loader = document.getElementById('loader');
     const urlParams = new URLSearchParams(window.location.search);
     const restoID = urlParams.get('resto') || "villa_saint_antoine";
-    const currentResto = FIDDLE_CONFIG.restos[restoID] || FIDDLE_CONFIG.restos["villa_saint_antoine"];
+    const currentResto = FYDELIO_CONFIG.restos[restoID] || FYDELIO_CONFIG.restos["villa_saint_antoine"];
 
     try {
         const { data: { session }, error: sessionError } = await supabaseApp.auth.getSession();
@@ -195,6 +195,6 @@ function exporterCSV(restoConfig) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `Export_${restoConfig.nom.replace(/\s+/g, '_')}.csv`;
+    link.download = `Export_FYDELIO_${restoConfig.nom.replace(/\s+/g, '_')}.csv`;
     link.click();
 }
