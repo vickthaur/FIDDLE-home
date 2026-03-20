@@ -1,6 +1,6 @@
 /**
  * 📊 SCRIPT DU DASHBOARD - FIDDLE BRO'S
- * Gère la vérification de session, l'affichage et l'export des données
+ * Corrigé avec tes vrais noms de colonnes Supabase
  */
 
 // 1. VRAIES CLÉS SUPABASE
@@ -15,37 +15,33 @@ async function verifierSession() {
     const { data: { session }, error } = await supabaseApp.auth.getSession();
 
     if (!session || error) {
-        // Pas de badge de sécurité = retour à l'accueil direct
         window.location.href = "index.html";
         return;
     }
 
-    // Si c'est bon, on affiche l'email du pro en haut à droite
     const userEmail = session.user.email;
     document.getElementById('displayEmail').innerText = userEmail;
     
-    // Attribution du restoID (logique temporaire pour ton pilote)
-    let restoID = "bistrot"; 
-    if (userEmail.includes("villa")) restoID = "villa_saint_antoine";
+    // On force l'ID du restaurant selon ta base de données
+    const restoID = "villa_saint_antoine"; 
 
-    // On fait disparaître l'écran de chargement
     document.getElementById('loader').style.display = "none";
 
-    // On lance la récupération des clients
     chargerDonnees(restoID);
 }
 
 // 📊 3. CHARGEMENT DES DONNÉES RESTAURANT
 async function chargerDonnees(restoID) {
+    // ⚠️ On interroge "restaurant_origine" comme écrit dans ton Supabase
     const { data, error } = await supabaseApp
         .from('clients')
         .select('*')
-        .eq('restaurant_id', restoID)
-        .order('derniere_visite', { ascending: false });
+        .eq('restaurant_origine', restoID)
+        .order('date_inscription', { ascending: false }); // On trie par date d'inscription
 
     if (error) {
-        console.error("Erreur de chargement :", error);
-        document.getElementById('tableBody').innerHTML = `<tr><td colspan="4" style="text-align:center; color: red;">Erreur de chargement des données.</td></tr>`;
+        console.error("Erreur détaillée :", error);
+        document.getElementById('tableBody').innerHTML = `<tr><td colspan="4" style="text-align:center; color: red;">Erreur : ${error.message}</td></tr>`;
         return;
     }
 
@@ -57,8 +53,8 @@ async function chargerDonnees(restoID) {
 // 📈 4. AFFICHAGE DES CHIFFRES
 function afficherStatistiques(data) {
     document.getElementById('statTotalClients').innerText = data.length;
-    const totalPts = data.reduce((sum, client) => sum + (client.points || 0), 0);
-    document.getElementById('statTotalPoints').innerText = totalPts;
+    // On met en pause le total des points car il n'est pas dans cette table
+    document.getElementById('statTotalPoints').innerText = "-"; 
 }
 
 // 📋 5. AFFICHAGE DU TABLEAU
@@ -66,16 +62,17 @@ function afficherTableau(data) {
     const tbody = document.getElementById('tableBody');
     
     if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: #6B7280;">Aucun client enregistré pour le moment.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: #6B7280;">Aucun client enregistré.</td></tr>`;
         return;
     }
 
+    // ⚠️ On utilise "prénom" (avec accent) et "date_inscription"
     tbody.innerHTML = data.map(client => `
         <tr>
-            <td style="font-weight: 600;">${client.prenom || 'Non renseigné'}</td>
+            <td style="font-weight: 600;">${client.prénom || client.Nom || 'Non renseigné'}</td>
             <td style="color: #6B7280;">${client.email}</td>
-            <td><span class="badge-points">${client.points} pts</span></td>
-            <td style="color: #6B7280;">${new Date(client.derniere_visite).toLocaleDateString('fr-FR', {day: '2-digit', month: 'short', year: 'numeric'})}</td>
+            <td><span class="badge-points">Voir Table Points</span></td>
+            <td style="color: #6B7280;">${new Date(client.date_inscription).toLocaleDateString('fr-FR', {day: '2-digit', month: 'short', year: 'numeric'})}</td>
         </tr>
     `).join('');
 }
@@ -84,12 +81,11 @@ function afficherTableau(data) {
 document.getElementById('btnExport').addEventListener('click', () => {
     if (dataClients.length === 0) return alert("Rien à exporter.");
 
-    const headers = ["Prenom", "Email", "Points", "Derniere Visite"];
+    const headers = ["Prenom", "Email", "Date Inscription"];
     const rows = dataClients.map(c => [
-        c.prenom || '', 
+        c.prénom || '', 
         c.email, 
-        c.points, 
-        new Date(c.derniere_visite).toLocaleDateString('fr-FR')
+        new Date(c.date_inscription).toLocaleDateString('fr-FR')
     ]);
     
     let csvContent = "data:text/csv;charset=utf-8," 
@@ -111,5 +107,5 @@ document.getElementById('btnLogout').addEventListener('click', async () => {
     window.location.href = "index.html";
 });
 
-// Lancement de la machine dès que le fichier est lu
+// Lancement de la machine
 verifierSession();
