@@ -225,23 +225,106 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
 .loader-overlay { position: fixed; inset: 0; background: rgba(255, 255, 255, 0.95); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.3s ease; }
 .loader-text { font-weight: 700; color: var(--text-muted); font-size: 0.9rem; margin-top: 15px; }
 
-/* --- RESPONSIVE DASHBOARD --- */
-@media (max-width: 1024px) {
-    .kpi-grid { grid-template-columns: 1fr 1fr; }
-}
+/* ==========================================================================
+   📱 NAVIGATION STYLE APP + DASHBOARD RESPONSIVE (MERGED & PRO)
+   ========================================================================== */
 
 @media (max-width: 768px) {
+    /* --- 1. VITRINE : NAVIGATION STYLE APP --- */
+    #main-header { padding: 10px 0; }
+    .nav-inner { position: relative; }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Menu caché */
+        height: 100vh;
+        width: 85%;
+        max-width: 320px;
+        background: var(--surface);
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 100px 30px;
+        gap: 25px !important;
+        box-shadow: -15px 0 40px rgba(0,0,0,0.15);
+        transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 999;
+    }
+
+    .nav-links.active { right: 0; }
+
+    .nav-links a.link-text {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-main);
+        width: 100%;
+        padding-bottom: 15px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .btn-nav {
+        width: 100%;
+        margin-top: 30px;
+        padding: 20px !important;
+        background: var(--primary) !important;
+        color: white !important;
+        font-size: 16px !important;
+        border-radius: 18px !important;
+        box-shadow: 0 10px 20px rgba(15, 118, 110, 0.2) !important;
+        justify-content: center;
+    }
+
+    .menu-toggle {
+        display: flex !important;
+        flex-direction: column;
+        gap: 5px;
+        background: var(--bg-gray);
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 12px;
+        z-index: 1001;
+    }
+
+    .bar { width: 22px; height: 2px; background-color: var(--primary); transition: 0.3s; border-radius: 2px; }
+    .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
+    .menu-toggle.active .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle.active .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* --- 2. VITRINE : CONTENU --- */
+    .hero { padding: 130px 0 60px; }
+    .hero h1 { font-size: 2.3rem; }
+    .grid-3, .pricing-grid, .footer-content { grid-template-columns: 1fr !important; gap: 30px; }
+    .pricing-card.highlight { transform: none; margin-top: 20px; }
+    .footer-content { text-align: center; }
+
+    /* --- 3. DASHBOARD PRO : RESPONSIVE SÉCURISÉ --- */
     .dashboard-layout { flex-direction: column; }
-    .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; align-items: center; justify-content: space-between; padding: 10px 20px; }
+    
+    .sidebar { 
+        width: 100%; 
+        height: auto; 
+        border-right: none; 
+        border-bottom: 1px solid var(--border); 
+        flex-direction: row; 
+        align-items: center; 
+        justify-content: space-between; 
+        padding: 12px 20px; 
+    }
+    
     .sidebar-header { border-bottom: none; padding: 0; }
-    .sidebar-nav, .sidebar-footer { display: none; /* Cache le menu complet sur mobile pour simplifier */ }
-    .topbar { flex-direction: column; height: auto; padding: 15px; gap: 15px; }
+    .sidebar-nav, .sidebar-footer { display: none; } /* On simplifie sur mobile */
+    
+    .topbar { 
+        flex-direction: column; 
+        height: auto; 
+        padding: 15px; 
+        gap: 15px; 
+    }
+    
     .topbar-search { width: 100%; }
-    .kpi-grid { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: 1fr !important; }
     .dashboard-content { padding: 15px; }
     
-    /* Vitrine Mobile */
-    .grid-3, .pricing-grid { grid-template-columns: 1fr; }
-    .footer-content { grid-template-columns: 1fr; gap: 30px; text-align: center; }
-    .hero h1 { font-size: 2.5rem; }
+    .table-header-row { flex-direction: column; align-items: flex-start; gap: 10px; }
 }
