@@ -9,19 +9,20 @@
     <link rel="apple-touch-icon" href="flavicon.jpg">
     <meta name="description" content="Transformez vos clients de passage en habitués. Programme de fidélité digital, simple et automatisé pour les restaurants du Vaucluse.">
     
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         /* DIRECTION ARTISTIQUE : Épurée, Lumineuse et Élégante */
         :root {
-            --bg: #FAFAFA; /* Gris très clair, presque blanc */
-            --surface: #FFFFFF; /* Blanc pur pour les cartes */
-            --border: #E5E7EB; /* Bordure douce */
-            --text-main: #111827; /* Gris très foncé (presque noir) pour la lisibilité */
-            --text-muted: #4B5563; /* Gris moyen pour les paragraphes */
-            --primary: #0F766E; /* Vert Canard élégant (Haut de gamme, Restauration) */
+            --bg: #FAFAFA;
+            --surface: #FFFFFF;
+            --border: #E5E7EB;
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --primary: #0F766E;
             --primary-hover: #0D655E;
-            --accent: #D97706; /* Touche d'ambre/orange pour attirer l'oeil */
+            --accent: #D97706;
             --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
@@ -320,16 +321,16 @@
                 <p style="color: var(--text-muted); font-size: 14px;">Accédez au pilotage de votre restaurant.</p>
             </div>
             
-            <form onsubmit="simulerConnexion(event)">
+            <form onsubmit="vraieConnexion(event)">
                 <div class="form-group">
-                    <label>Identifiant Restaurant (ex: bistrot)</label>
-                    <input type="text" id="restoId" placeholder="Votre identifiant" required>
+                    <label>Email Professionnel</label>
+                    <input type="email" id="restoEmail" placeholder="contact@restaurant.fr" required>
                 </div>
                 <div class="form-group">
                     <label>Mot de passe</label>
                     <input type="password" id="restoPwd" placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Se connecter au Dashboard</button>
+                <button type="submit" id="btnConnexion" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Se connecter au Dashboard</button>
             </form>
             <p style="text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 20px;">
                 Un problème de connexion ? <br><a href="mailto:victordetroux2@gmail.com" style="color: var(--primary);">Contactez le support Fiddle Bro's</a>
@@ -338,6 +339,11 @@
     </div>
 
     <script>
+        // 🔑 INITIALISATION SUPABASE
+        const SUPABASE_URL = "https://qawfwbppnbnskxlkwstu.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_EbKZkPjtT8rwkEdw3oVRCg_mBJJ_gNJ";
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
         // Gestion de la modale de connexion
         const modal = document.getElementById('loginModal');
 
@@ -356,15 +362,40 @@
             if (e.target === modal) fermerModal();
         });
 
-        // Simulation de connexion qui redirige vers le Dashboard B2B
-        function simulerConnexion(event) {
+        // 🚀 LA VRAIE CONNEXION SUPABASE
+        async function vraieConnexion(event) {
             event.preventDefault();
-            const id = document.getElementById('restoId').value.trim().toLowerCase();
+            
+            const email = document.getElementById('restoEmail').value.trim();
             const pwd = document.getElementById('restoPwd').value;
+            const btn = document.getElementById('btnConnexion');
 
-            // Redirection vers le dashboard B2B avec l'ID du resto
-            if (id && pwd) {
-                window.location.href = `dashboard-pro.html?resto=${id}`;
+            // On fait patienter l'utilisateur visuellement
+            btn.innerText = "Vérification...";
+            btn.style.opacity = "0.7";
+
+            // Demande à Supabase d'authentifier le compte
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: pwd,
+            });
+
+            if (error) {
+                // Si l'email ou le mot de passe est mauvais
+                alert("Erreur de connexion : Identifiants incorrects.");
+                btn.innerText = "Se connecter au Dashboard";
+                btn.style.opacity = "1";
+            } else {
+                // SUCCÈS : on change le bouton en vert
+                btn.innerText = "Connexion réussie !";
+                btn.style.background = "#10b981"; 
+                btn.style.color = "white";
+                btn.style.opacity = "1";
+                
+                // Redirection vers le dashboard après 1 petite seconde
+                setTimeout(() => {
+                    window.location.href = "dashboard-pro.html";
+                }, 1000);
             }
         }
     </script>
