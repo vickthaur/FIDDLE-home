@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* DIRECTION ARTISTIQUE : Épurée, Lumineuse et Élégante */
+        /* --- TA DIRECTION ARTISTIQUE PREMIUM --- */
         :root {
             --bg: #FAFAFA;
             --surface: #FFFFFF;
@@ -27,38 +27,16 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Formes de fond douces */
-        .bg-shape-1 {
-            position: absolute; width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(15, 118, 110, 0.05) 0%, transparent 70%);
-            top: -100px; right: -100px; z-index: -1; pointer-events: none;
-        }
-        .bg-shape-2 {
-            position: absolute; width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(217, 119, 6, 0.05) 0%, transparent 70%);
-            bottom: 20%; left: -100px; z-index: -1; pointer-events: none;
-        }
+        /* Arrière-plans */
+        .bg-shape-1 { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(15, 118, 110, 0.05) 0%, transparent 70%); top: -100px; right: -100px; z-index: -1; pointer-events: none; }
+        .bg-shape-2 { position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(217, 119, 6, 0.05) 0%, transparent 70%); bottom: 20%; left: -100px; z-index: -1; pointer-events: none; }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
         /* HEADER */
-        header {
-            position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            padding: 15px 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
-        }
+        header { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 15px 0; transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 22px; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
         .logo img { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; }
@@ -67,70 +45,37 @@
         .nav-links a.link-text:hover { color: var(--primary); }
         
         /* BOUTONS */
-        .btn {
-            display: inline-flex; align-items: center; justify-content: center; padding: 14px 28px; border-radius: 12px;
-            font-size: 15px; font-weight: 700; text-decoration: none; text-align: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: none;
-        }
-        .btn-primary {
-            background: var(--primary); color: white;
-            box-shadow: 0 4px 15px rgba(15, 118, 110, 0.2);
-        }
-        .btn-primary:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15, 118, 110, 0.3);
-        }
-        .btn-outline {
-            background: white; color: var(--text-main); border: 1px solid var(--border);
-        }
-        .btn-outline:hover {
-            border-color: var(--primary); color: var(--primary);
-        }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 28px; border-radius: 12px; font-size: 15px; font-weight: 700; text-decoration: none; text-align: center; transition: all 0.3s ease; cursor: pointer; border: none; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(15, 118, 110, 0.2); }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15, 118, 110, 0.3); }
+        .btn-outline { background: white; color: var(--text-main); border: 1px solid var(--border); }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
         .btn-nav { padding: 10px 20px; font-size: 14px; margin-left: 20px; }
 
-        /* HERO SECTION */
+        /* HERO & SECTIONS */
         .hero { padding: 180px 0 100px 0; text-align: center; position: relative; }
-        .badge-hero {
-            display: inline-block; padding: 8px 16px; background: rgba(15, 118, 110, 0.1);
-            border: 1px solid rgba(15, 118, 110, 0.2); border-radius: 100px; font-size: 13px; font-weight: 700;
-            color: var(--primary); margin-bottom: 24px;
-        }
-        .hero h1 {
-            font-size: 56px; font-weight: 800; line-height: 1.15; margin-bottom: 24px; letter-spacing: -1.5px; color: var(--text-main);
-        }
+        .badge-hero { display: inline-block; padding: 8px 16px; background: rgba(15, 118, 110, 0.1); border: 1px solid rgba(15, 118, 110, 0.2); border-radius: 100px; font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 24px; }
+        .hero h1 { font-size: 56px; font-weight: 800; line-height: 1.15; margin-bottom: 24px; letter-spacing: -1.5px; color: var(--text-main); }
         .hero h1 span { color: var(--primary); }
         .hero p { font-size: 18px; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px auto; }
         .hero-actions { display: flex; justify-content: center; gap: 15px; }
 
-        /* SECTION PROBLÈME / SOLUTION */
         .section { padding: 100px 0; }
         .section-header { text-align: center; margin-bottom: 70px; }
         .section-header h2 { font-size: 36px; font-weight: 800; margin-bottom: 16px; }
         .section-header p { color: var(--text-muted); font-size: 18px; max-width: 600px; margin: 0 auto; }
-
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
         
-        .card {
-            background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 40px 30px;
-            transition: 0.4s; position: relative; box-shadow: var(--shadow);
-        }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 40px 30px; transition: 0.4s; box-shadow: var(--shadow); }
         .card:hover { transform: translateY(-5px); border-color: rgba(15, 118, 110, 0.3); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .card-icon {
-            width: 60px; height: 60px; background: rgba(15, 118, 110, 0.05); border: 1px solid rgba(15, 118, 110, 0.1);
-            border-radius: 16px; display: flex; align-items: center; justify-content: center;
-            font-size: 28px; margin-bottom: 24px; color: var(--primary);
-        }
+        .card-icon { width: 60px; height: 60px; background: rgba(15, 118, 110, 0.05); border: 1px solid rgba(15, 118, 110, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 24px; color: var(--primary); }
         .card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--text-main); }
         .card p { color: var(--text-muted); font-size: 15px; }
 
         /* TARIFS */
         .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 900px; margin: 0 auto; }
-        .pricing-card {
-            background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 40px; text-align: left; box-shadow: var(--shadow);
-        }
-        .pricing-card.highlight {
-            background: var(--primary); color: white; border-color: var(--primary);
-        }
+        .pricing-card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 40px; text-align: left; box-shadow: var(--shadow); }
+        .pricing-card.highlight { background: var(--primary); color: white; border-color: var(--primary); }
         .pricing-card.highlight p, .pricing-card.highlight .price-title { color: rgba(255,255,255,0.8); }
         .pricing-card.highlight .price-amount { color: white; }
         .pricing-card.highlight .pricing-list li { color: white; }
@@ -144,27 +89,16 @@
         .pricing-list li { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; color: var(--text-muted); font-size: 15px; }
         .pricing-list li::before { content: "✓"; font-size: 14px; font-weight: 900; color: var(--accent); background: rgba(217, 119, 6, 0.1); width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
 
-        /* CTA FINAL */
-        .cta-final { text-align: center; padding: 100px 0; background: rgba(15, 118, 110, 0.03); border-top: 1px solid var(--border); }
-        
         /* FOOTER */
-        footer { background: #111827; padding: 60px 0; color: #9CA3AF; font-size: 14px; }
+        footer { background: #111827; padding: 60px 0; color: #9CA3AF; font-size: 14px; border-top: 1px solid var(--border); }
         .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         .footer-brand h4 { color: white; font-size: 20px; font-weight: 800; margin-bottom: 15px; }
         .footer-contact p { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
 
         /* MODAL CONNEXION B2B */
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(17, 24, 39, 0.6); backdrop-filter: blur(5px); z-index: 1000;
-            justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s;
-        }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.6); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
         .modal-overlay.active { display: flex; opacity: 1; }
-        .modal-content {
-            background: white; padding: 40px; border-radius: 24px; width: 100%; max-width: 400px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); position: relative;
-            transform: translateY(20px); transition: transform 0.3s;
-        }
+        .modal-content { background: white; padding: 40px; border-radius: 24px; width: 90%; max-width: 400px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); position: relative; transform: translateY(20px); transition: transform 0.3s; }
         .modal-overlay.active .modal-content { transform: translateY(0); }
         .modal-close { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; }
         
@@ -172,13 +106,13 @@
         .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
         .form-group input { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 15px; outline: none; transition: border 0.3s; }
         .form-group input:focus { border-color: var(--primary); }
+        
+        #loginError { display: none; color: #EF4444; font-size: 13px; text-align: center; margin-top: 15px; font-weight: 600; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; }
 
         @media (max-width: 768px) {
             .nav-links .link-text { display: none; }
             .hero h1 { font-size: 40px; }
-            .grid-3 { grid-template-columns: 1fr; }
-            .pricing-grid { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: 1fr; }
+            .grid-3, .pricing-grid, .footer-grid { grid-template-columns: 1fr; }
             .hero-actions { flex-direction: column; }
         }
     </style>
@@ -198,7 +132,7 @@
                 <a href="#concept" class="link-text">Concept</a>
                 <a href="#fonctionnement" class="link-text">Méthode</a>
                 <a href="#tarifs" class="link-text">Tarifs</a>
-                <button onclick="ouvrirModal()" class="btn btn-outline btn-nav">🔑 Espace Restaurateur</button>
+                <button id="btnOpenModal" class="btn btn-outline btn-nav">🔑 Espace Restaurateur</button>
             </div>
         </div>
     </header>
@@ -213,86 +147,11 @@
     </section>
 
     <section id="concept" class="section container">
-        <div class="section-header">
-            <h2>Le problème de la restauration</h2>
-            <p>Vous générez du trafic, mais vous ne capturez aucune donnée client.</p>
-        </div>
+        <div class="section-header"><h2>Le problème de la restauration</h2><p>Vous générez du trafic, mais vous ne capturez aucune donnée client.</p></div>
         <div class="grid-3">
-            <div class="card">
-                <div class="card-icon">👥</div>
-                <h3>Visiteurs fantômes</h3>
-                <p>Un client vient, consomme et repart. Vous n'avez aucune stratégie de fidélisation ni moyen de le relancer pour annoncer un événement.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon">📉</div>
-                <h3>Dépendance</h3>
-                <p>Sans base de données exploitable, vous dépendez fortement des plateformes de réservation externes (qui prennent des commissions) pour remplir votre salle.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon">⏱️</div>
-                <h3>Zéro temps libre</h3>
-                <p>Vos serveurs n'ont pas le temps de gérer des cartes papier. Vous avez besoin d'un système qui tourne sans aucun effort opérationnel.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="fonctionnement" class="section container">
-        <div class="section-header">
-            <h2>La méthode Fiddle Bro's</h2>
-            <p>Un fonctionnement élégant pour le client, un pilotage puissant pour le patron.</p>
-        </div>
-        <div class="grid-3">
-            <div class="card">
-                <div class="card-icon">📱</div>
-                <h3>1. Scan à table</h3>
-                <p>Le client flashe un QR Code Premium posé sur sa table pour s'inscrire au programme en quelques secondes, sans application à télécharger.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon">✨</div>
-                <h3>2. Validation Pro</h3>
-                <p>Le serveur valide les points d'un simple clic via notre outil sécurisé. Rapide, fluide et impossible à frauder.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon">📊</div>
-                <h3>3. Votre Espace</h3>
-                <p>Connectez-vous à votre Espace Pro pour voir votre base grandir et exporter vos contacts. Les relances clients se font automatiquement.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="tarifs" class="section container">
-        <div class="section-header">
-            <h2>Un modèle économique transparent</h2>
-            <p>Votre base de données vous appartient à 100%. Aucun engagement caché.</p>
-        </div>
-        <div class="pricing-grid">
-            
-            <div class="pricing-card">
-                <div class="price-title">Installation</div>
-                <div class="price-amount">300 € <span>/ paiement unique</span></div>
-                <p style="color: var(--text-muted); margin-bottom: 25px;">Mise en place complète et rapide de votre écosystème sur-mesure.</p>
-                <ul class="pricing-list">
-                    <li>Création de votre programme fidélité</li>
-                    <li>Design & Impression des QR Codes</li>
-                    <li>Configuration des emails automatisés</li>
-                    <li>Formation rapide de l'équipe en salle</li>
-                </ul>
-            </div>
-
-            <div class="pricing-card highlight">
-                <div class="price-title">Abonnement Logiciel</div>
-                <div class="price-amount">99 € <span>/ mois</span></div>
-                <p style="margin-bottom: 25px;">Le moteur de votre croissance et l'accès à votre espace privé.</p>
-                <ul class="pricing-list">
-                    <li>Accès Espace Restaurateur 24/7</li>
-                    <li>Export illimité de votre base (CSV)</li>
-                    <li>Automatisations emails illimitées</li>
-                    <li>Hébergement Cloud Sécurisé (RGPD)</li>
-                    <li>Support local & maintenance inclus</li>
-                </ul>
-                <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Démarrer avec Fiddle Bro's</a>
-            </div>
-
+            <div class="card"><div class="card-icon">👥</div><h3>Visiteurs fantômes</h3><p>Un client vient, consomme et repart. Vous n'avez aucune stratégie de fidélisation ni moyen de le relancer pour annoncer un événement.</p></div>
+            <div class="card"><div class="card-icon">📉</div><h3>Dépendance</h3><p>Sans base de données exploitable, vous dépendez fortement des plateformes de réservation externes (qui prennent des commissions) pour remplir votre salle.</p></div>
+            <div class="card"><div class="card-icon">⏱️</div><h3>Zéro temps libre</h3><p>Vos serveurs n'ont pas le temps de gérer des cartes papier. Vous avez besoin d'un système qui tourne sans aucun effort opérationnel.</p></div>
         </div>
     </section>
 
@@ -306,22 +165,22 @@
             <div class="footer-contact">
                 <h4 style="color: white; font-weight: 700; margin-bottom: 15px;">Nous contacter</h4>
                 <p>📍 Vaucluse (Cavaillon / L'Isle-sur-la-Sorgue)</p>
-                <p>✉️ <a href="mailto:victordetroux2@gmail.com" style="color: #9CA3AF; text-decoration: none;">victordetroux2@gmail.com</a></p>
-                <p>✉️ <a href="mailto:mathys.groy84@gmail.com" style="color: #9CA3AF; text-decoration: none;">mathys.groy84@gmail.com</a></p>
+                <p>✉️ victordetroux2@gmail.com</p>
+                <p>✉️ mathys.groy84@gmail.com</p>
             </div>
         </div>
     </footer>
 
     <div id="loginModal" class="modal-overlay">
         <div class="modal-content">
-            <button onclick="fermerModal()" class="modal-close">&times;</button>
+            <button id="btnCloseModal" class="modal-close">&times;</button>
             <div style="text-align: center; margin-bottom: 25px;">
                 <div style="font-size: 32px; margin-bottom: 10px;">🔐</div>
                 <h2 style="font-size: 24px; font-weight: 800; color: var(--text-main);">Espace Pro</h2>
-                <p style="color: var(--text-muted); font-size: 14px;">Accédez au pilotage de votre restaurant.</p>
+                <p style="color: var(--text-muted); font-size: 14px;">Accédez au pilotage de votre base clients.</p>
             </div>
             
-            <form onsubmit="vraieConnexion(event)">
+            <form id="loginForm">
                 <div class="form-group">
                     <label>Email Professionnel</label>
                     <input type="email" id="restoEmail" placeholder="contact@restaurant.fr" required>
@@ -330,75 +189,16 @@
                     <label>Mot de passe</label>
                     <input type="password" id="restoPwd" placeholder="••••••••" required>
                 </div>
-                <button type="submit" id="btnConnexion" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Se connecter au Dashboard</button>
+                <button type="submit" id="btnSubmitLogin" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Se connecter au Dashboard</button>
+                <div id="loginError">Identifiants incorrects. Veuillez réessayer.</div>
             </form>
+            
             <p style="text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 20px;">
                 Un problème de connexion ? <br><a href="mailto:victordetroux2@gmail.com" style="color: var(--primary);">Contactez le support Fiddle Bro's</a>
             </p>
         </div>
     </div>
 
-    <script>
-        // 🔑 INITIALISATION SUPABASE
-        const SUPABASE_URL = "https://qawfwbppnbnskxlkwstu.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_EbKZkPjtT8rwkEdw3oVRCg_mBJJ_gNJ";
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        // Gestion de la modale de connexion
-        const modal = document.getElementById('loginModal');
-
-        function ouvrirModal() {
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('active'), 10);
-        }
-
-        function fermerModal() {
-            modal.classList.remove('active');
-            setTimeout(() => modal.style.display = 'none', 300);
-        }
-
-        // Fermer en cliquant en dehors de la boîte
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) fermerModal();
-        });
-
-        // 🚀 LA VRAIE CONNEXION SUPABASE
-        async function vraieConnexion(event) {
-            event.preventDefault();
-            
-            const email = document.getElementById('restoEmail').value.trim();
-            const pwd = document.getElementById('restoPwd').value;
-            const btn = document.getElementById('btnConnexion');
-
-            // On fait patienter l'utilisateur visuellement
-            btn.innerText = "Vérification...";
-            btn.style.opacity = "0.7";
-
-            // Demande à Supabase d'authentifier le compte
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: pwd,
-            });
-
-            if (error) {
-                // Si l'email ou le mot de passe est mauvais
-                alert("Erreur de connexion : Identifiants incorrects.");
-                btn.innerText = "Se connecter au Dashboard";
-                btn.style.opacity = "1";
-            } else {
-                // SUCCÈS : on change le bouton en vert
-                btn.innerText = "Connexion réussie !";
-                btn.style.background = "#10b981"; 
-                btn.style.color = "white";
-                btn.style.opacity = "1";
-                
-                // Redirection vers le dashboard après 1 petite seconde
-                setTimeout(() => {
-                    window.location.href = "dashboard-pro.html";
-                }, 1000);
-            }
-        }
-    </script>
-
+    <script src="auth.js"></script>
 </body>
 </html>
