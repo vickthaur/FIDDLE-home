@@ -3,90 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Espace Pro | Fiddle Bro's</title>
+    <title>Dashboard Pro | Fiddle Bro's</title>
     
     <link rel="icon" type="image/jpeg" href="flavicon.jpg">
-    
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray">
+<body class="dashboard-body">
 
     <div id="loader" class="loader-overlay">
         <div class="spinner"></div>
-        <p class="loader-text">Vérification de l'accès sécurisé...</p>
+        <p class="loader-text">Sécurisation de votre espace...</p>
     </div>
 
-    <header class="dash-header">
-        <a href="index.html" class="logo">
-            <img src="flavicon.jpg" alt="Logo Fiddle Bro's">
-            <span>Fiddle Bro's Pro</span>
-        </a>
-        <div class="user-info">
-            <span class="badge-email" id="displayEmail">Chargement...</span>
-            <button class="btn btn-outline-danger btn-sm" id="btnLogout">Déconnexion</button>
-        </div>
-    </header>
-
-    <main class="container-dash">
+    <div class="dashboard-layout">
         
-        <div class="page-header">
-            <div class="header-titles">
-                <h1>Base Clients</h1>
-                <p class="subtitle">Visualisez et gérez votre communauté en temps réel.</p>
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="flavicon.jpg" alt="Logo" class="sidebar-logo-img">
+                <span class="sidebar-logo-text">Fiddle Pro</span>
             </div>
-            <button class="btn btn-primary" id="btnExport">
-                📥 Exporter (CSV)
-            </button>
-        </div>
+            
+            <nav class="sidebar-nav">
+                <p class="sidebar-title">Menu Principal</p>
+                <a href="#" class="nav-item active">
+                    <span class="nav-icon">📊</span>
+                    Base Clients
+                </a>
+                <a href="#" class="nav-item disabled" title="Bientôt disponible">
+                    <span class="nav-icon">📱</span>
+                    Mes QR Codes <span class="badge-soon">Bientôt</span>
+                </a>
+                <a href="#" class="nav-item disabled" title="Bientôt disponible">
+                    <span class="nav-icon">✉️</span>
+                    Campagnes SMS <span class="badge-soon">Bientôt</span>
+                </a>
+            </nav>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon-wrapper">👥</div>
-                <div class="stat-details">
-                    <h3>Total Inscrits</h3>
-                    <div class="value" id="statTotalClients">-</div>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">👤</div>
+                    <div class="user-info">
+                        <p class="user-role">Administrateur</p>
+                        <p class="user-email-text" id="displayEmail">chargement...</p>
+                    </div>
                 </div>
+                <button class="btn-logout-sidebar" id="btnLogout">
+                    <span>🚪 Déconnexion</span>
+                </button>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon-wrapper">⭐</div>
-                <div class="stat-details">
-                    <h3>Points Distribués</h3>
-                    <div class="value" id="statTotalPoints">-</div>
-                </div>
-            </div>
-        </div>
+        </aside>
 
-        <div class="table-card">
-            <div class="table-toolbar">
-                <div class="search-container">
+        <main class="dashboard-main">
+            
+            <header class="topbar">
+                <div class="topbar-search">
                     <span class="search-icon">🔍</span>
-                    <input type="text" id="searchClient" class="search-input" placeholder="Rechercher un client (nom, email, téléphone...)">
+                    <input type="text" id="searchClient" class="search-input-top" placeholder="Rechercher un client (Nom, Email, Téléphone)...">
                 </div>
-            </div>
+                <div class="topbar-actions">
+                    <button class="btn btn-primary" id="btnExport">
+                        📥 Exporter la base (CSV)
+                    </button>
+                </div>
+            </header>
 
-            <div class="table-responsive">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Client</th>
-                            <th>Email</th>
-                            <th>Points cumulés</th>
-                            <th>Date d'inscription</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <tr>
-                            <td colspan="4" class="empty-state">Chargement des données...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            <div class="dashboard-content">
+                <div class="page-title-group">
+                    <h1>Vue d'ensemble</h1>
+                    <p>Suivez l'évolution de votre programme de fidélité en temps réel.</p>
+                </div>
 
-    </main>
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <h3>Total Inscrits</h3>
+                            <div class="kpi-icon blue">👥</div>
+                        </div>
+                        <div class="kpi-value" id="statTotalClients">-</div>
+                        <p class="kpi-trend positive">La base de données s'agrandit</p>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <h3>Points Distribués</h3>
+                            <div class="kpi-icon orange">⭐</div>
+                        </div>
+                        <div class="kpi-value" id="statTotalPoints">-</div>
+                        <p class="kpi-trend">Points en circulation</p>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <h3>Taux de capture</h3>
+                            <div class="kpi-icon green">📈</div>
+                        </div>
+                        <div class="kpi-value">Optimisé</div>
+                        <p class="kpi-trend">Fidélisation automatique active</p>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header-row">
+                        <h2>Répertoire Clients</h2>
+                        <span class="badge-live">🟢 Live</span>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="pro-table">
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Contact</th>
+                                    <th>Statut Fidélité</th>
+                                    <th>Date d'inscription</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <tr>
+                                    <td colspan="4" class="empty-state">Chargement de votre base de données...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+            </div>
+        </main>
+    </div>
 
     <script src="fiddle-pro.js"></script>
 </body>
