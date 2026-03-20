@@ -1,6 +1,6 @@
 /**
  * 📊 SCRIPT DU DASHBOARD - FIDDLE BRO'S
- * Corrigé pour l'affichage dynamique
+ * Gère l'affichage dynamique des clients et des points
  */
 
 // 1. CONNEXION SUPABASE
@@ -10,31 +10,41 @@ const supabaseApp = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let dataClients = [];
 
-// Détection automatique du resto par l'URL ou par défaut
+// Récupération de l'ID du restaurant dans l'URL (ex: ?resto=bistrot)
 const urlParams = new URLSearchParams(window.location.search);
 const restoID = urlParams.get('resto') || "villa_saint_antoine"; 
 
-// --- CHOIX DE LA COLONNE DE POINTS SELON LE RESTO ---
+// Définition de la colonne de points à lire (points_bistrot ou points_villa)
 const pointsCol = (restoID === "bistrot") ? "points_bistrot" : "points_villa";
 
-// 🛡️ 2. VÉRIFICATION DE LA SESSION
+// 🛡️ 2. VÉRIFICATION DE LA SESSION (Sécurité)
 async function verifierSession() {
-    const { data: { session }, error } = await supabaseApp.auth.getSession();
+    try {
+        const { data: { session }, error } = await supabaseApp.auth.getSession();
 
-    if (!session || error) {
-        window.location.href = "index.html";
-        return;
+        if (!session || error) {
+            console.log("Session expirée ou inexistante.");
+            window.location.href = "index.html";
+            return;
+        }
+
+        // Affichage de l'email du pro connecté
+        const emailDisplay = document.getElementById('displayEmail');
+        if (emailDisplay) emailDisplay.innerText = session.user.email;
+        
+        // On lance le chargement des données
+        await chargerDonnees(restoID);
+
+    } catch (e) {
+        console.error("Erreur critique session:", e);
+        arreterLoader(); // Sécurité pour ne pas mouliner
     }
-
-    document.getElementById('displayEmail').innerText = session.user.email;
-    chargerDonnees(restoID);
 }
 
-// 📊 3. CHARGEMENT ET AFFICHAGE (C'est ici que ça bloquait)
+// 📊 3. CHARGEMENT DES DONNÉES DEPUIS SUPABASE
 async function chargerDonnees(id) {
-    const loader = document.getElementById('loader'); // Vérifie que l'ID est bien 'loader' dans ton HTML
-    
     try {
+        // On récupère tout de la table 'clients' pour ce resto précis
         const { data, error } = await supabaseApp
             .from('clients')
             .select('*')
@@ -45,44 +55,49 @@ async function chargerDonnees(id) {
 
         dataClients = data || [];
         
-        // On lance l'affichage
+        // Mise à jour des chiffres et du tableau
         afficherStatistiques(dataClients);
         afficherTableau(dataClients);
 
     } catch (err) {
-        console.error("Erreur d'affichage :", err);
+        console.error("Erreur de chargement des données:", err);
         const tbody = document.getElementById('tableBody');
-        if (tbody) tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: red;">Erreur de chargement des données.</td></tr>`;
+        if (tbody) tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: #EF4444; padding: 20px;">Erreur base de données. Vérifiez votre connexion.</td></tr>`;
     } finally {
-        // 🛑 ARRÊT DU MOULINAGE (Indispensable)
-        // Quoi qu'il arrive (succès ou erreur), on cache le spinner
-        if (loader) loader.style.display = "none";
+        // 🛑 ARRÊT DU MOULINAGE : Indispensable pour enlever l'écran blanc
+        arreterLoader();
     }
 }
 
-// 📈 4. STATISTIQUES
+// 📉 4. CALCUL DES STATISTIQUES (Points et Total)
 function afficherStatistiques(data) {
-    document.getElementById('statTotalClients').innerText = data.length;
+    const statTotal = document.getElementById('statTotalClients');
+    const statPoints = document.getElementById('statTotalPoints');
+
+    if (statTotal) statTotal.innerText = data.length;
     
-    // On utilise pointsCol qui a été défini en haut
-    const totalPoints = data.reduce((acc, client) => acc + (client[pointsCol] || 0), 0);
-    document.getElementById('statTotalPoints').innerText = totalPoints; 
+    if (statPoints) {
+        // On additionne dynamiquement la colonne de points correspondante (villa ou bistrot)
+        const total = data.reduce((acc, c) => acc + (c[pointsCol] || 0), 0);
+        statPoints.innerText = total; 
+    }
 }
 
-// 📋 5. AFFICHAGE DU TABLEAU
+// 📋 5. GÉNÉRATION DU TABLEAU DES CONTACTS
 function afficherTableau(data) {
     const tbody = document.getElementById('tableBody');
+    if (!tbody) return;
     
     if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: #6B7280;">Aucun client trouvé pour ce restaurant.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: #6B7280;">Aucun client enregistré pour cet établissement.</td></tr>`;
         return;
     }
 
     tbody.innerHTML = data.map(client => `
         <tr>
-            <td style="font-weight: 600;">${client.prenom || ''} ${client.nom || ''}</td>
-            <td style="color: #6B7280;">${client.email}</td>
-            <td><span class="badge-points" style="background:#10b981; color:white; padding:4px 10px; border-radius:8px; font-weight:bold;">
+            <td style="font-weight: 600; color: #111827;">${client.prenom || ''} ${client.nom || ''}</td>
+            <td style="color: #4B5563;">${client.email}</td>
+            <td><span class="badge-points">
                 ${client[pointsCol] || 0} pts
             </span></td>
             <td style="color: #6B7280;">
@@ -92,10 +107,49 @@ function afficherTableau(data) {
     `).join('');
 }
 
-// 🚪 6. DÉCONNEXION
-document.getElementById('btnLogout').addEventListener('click', async () => {
-    await supabaseApp.auth.signOut();
-    window.location.href = "index.html";
-});
+// 🔄 Fonction utilitaire pour masquer l'écran de chargement
+function arreterLoader() {
+    const loader = document.getElementById('loader');
+    if (loader) loader.style.display = "none";
+}
 
+// 📥 6. EXPORT CSV (RGPD)
+const btnExport = document.getElementById('btnExport');
+if (btnExport) {
+    btnExport.addEventListener('click', () => {
+        if (dataClients.length === 0) return alert("Rien à exporter.");
+
+        const headers = ["Prenom", "Nom", "Email", "Telephone", "Points", "Date"];
+        const rows = dataClients.map(c => [
+            c.prenom || '', 
+            c.nom || '',
+            c.email, 
+            c.telephone || '',
+            c[pointsCol] || 0,
+            new Date(c.created_at).toLocaleDateString('fr-FR')
+        ]);
+        
+        let csvContent = "data:text/csv;charset=utf-8," 
+            + headers.join(",") + "\n"
+            + rows.map(e => e.join(",")).join("\n");
+
+        const link = document.createElement("a");
+        link.setAttribute("href", encodeURI(csvContent));
+        link.setAttribute("download", `Export_Clients_${restoID}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    });
+}
+
+// 🚪 7. DÉCONNEXION
+const btnLogout = document.getElementById('btnLogout');
+if (btnLogout) {
+    btnLogout.addEventListener('click', async () => {
+        await supabaseApp.auth.signOut();
+        window.location.href = "index.html";
+    });
+}
+
+// Lancement automatique au chargement
 verifierSession();
