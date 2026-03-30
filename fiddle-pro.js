@@ -1,6 +1,6 @@
 /**
- * 🚀 FYDELIO ENGINE v4.4 - DASHBOARD & EXPORT EXPERT + QR CODE
- * Système B2B dynamique avec support Anniversaires, Points unifiés et QR Code
+ * 🚀 FYDELIO ENGINE v4.4 - DASHBOARD MULTI-VUES & QR CODE
+ * Système B2B dynamique avec support Anniversaires, Points unifiés et Navigation
  */
 
 // ==========================================================================
@@ -11,7 +11,6 @@ const FYDELIO_CONFIG = {
         url: "https://qawfwbppnbnskxlkwstu.supabase.co",
         key: "sb_publishable_EbKZkPjtT8rwkEdw3oVRCg_mBJJ_gNJ"
     },
-    // Note : On utilise "points" car les Vues SQL font un "AS points"
     restos: {
         "villa_saint_antoine": { 
             nom: "Villa Saint Antoine", 
@@ -136,16 +135,13 @@ async function initialiserDashboard() {
     const btnDownloadQR = document.getElementById('btnDownloadQR');
 
     if (qrContainer) {
-        // 🔥 Lien d'inscription corrigé avec l'App Fydelio 🔥
+        // Lien d'inscription personnalisé avec l'App Fydelio
         const lienInscription = `https://app.fydelio.fr/?resto=${restoID}`; 
         
-        // URL de l'API pour générer le QR Code (300x300 pixels)
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(lienInscription)}`;
         
-        // Injection de l'image dans le container
         qrContainer.innerHTML = `<img src="${qrUrl}" alt="QR Code ${currentResto.nom}" style="width: 150px; height: 150px; border-radius: 8px;">`;
 
-        // Téléchargement sécurisé pour le restaurateur
         if (btnDownloadQR) {
             btnDownloadQR.addEventListener('click', async (e) => {
                 e.preventDefault();
@@ -160,7 +156,7 @@ async function initialiserDashboard() {
                     a.href = url;
                     a.download = `QR_Code_${currentResto.nom.replace(/\s+/g, '_')}.png`;
                     a.click();
-                    window.URL.revokeObjectURL(url); // Nettoyage de la mémoire
+                    window.URL.revokeObjectURL(url);
                 } catch (err) {
                     alert("Erreur lors du téléchargement. Faites un clic droit sur l'image > 'Enregistrer l'image sous'.");
                 } finally {
@@ -168,6 +164,32 @@ async function initialiserDashboard() {
                 }
             });
         }
+    }
+
+    // ==========================================
+    // 🧭 NAVIGATION DANS LE DASHBOARD
+    // ==========================================
+    const navClients = document.getElementById('nav-clients');
+    const navQrcodes = document.getElementById('nav-qrcodes');
+    const viewClients = document.getElementById('view-clients');
+    const viewQrcodes = document.getElementById('view-qrcodes');
+
+    if (navClients && navQrcodes && viewClients && viewQrcodes) {
+        navClients.addEventListener('click', (e) => {
+            e.preventDefault();
+            navClients.classList.add('active');
+            navQrcodes.classList.remove('active');
+            viewClients.style.display = 'block';
+            viewQrcodes.style.display = 'none';
+        });
+
+        navQrcodes.addEventListener('click', (e) => {
+            e.preventDefault();
+            navQrcodes.classList.add('active');
+            navClients.classList.remove('active');
+            viewQrcodes.style.display = 'block';
+            viewClients.style.display = 'none';
+        });
     }
 
     // Barre de recherche
