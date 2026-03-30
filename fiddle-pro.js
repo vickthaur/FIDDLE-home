@@ -1,6 +1,6 @@
 /**
- * 🚀 FYDELIO ENGINE v4.3 - DASHBOARD & EXPORT EXPERT
- * Système B2B dynamique avec support Anniversaires et Points unifiés
+ * 🚀 FYDELIO ENGINE v4.4 - DASHBOARD & EXPORT EXPERT + QR CODE
+ * Système B2B dynamique avec support Anniversaires, Points unifiés et QR Code
  */
 
 // ==========================================================================
@@ -126,6 +126,47 @@ async function initialiserDashboard() {
         if (loader) {
             loader.style.opacity = '0';
             setTimeout(() => loader.style.display = 'none', 300);
+        }
+    }
+
+    // ==========================================
+    // 📱 GÉNÉRATION DYNAMIQUE DU QR CODE
+    // ==========================================
+    const qrContainer = document.getElementById('qr-code-container');
+    const btnDownloadQR = document.getElementById('btnDownloadQR');
+
+    if (qrContainer) {
+        // Lien d'inscription personnalisé avec l'ID du resto
+        const lienInscription = `https://fydelio.fr/inscription.html?resto=${restoID}`; 
+        
+        // URL de l'API pour générer le QR Code (300x300 pixels)
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(lienInscription)}`;
+        
+        // Injection de l'image dans le container
+        qrContainer.innerHTML = `<img src="${qrUrl}" alt="QR Code ${currentResto.nom}" style="width: 150px; height: 150px; border-radius: 8px;">`;
+
+        // Téléchargement sécurisé pour le restaurateur
+        if (btnDownloadQR) {
+            btnDownloadQR.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const btnOriginalText = btnDownloadQR.innerHTML;
+                btnDownloadQR.innerHTML = "Téléchargement en cours...";
+                
+                try {
+                    const response = await fetch(qrUrl);
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `QR_Code_${currentResto.nom.replace(/\s+/g, '_')}.png`;
+                    a.click();
+                    window.URL.revokeObjectURL(url); // Nettoyage de la mémoire
+                } catch (err) {
+                    alert("Erreur lors du téléchargement. Faites un clic droit sur l'image > 'Enregistrer l'image sous'.");
+                } finally {
+                    btnDownloadQR.innerHTML = btnOriginalText;
+                }
+            });
         }
     }
 
