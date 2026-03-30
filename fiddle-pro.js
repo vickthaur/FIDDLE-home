@@ -1,6 +1,6 @@
 /**
- * 🚀 FYDELIO ENGINE v4.1 - SYSTÈME B2B 100% DYNAMIQUE
- * Centralise : Auth via base de données, Dashboard, Recherche & Export
+ * 🚀 FYDELIO ENGINE v4.3 - DASHBOARD & EXPORT EXPERT
+ * Système B2B dynamique avec support Anniversaires et Points unifiés
  */
 
 // ==========================================================================
@@ -121,7 +121,7 @@ async function initialiserDashboard() {
     } catch (err) {
         console.error("Erreur Dashboard:", err);
         const tbody = document.getElementById('tableBody');
-        if (tbody) tbody.innerHTML = `<tr><td colspan="4">Erreur de chargement des données.</td></tr>`;
+        if (tbody) tbody.innerHTML = `<tr><td colspan="5">Erreur de chargement des données.</td></tr>`;
     } finally {
         if (loader) {
             loader.style.opacity = '0';
@@ -137,8 +137,7 @@ async function initialiserDashboard() {
             const resultats = dataClientsGlobal.filter(c => 
                 (c.prenom && c.prenom.toLowerCase().includes(terme)) || 
                 (c.nom && c.nom.toLowerCase().includes(terme)) || 
-                (c.email && c.email.toLowerCase().includes(terme)) ||
-                (c.telephone && c.telephone.includes(terme))
+                (c.email && c.email.toLowerCase().includes(terme))
             );
             afficherTableau(resultats, currentResto.colPoints, false); 
         });
@@ -175,7 +174,7 @@ function afficherTableau(data, colPoints, updateStats = true) {
     }
 
     if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" class="empty-state">Aucun client trouvé.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-state">Aucun client trouvé.</td></tr>`;
         return;
     }
 
@@ -183,6 +182,7 @@ function afficherTableau(data, colPoints, updateStats = true) {
         <tr>
             <td style="font-weight: 600;">${c.prenom || ''} ${c.nom || ''}</td>
             <td>${c.email || 'N/A'}</td>
+            <td>${c.date_anniversaire || '-'}</td>
             <td><span class="badge-points">${c[colPoints] || 0} pts</span></td>
             <td style="color:#6B7280;">${new Date(c.created_at).toLocaleDateString('fr-FR')}</td>
         </tr>
@@ -191,18 +191,24 @@ function afficherTableau(data, colPoints, updateStats = true) {
 
 function exporterCSV(restoConfig) {
     if (dataClientsGlobal.length === 0) return alert("Rien à exporter.");
-    const headers = ["Prenom", "Nom", "Email", "Telephone", "Points", "Date Inscription"];
     
+    // Titres des colonnes
+    const headers = ["Prenom", "Nom", "Email", "Telephone", "Anniversaire", "Points", "Date Inscription"];
+    
+    // Construction des lignes
     const rows = dataClientsGlobal.map(c => [
         `"${c.prenom || ''}"`, 
         `"${c.nom || ''}"`, 
         `"${c.email || ''}"`, 
         `"${c.telephone || ''}"`, 
-        c[restoConfig.colPoints] || 0, 
+        `"${c.date_anniversaire || ''}"`, 
+        c[restoConfig.colPoints] || 0, // Utilise colPoints ("points") dynamiquement
         `"${new Date(c.created_at).toLocaleDateString('fr-FR')}"`
     ]);
 
-    const csvContent = headers.join(",") + "\n" + rows.map(r => r.join(",")).join("\n");
+    // Encodage avec BOM (\ufeff) pour Excel
+    const csvContent = "\ufeff" + headers.join(",") + "\n" + rows.map(r => r.join(",")).join("\n");
+    
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
