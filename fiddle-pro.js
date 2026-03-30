@@ -1,26 +1,27 @@
 /**
- * 🚀 FYDELIO ENGINE v4.1 - MULTI-RESTO OPTIMISÉ
- * Utilise les Vues SQL pour afficher tous les clients actifs par établissement
+ * 🚀 FYDELIO ENGINE v4.1 - SYSTÈME B2B 100% DYNAMIQUE
+ * Centralise : Auth via base de données, Dashboard, Recherche & Export
  */
 
 // ==========================================================================
-// ⚙️ 1. CONFIGURATION (Mise à jour avec les Vues SQL)
+// ⚙️ 1. CONFIGURATION (Harmonisée avec les Vues SQL)
 // ==========================================================================
 const FYDELIO_CONFIG = {
     supabase: {
         url: "https://qawfwbppnbnskxlkwstu.supabase.co",
         key: "sb_publishable_EbKZkPjtT8rwkEdw3oVRCg_mBJJ_gNJ"
     },
+    // Note : On utilise "points" car les Vues SQL font un "AS points"
     restos: {
         "villa_saint_antoine": { 
             nom: "Villa Saint Antoine", 
-            colPoints: "points_villa",
-            vueSql: "vue_clients_villa" // Appelle la vue SQL créée précédemment
+            colPoints: "points", 
+            vueSql: "vue_clients_villa" 
         },
         "bistrot": { 
             nom: "Le Bistrot Paris", 
-            colPoints: "points_bistrot",
-            vueSql: "vue_clients_bistrot" // Appelle la vue SQL créée précédemment
+            colPoints: "points", 
+            vueSql: "vue_clients_bistrot" 
         }
     }
 };
@@ -58,39 +59,33 @@ function initialiserPageAccueil() {
             const errorMsg = document.getElementById('loginError');
 
             errorMsg.style.display = 'none';
-            btn.innerHTML = `<span class="btn-spinner" style="display:inline-block;"></span> Vérification...`;
+            btn.innerHTML = `Vérification...`;
             btn.disabled = true;
 
             try {
-                // 1. Connexion de l'utilisateur
                 const { error: authError } = await supabaseApp.auth.signInWithPassword({ email, password: pwd });
                 if (authError) throw authError;
 
-                btn.innerHTML = `<span class="btn-spinner" style="display:inline-block;"></span> Recherche du restaurant...`;
-
-                // 2. Interrogation de la table acces_pro
-                const { data: proData, error: dbError } = await supabaseApp
+                const { data: proData } = await supabaseApp
                     .from('acces_pro')
                     .select('resto_id')
                     .eq('email', email)
                     .single();
 
-                // On récupère le resto, ou on met la villa par défaut si tu as oublié de le rajouter dans l'annuaire
                 const restoID = proData ? proData.resto_id : "villa_saint_antoine";
 
                 btn.innerHTML = `✓ Connexion réussie`;
                 btn.style.background = "#10b981";
 
-                // 3. Redirection vers le dashboard
                 setTimeout(() => {
                     window.location.href = `dashboard-pro.html?resto=${restoID}`;
                 }, 800);
 
             } catch (err) {
-                console.error("Erreur de connexion :", err);
+                console.error("Erreur login:", err);
                 errorMsg.style.display = 'block';
-                errorMsg.innerText = "Identifiants incorrects ou accès refusé.";
-                btn.innerHTML = `<span class="btn-text">Se connecter au Dashboard</span>`;
+                errorMsg.innerText = "Identifiants incorrects.";
+                btn.innerHTML = `Se connecter`;
                 btn.disabled = false;
             }
         };
@@ -98,7 +93,7 @@ function initialiserPageAccueil() {
 }
 
 // ==========================================================================
-// 📊 4. DASHBOARD PRO (Version "Vue Dynamique")
+// 📊 4. DASHBOARD PRO
 // ==========================================================================
 async function initialiserDashboard() {
     const loader = document.getElementById('loader');
@@ -107,14 +102,12 @@ async function initialiserDashboard() {
     const currentResto = FYDELIO_CONFIG.restos[restoID] || FYDELIO_CONFIG.restos["villa_saint_antoine"];
 
     try {
-        const { data: { session }, error: sessionError } = await supabaseApp.auth.getSession();
-        if (sessionError || !session) { window.location.href = "index.html"; return; }
+        const { data: { session } } = await supabaseApp.auth.getSession();
+        if (!session) { window.location.href = "index.html"; return; }
 
         if (document.getElementById('displayEmail')) document.getElementById('displayEmail').innerText = session.user.email;
 
-        // 🔥 MODIFICATION ICI : On appelle la VUE au lieu de la table 'clients'
-        // On ne met PLUS de filtre .eq('restaurant_origine'), car la vue s'occupe
-        // de ne montrer que les gens qui ont des points dans CE resto.
+        // Appel de la VUE SQL correspondante
         const { data, error } = await supabaseApp
             .from(currentResto.vueSql) 
             .select('*')
@@ -123,21 +116,19 @@ async function initialiserDashboard() {
         if (error) throw error;
         
         dataClientsGlobal = data || [];
-        
-        // On affiche. Note: dans la vue, la colonne de points s'appelle toujours "points"
-        // car on l'a renommée en SQL (AS points) pour simplifier.
-        afficherTableau(dataClientsGlobal, "points", true);
+        afficherTableau(dataClientsGlobal, currentResto.colPoints, true);
 
     } catch (err) {
         console.error("Erreur Dashboard:", err);
         const tbody = document.getElementById('tableBody');
-        if (tbody) tbody.innerHTML = `<tr><td colspan="4" class="empty-state" style="color:#EF4444;">Erreur base de données.</td></tr>`;
+        if (tbody) tbody.innerHTML = `<tr><td colspan="4">Erreur de chargement des données.</td></tr>`;
     } finally {
         if (loader) {
             loader.style.opacity = '0';
             setTimeout(() => loader.style.display = 'none', 300);
         }
     }
+
     // Barre de recherche
     const searchInput = document.getElementById('searchClient');
     if (searchInput) {
@@ -167,14 +158,20 @@ async function initialiserDashboard() {
     }
 }
 
-// Gère l'affichage du tableau
+// ==========================================================================
+// 🛠️ 5. FONCTIONS DE RENDU (Affichage & CSV)
+// ==========================================================================
+
 function afficherTableau(data, colPoints, updateStats = true) {
     const tbody = document.getElementById('tableBody');
     if (!tbody) return;
 
     if (updateStats) {
         if (document.getElementById('statTotalClients')) document.getElementById('statTotalClients').innerText = data.length;
-        if (document.getElementById('statTotalPoints')) document.getElementById('statTotalPoints').innerText = data.reduce((acc, c) => acc + (c[colPoints] || 0), 0);
+        if (document.getElementById('statTotalPoints')) {
+            const total = data.reduce((acc, c) => acc + (parseInt(c[colPoints]) || 0), 0);
+            document.getElementById('statTotalPoints').innerText = total;
+        }
     }
 
     if (data.length === 0) {
@@ -192,13 +189,19 @@ function afficherTableau(data, colPoints, updateStats = true) {
     `).join('');
 }
 
-// Gère l'export CSV
 function exporterCSV(restoConfig) {
     if (dataClientsGlobal.length === 0) return alert("Rien à exporter.");
     const headers = ["Prenom", "Nom", "Email", "Telephone", "Points", "Date Inscription"];
+    
     const rows = dataClientsGlobal.map(c => [
-        `"${c.prenom || ''}"`, `"${c.nom || ''}"`, `"${c.email || ''}"`, `"${c.telephone || ''}"`, c[restoConfig.colPoints] || 0, `"${new Date(c.created_at).toLocaleDateString('fr-FR')}"`
+        `"${c.prenom || ''}"`, 
+        `"${c.nom || ''}"`, 
+        `"${c.email || ''}"`, 
+        `"${c.telephone || ''}"`, 
+        c[restoConfig.colPoints] || 0, 
+        `"${new Date(c.created_at).toLocaleDateString('fr-FR')}"`
     ]);
+
     const csvContent = headers.join(",") + "\n" + rows.map(r => r.join(",")).join("\n");
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
