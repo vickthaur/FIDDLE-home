@@ -1,22 +1,27 @@
 /**
- * 🚀 FYDELIO ENGINE v4.0 - SYSTÈME B2B 100% DYNAMIQUE
- * Centralise : Auth via base de données, Dashboard, Recherche & Export
+ * 🚀 FYDELIO ENGINE v4.1 - MULTI-RESTO OPTIMISÉ
+ * Utilise les Vues SQL pour afficher tous les clients actifs par établissement
  */
 
 // ==========================================================================
-// ⚙️ 1. CONFIGURATION (Pour l'affichage des colonnes)
+// ⚙️ 1. CONFIGURATION (Mise à jour avec les Vues SQL)
 // ==========================================================================
 const FYDELIO_CONFIG = {
     supabase: {
         url: "https://qawfwbppnbnskxlkwstu.supabase.co",
         key: "sb_publishable_EbKZkPjtT8rwkEdw3oVRCg_mBJJ_gNJ"
     },
-    // Associe le nom du resto à sa colonne de points dans la table "clients"
     restos: {
-        "villa_saint_antoine": { nom: "Villa Saint Antoine", colPoints: "points_villa" },
-        "bistrot": { nom: "Le Bistrot Paris", colPoints: "points_bistrot" }
-        // Demain pour le garage, tu ajouteras juste :
-        // "garage": { nom: "Le Garage", colPoints: "points_garage" }
+        "villa_saint_antoine": { 
+            nom: "Villa Saint Antoine", 
+            colPoints: "points_villa",
+            vueSql: "vue_clients_villa" // Appelle la vue SQL créée précédemment
+        },
+        "bistrot": { 
+            nom: "Le Bistrot Paris", 
+            colPoints: "points_bistrot",
+            vueSql: "vue_clients_bistrot" // Appelle la vue SQL créée précédemment
+        }
     }
 };
 
@@ -93,7 +98,7 @@ function initialiserPageAccueil() {
 }
 
 // ==========================================================================
-// 📊 4. DASHBOARD PRO
+// 📊 4. DASHBOARD PRO (Version "Vue Dynamique")
 // ==========================================================================
 async function initialiserDashboard() {
     const loader = document.getElementById('loader');
@@ -107,16 +112,21 @@ async function initialiserDashboard() {
 
         if (document.getElementById('displayEmail')) document.getElementById('displayEmail').innerText = session.user.email;
 
-        // Récupération des données clients
+        // 🔥 MODIFICATION ICI : On appelle la VUE au lieu de la table 'clients'
+        // On ne met PLUS de filtre .eq('restaurant_origine'), car la vue s'occupe
+        // de ne montrer que les gens qui ont des points dans CE resto.
         const { data, error } = await supabaseApp
-            .from('clients')
+            .from(currentResto.vueSql) 
             .select('*')
-            .eq('restaurant_origine', restoID)
             .order('created_at', { ascending: false });
 
         if (error) throw error;
+        
         dataClientsGlobal = data || [];
-        afficherTableau(dataClientsGlobal, currentResto.colPoints, true);
+        
+        // On affiche. Note: dans la vue, la colonne de points s'appelle toujours "points"
+        // car on l'a renommée en SQL (AS points) pour simplifier.
+        afficherTableau(dataClientsGlobal, "points", true);
 
     } catch (err) {
         console.error("Erreur Dashboard:", err);
@@ -128,7 +138,6 @@ async function initialiserDashboard() {
             setTimeout(() => loader.style.display = 'none', 300);
         }
     }
-
     // Barre de recherche
     const searchInput = document.getElementById('searchClient');
     if (searchInput) {
