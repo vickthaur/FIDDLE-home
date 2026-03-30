@@ -136,8 +136,8 @@ async function initialiserDashboard() {
     const btnDownloadQR = document.getElementById('btnDownloadQR');
 
     if (qrContainer) {
-        // Lien d'inscription personnalisé avec l'ID du resto
-        const lienInscription = `https://fydelio.fr/inscription.html?resto=${restoID}`; 
+        // 🔥 Lien d'inscription corrigé avec l'App Fydelio 🔥
+        const lienInscription = `https://app.fydelio.fr/?resto=${restoID}`; 
         
         // URL de l'API pour générer le QR Code (300x300 pixels)
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(lienInscription)}`;
