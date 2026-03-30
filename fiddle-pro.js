@@ -175,6 +175,7 @@ async function initialiserDashboard() {
     const viewQrcodes = document.getElementById('view-qrcodes');
 
     if (navClients && navQrcodes && viewClients && viewQrcodes) {
+        // Clic sur "Base Clients"
         navClients.addEventListener('click', (e) => {
             e.preventDefault();
             navClients.classList.add('active');
@@ -183,6 +184,7 @@ async function initialiserDashboard() {
             viewQrcodes.style.display = 'none';
         });
 
+        // Clic sur "Mes QR Codes"
         navQrcodes.addEventListener('click', (e) => {
             e.preventDefault();
             navQrcodes.classList.add('active');
