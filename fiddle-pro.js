@@ -1,6 +1,6 @@
 /**
- * 🚀 FYDELIO ENGINE v4.4 - DASHBOARD MULTI-VUES & QR CODE
- * Système B2B dynamique avec support Anniversaires, Points unifiés et Navigation
+ * 🚀 FYDELIO ENGINE v4.4.1 - DASHBOARD MULTI-VUES & MOBILE
+ * Système B2B dynamique avec support Anniversaires, Points unifiés et Navigation Mobile
  */
 
 // ==========================================================================
@@ -11,6 +11,7 @@ const FYDELIO_CONFIG = {
         url: "https://qawfwbppnbnskxlkwstu.supabase.co",
         key: "sb_publishable_EbKZkPjtT8rwkEdw3oVRCg_mBJJ_gNJ"
     },
+    // Note : On utilise "points" car les Vues SQL font un "AS points"
     restos: {
         "villa_saint_antoine": { 
             nom: "Villa Saint Antoine", 
@@ -167,12 +168,30 @@ async function initialiserDashboard() {
     }
 
     // ==========================================
-    // 🧭 NAVIGATION DANS LE DASHBOARD
+    // 🧭 NAVIGATION DANS LE DASHBOARD & MOBILE
     // ==========================================
     const navClients = document.getElementById('nav-clients');
     const navQrcodes = document.getElementById('nav-qrcodes');
     const viewClients = document.getElementById('view-clients');
     const viewQrcodes = document.getElementById('view-qrcodes');
+
+    // Éléments pour le menu mobile
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.querySelector('.sidebar');
+
+    // Ouverture/Fermeture du menu sur mobile
+    if (mobileMenuBtn && sidebar) {
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('mobile-open');
+        });
+    }
+
+    // Fonction pour fermer le menu automatiquement après un clic (sur mobile)
+    function closeMobileMenu() {
+        if (window.innerWidth <= 768 && sidebar) {
+            sidebar.classList.remove('mobile-open');
+        }
+    }
 
     if (navClients && navQrcodes && viewClients && viewQrcodes) {
         // Clic sur "Base Clients"
@@ -182,6 +201,7 @@ async function initialiserDashboard() {
             navQrcodes.classList.remove('active');
             viewClients.style.display = 'block';
             viewQrcodes.style.display = 'none';
+            closeMobileMenu(); // Ferme le menu sur mobile
         });
 
         // Clic sur "Mes QR Codes"
@@ -191,6 +211,7 @@ async function initialiserDashboard() {
             navClients.classList.remove('active');
             viewQrcodes.style.display = 'block';
             viewClients.style.display = 'none';
+            closeMobileMenu(); // Ferme le menu sur mobile
         });
     }
 
