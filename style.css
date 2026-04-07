@@ -43,6 +43,9 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
 .text-gradient { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .mt-4 { margin-top: 1.5rem; }
 
+/* Masquer par défaut les éléments réservés au mobile */
+.mobile-only { display: none; }
+
 /* --- 3. BOUTONS GLOBAUX --- */
 .btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; border-radius: 12px; font-size: 14px; font-weight: 700; text-decoration: none; cursor: pointer; transition: var(--transition); border: none; gap: 8px; font-family: inherit; }
 .btn-large { padding: 16px 32px; font-size: 16px; }
@@ -230,6 +233,11 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
    ========================================================================== */
 
 @media (max-width: 768px) {
+    /* Afficher les éléments spécifiques au mobile */
+    .mobile-only {
+        display: block !important;
+    }
+
     /* --- 1. VITRINE : NAVIGATION STYLE APP --- */
     #main-header { padding: 10px 0; }
     .nav-inner { position: relative; }
@@ -301,30 +309,67 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
     /* --- 3. DASHBOARD PRO : RESPONSIVE SÉCURISÉ --- */
     .dashboard-layout { flex-direction: column; }
     
-    .sidebar { 
-        width: 100%; 
-        height: auto; 
-        border-right: none; 
-        border-bottom: 1px solid var(--border); 
-        flex-direction: row; 
-        align-items: center; 
-        justify-content: space-between; 
-        padding: 12px 20px; 
+    /* La sidebar devient un menu glissant (Off-canvas) sur mobile */
+    .sidebar {
+        position: fixed;
+        left: -100%; /* Caché hors de l'écran par défaut */
+        top: 0;
+        bottom: 0;
+        z-index: 9999;
+        width: 280px;
+        background: var(--surface);
+        box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-right: 1px solid var(--border);
+        /* On remet le flex en colonne pour voir le menu */
+        flex-direction: column; 
+        align-items: stretch;
+        justify-content: flex-start;
+        padding: 0;
+    }
+
+    /* Classe ajoutée par le JS pour ouvrir le menu */
+    .sidebar.mobile-open {
+        left: 0; 
     }
     
-    .sidebar-header { border-bottom: none; padding: 0; }
-    .sidebar-nav, .sidebar-footer { display: none; } /* On simplifie sur mobile */
+    .sidebar-header { border-bottom: 1px solid var(--border); padding: 24px; }
+    .sidebar-nav { display: block; } 
+    .sidebar-footer { display: block; }
     
+    /* Ajustement de la Topbar pour accueillir le bouton Menu (☰) */
     .topbar { 
-        flex-direction: column; 
+        flex-direction: row; 
+        flex-wrap: wrap;
         height: auto; 
         padding: 15px; 
         gap: 15px; 
+        justify-content: space-between;
     }
     
-    .topbar-search { width: 100%; }
+    .topbar-search { 
+        width: 100%; 
+        order: 3; /* Passe en dessous du bouton menu et exporter */
+    }
+
+    #mobileMenuBtn {
+        order: 1; /* Tout à gauche */
+    }
+
+    .topbar-actions {
+        order: 2; /* À droite du bouton menu */
+    }
+    
     .kpi-grid { grid-template-columns: 1fr !important; }
     .dashboard-content { padding: 15px; }
     
     .table-header-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+
+    /* Adaptation de la vue QR Code sur mobile */
+    .qr-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px !important;
+        gap: 20px !important;
+    }
 }
