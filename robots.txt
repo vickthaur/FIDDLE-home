@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Indiquez ici l'emplacement de votre sitemap pour les robots
+Sitemap: https://fydelio.fr/sitemap.xml
