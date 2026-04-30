@@ -5,33 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Pro | FYDELIO</title>
     
-    <meta name="robots" content="noindex, nofollow"> <!-- Sécurité : Empêche Google d'indexer le dashboard privé -->
-    
     <link rel="icon" type="image/jpeg" href="flavicon.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="style.css">
-    
-    <!-- Ajout rapide d'une animation de transition pour les onglets -->
-    <style>
-        .view-section { animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
-    </style>
 </head>
 <body class="dashboard-body">
 
-    <!-- LOADER SÉCURITÉ -->
-    <div id="loader" class="loader-overlay" role="alert" aria-busy="true">
+    <div id="loader" class="loader-overlay">
         <div class="spinner"></div>
         <p class="loader-text">Sécurisation de votre espace...</p>
     </div>
 
     <div class="dashboard-layout">
         
-        <!-- SIDEBAR GAUCHE -->
-        <aside class="sidebar" aria-label="Menu de navigation principal">
+        <aside class="sidebar">
             <div class="sidebar-header">
                 <img src="flavicon.jpg" alt="Logo FYDELIO" class="sidebar-logo-img">
                 <span class="sidebar-logo-text">FYDELIO</span>
@@ -39,110 +28,102 @@
             
             <nav class="sidebar-nav">
                 <p class="sidebar-title">Menu Principal</p>
-                <a href="#" class="nav-item active" id="nav-clients" aria-current="page">
-                    <span class="nav-icon" aria-hidden="true">📊</span>
+                <a href="#" class="nav-item active" id="nav-clients">
+                    <span class="nav-icon">📊</span>
                     Base Clients
                 </a>
                 <a href="#" class="nav-item" id="nav-qrcodes">
-                    <span class="nav-icon" aria-hidden="true">📱</span>
+                    <span class="nav-icon">📱</span>
                     Mes QR Codes
                 </a>
-                <a href="#" class="nav-item disabled" title="Bientôt disponible" aria-disabled="true">
-                    <span class="nav-icon" aria-hidden="true">✉️</span>
+                <a href="#" class="nav-item disabled" title="Bientôt disponible">
+                    <span class="nav-icon">✉️</span>
                     Campagnes SMS <span class="badge-soon">Bientôt</span>
                 </a>
             </nav>
 
             <div class="sidebar-footer">
                 <div class="user-profile">
-                    <div class="avatar" aria-hidden="true">👤</div>
+                    <div class="avatar">👤</div>
                     <div class="user-info">
                         <p class="user-role">Administrateur</p>
-                        <p class="user-email-text" id="displayEmail">Chargement...</p>
+                        <p class="user-email-text" id="displayEmail">chargement...</p>
                     </div>
                 </div>
-                <button class="btn-logout-sidebar" id="btnLogout" aria-label="Se déconnecter">
-                    <span aria-hidden="true">🚪</span> Déconnexion
+                <button class="btn-logout-sidebar" id="btnLogout">
+                    <span>🚪 Déconnexion</span>
                 </button>
             </div>
         </aside>
 
-        <!-- CONTENU PRINCIPAL -->
         <main class="dashboard-main">
             
-            <!-- BARRE SUPÉRIEURE -->
             <header class="topbar">
-                <button id="mobileMenuBtn" class="mobile-only" aria-label="Ouvrir le menu" aria-expanded="false" style="background: none; border: none; font-size: 24px; cursor: pointer; margin-right: 15px;">
-                    <span aria-hidden="true">☰</span>
-                </button>
+                <button id="mobileMenuBtn" style="background: none; border: none; font-size: 24px; cursor: pointer; margin-right: 15px; display: none;" class="mobile-only">☰</button>
                 
                 <div class="topbar-search">
-                    <label for="searchClient" class="sr-only">Rechercher un client</label>
-                    <span class="search-icon" aria-hidden="true">🔍</span>
-                    <input type="search" id="searchClient" class="search-input-top" placeholder="Rechercher un client (Nom, Email, Téléphone)...">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchClient" class="search-input-top" placeholder="Rechercher un client (Nom, Email, Téléphone)...">
                 </div>
-                
                 <div class="topbar-actions">
-                    <button class="btn btn-primary" id="btnExport" title="Télécharger la base au format CSV">
-                        <span aria-hidden="true">📥</span> Exporter la base (CSV)
+                    <button class="btn btn-primary" id="btnExport">
+                        📥 Exporter la base (CSV)
                     </button>
                 </div>
             </header>
 
-            <!-- ZONE D'AFFICHAGE DYNAMIQUE -->
             <div class="dashboard-content">
                 
-                <!-- VUE 1 : BASE CLIENTS -->
-                <section id="view-clients" class="view-section">
-                    <header class="page-title-group">
+                <div id="view-clients">
+                    <div class="page-title-group">
                         <h1>Vue d'ensemble</h1>
                         <p>Suivez l'évolution de votre programme de fidélité en temps réel.</p>
-                    </header>
+                    </div>
 
                     <div class="kpi-grid">
-                        <article class="kpi-card">
+                        <div class="kpi-card">
                             <div class="kpi-header">
                                 <h3>Total Inscrits</h3>
-                                <div class="kpi-icon blue" aria-hidden="true">👥</div>
+                                <div class="kpi-icon blue">👥</div>
                             </div>
                             <div class="kpi-value" id="statTotalClients">-</div>
                             <p class="kpi-trend positive">La base de données s'agrandit</p>
-                        </article>
+                        </div>
                         
-                        <article class="kpi-card">
+                        <div class="kpi-card">
                             <div class="kpi-header">
                                 <h3>Points Distribués</h3>
-                                <div class="kpi-icon orange" aria-hidden="true">⭐</div>
+                                <div class="kpi-icon orange">⭐</div>
                             </div>
                             <div class="kpi-value" id="statTotalPoints">-</div>
                             <p class="kpi-trend">Points en circulation</p>
-                        </article>
+                        </div>
 
-                        <article class="kpi-card">
+                        <div class="kpi-card">
                             <div class="kpi-header">
                                 <h3>Taux de capture</h3>
-                                <div class="kpi-icon green" aria-hidden="true">📈</div>
+                                <div class="kpi-icon green">📈</div>
                             </div>
                             <div class="kpi-value">Optimisé</div>
                             <p class="kpi-trend">Fidélisation automatique active</p>
-                        </article>
+                        </div>
                     </div>
 
                     <div class="table-container">
                         <div class="table-header-row">
                             <h2>Répertoire Clients</h2>
-                            <span class="badge-live"><span aria-hidden="true">🟢</span> Live</span>
+                            <span class="badge-live">🟢 Live</span>
                         </div>
                         
                         <div class="table-responsive">
-                            <table class="pro-table" aria-label="Liste des clients fidélisés">
+                            <table class="pro-table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">CLIENT</th>
-                                        <th scope="col">CONTACT</th>
-                                        <th scope="col">ANNIVERSAIRE</th>
-                                        <th scope="col">FIDÉLITÉ</th>
-                                        <th scope="col">INSCRIPTION</th>
+                                        <th>CLIENT</th>
+                                        <th>CONTACT</th>
+                                        <th>ANNIVERSAIRE</th>
+                                        <th>FIDÉLITÉ</th>
+                                        <th>INSCRIPTION</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tableBody">
@@ -153,38 +134,34 @@
                             </table>
                         </div>
                     </div>
-                </section>
+                </div>
 
-                <!-- VUE 2 : QR CODES -->
-                <section id="view-qrcodes" class="view-section" style="display: none;">
-                    <header class="page-title-group">
+                <div id="view-qrcodes" style="display: none;">
+                    <div class="page-title-group">
                         <h1>Matériel de communication</h1>
                         <p>Générez et téléchargez le QR Code officiel de votre établissement.</p>
-                    </header>
+                    </div>
 
-                    <!-- Utilisation de la classe .card de ton CSS pour nettoyer le HTML -->
-                    <article class="card qr-section" style="display: flex; align-items: center; gap: 40px; max-width: 850px; padding: 40px;">
-                        <div id="qr-code-container" style="min-width: 220px; min-height: 220px; background: var(--bg-gray); border-radius: 16px; display: flex; justify-content: center; align-items: center; border: 1px dashed var(--border);">
+                    <div class="qr-section" style="background: white; border-radius: 16px; padding: 40px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 40px; border: 1px solid #e2e8f0; max-width: 800px;">
+                        <div id="qr-code-container" style="min-width: 200px; min-height: 200px; background: #f8fafc; border-radius: 12px; display: flex; justify-content: center; align-items: center;">
                             <span class="spinner" style="border-color: var(--primary); border-top-color: transparent;"></span>
                         </div>
-                        
-                        <div class="qr-content">
-                            <h3 style="font-size: 1.5rem; margin-bottom: 12px; color: var(--text-main);">QR Code de votre établissement</h3>
-                            <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 24px; line-height: 1.6;">
+                        <div>
+                            <h3 style="font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 12px;">QR Code de votre établissement</h3>
+                            <p style="color: #64748b; font-size: 15px; margin-bottom: 24px; line-height: 1.6;">
                                 Imprimez ce QR Code et placez-le sur vos tables, votre comptoir ou vos menus. Vos clients le flashent avec leur smartphone pour s'inscrire à votre programme de fidélité. Le point de bienvenue sera crédité automatiquement !
                             </p>
-                            <button id="btnDownloadQR" class="btn btn-primary btn-large">
-                                <span aria-hidden="true">📥</span> Télécharger l'image HD
+                            <button id="btnDownloadQR" class="btn btn-primary" style="padding: 12px 24px; font-size: 15px;">
+                                📥 Télécharger l'image HD
                             </button>
                         </div>
-                    </article>
-                </section>
+                    </div>
+                </div>
 
             </div>
         </main>
     </div>
 
-    <!-- SCRIPTS -->
     <script src="fiddle-pro.js"></script>
 </body>
 </html>
