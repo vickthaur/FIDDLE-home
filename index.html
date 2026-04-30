@@ -37,13 +37,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Ajout des librairies d'animation (Lenis & GSAP) -->
+    <!-- Lenis pour un scroll fluide (sans bloquer la page) -->
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <!-- Ton fichier CSS externe -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Styles d'animation légers -->
+    <style>
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        /* Retard d'animation pour les cartes (effet cascade) */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        
+        .hero-img-wrapper { margin-top: 60px; border-radius: 24px; overflow: hidden; box-shadow: var(--shadow-xl); position: relative; height: 50vh; }
+        .hero-img { width: 100%; height: 120%; object-fit: cover; position: absolute; top: -10%; left: 0; }
+        
+        .method-img { border-radius: 20px; box-shadow: var(--shadow-md); transition: transform 0.3s ease; }
+        .method-img:hover { transform: scale(1.02); }
+    </style>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -74,109 +89,86 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </header>
 
-    <!-- NOUVELLE STRUCTURE HERO APPLE STYLE -->
-    <section class="hero-sequence">
-        <div class="hero-sticky">
-            <div class="hero-title" id="heroText">
-                <div class="badge-hero">Conçu pour les établissements du Vaucluse</div>
-                <h1>Ne perdez plus jamais un client<br><span class="text-gradient">après l'addition.</span></h1>
-                <p>Transformez vos visiteurs de passage en contacts réactivables et fidèles. Une solution claire, élégante et automatisée, pensée par et pour les restaurateurs.</p>
-                <div class="hero-actions">
-                    <a href="https://calendly.com/victordetroux2/30min" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-large">Réserver une démo (30 min)</a>
-                </div>
+    <section class="hero container">
+        <div class="reveal">
+            <div class="badge-hero">Conçu pour les établissements du Vaucluse</div>
+            <h1>Ne perdez plus jamais un client<br><span class="text-gradient">après l'addition.</span></h1>
+            <p>Transformez vos visiteurs de passage en contacts réactivables et fidèles. Une solution claire, élégante et automatisée, pensée par et pour les restaurateurs.</p>
+            <div class="hero-actions">
+                <a href="https://calendly.com/victordetroux2/30min" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-large">Réserver une démo (30 min)</a>
             </div>
+        </div>
+        
+        <!-- Image avec effet parallaxe léger -->
+        <div class="hero-img-wrapper reveal delay-2">
+            <!-- Remplacer par une de tes images -->
+            <img src="https://images.unsplash.com/photo-1514933651103-005eab06c04d?auto=format&fit=crop&w=1920&q=80" alt="Ambiance Restaurant FYDELIO" class="hero-img" id="heroParallax">
+        </div>
+    </section>
 
-            <!-- Image qui se transformera en écran -->
-            <div class="hero-media" id="heroImage">
-                <div class="hero-overlay"></div>
-                <!-- Remplace par une belle image d'ambiance de restaurant si besoin -->
-                <img src="https://images.unsplash.com/photo-1514933651103-005eab06c04d?auto=format&fit=crop&w=1920&q=80" alt="Ambiance Restaurant FYDELIO">
+    <section id="concept" class="section container">
+        <div class="section-header reveal">
+            <h2>Le problème de la restauration</h2>
+            <p>Vous générez du trafic, mais vous ne capturez aucune donnée client.</p>
+        </div>
+        <div class="grid-3">
+            <div class="card reveal delay-1">
+                <div class="card-icon">👥</div>
+                <h3>Visiteurs fantômes</h3>
+                <p>Un client vient, consomme et repart. Vous n'avez aucune stratégie de fidélisation ni moyen de le relancer pour un événement.</p>
+            </div>
+            <div class="card reveal delay-2">
+                <div class="card-icon">📉</div>
+                <h3>Dépendance</h3>
+                <p>Sans base de données exploitable, vous dépendez fortement des plateformes de réservation externes pour remplir votre salle.</p>
+            </div>
+            <div class="card reveal delay-3">
+                <div class="card-icon">⏱️</div>
+                <h3>Zéro temps libre</h3>
+                <p>Vos serveurs n'ont pas le temps de gérer des cartes papier. Vous avez besoin d'un système qui tourne sans effort opérationnel.</p>
             </div>
         </div>
     </section>
 
-    <!-- NOUVELLE STRUCTURE CONCEPT : SCROLL HORIZONTAL -->
-    <section id="concept" class="horizontal-sequence">
-        <div class="horizontal-sticky">
-            <div class="horizontal-container" id="horizontalContainer">
-                
-                <!-- Titre introductif du scroll horizontal -->
-                <div class="h-panel h-intro">
-                    <h2>Le problème de la restauration</h2>
-                    <p>Vous générez du trafic, mais vous ne capturez aucune donnée client.</p>
-                </div>
-
-                <div class="h-panel">
-                    <span class="h-number">👥</span>
-                    <h2>Visiteurs fantômes</h2>
-                    <p>Un client vient, consomme et repart. Vous n'avez aucune stratégie de fidélisation ni moyen de le relancer pour un événement.</p>
-                </div>
-                
-                <div class="h-panel">
-                    <span class="h-number">📉</span>
-                    <h2>Dépendance</h2>
-                    <p>Sans base de données exploitable, vous dépendez fortement des plateformes de réservation externes pour remplir votre salle.</p>
-                </div>
-                
-                <div class="h-panel">
-                    <span class="h-number">⏱️</span>
-                    <h2>Zéro temps libre</h2>
-                    <p>Vos serveurs n'ont pas le temps de gérer des cartes papier. Vous avez besoin d'un système qui tourne sans effort opérationnel.</p>
-                </div>
-
-            </div>
+    <section id="fonctionnement" class="section container">
+        <div class="section-header reveal">
+            <h2>La méthode FYDELIO</h2>
+            <p>Un fonctionnement élégant pour le client, un pilotage puissant pour le patron.</p>
         </div>
-    </section>
-
-    <!-- NOUVELLE STRUCTURE FONCTIONNEMENT : LE TÉLÉPHONE INTERACTIF -->
-    <section id="fonctionnement" class="showcase-sequence">
-        <div class="showcase-sticky">
+        
+        <!-- Méthode repensée avec des images -->
+        <div class="grid-3" style="gap: 50px;">
+            <div class="reveal delay-1">
+                <!-- Remplacer par tes images d'app ou de QR code -->
+                <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=800&q=80" alt="Scan QR Code" class="method-img" style="margin-bottom: 20px;">
+                <div class="badge-hero" style="background: var(--bg-gray); color: var(--text-main); margin-bottom: 10px;">Étape 1</div>
+                <h3>Scan à table</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Le client flashe un QR Code Premium posé sur sa table pour s'inscrire au programme en quelques secondes.</p>
+            </div>
             
-            <!-- Le téléphone central -->
-            <div class="phone-frame" id="phoneMockup">
-                <!-- Ecrans (remplace les src par tes propres captures d'écran de l'app si tu en as) -->
-                <div class="phone-screen active" id="screen1">
-                    <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=800&q=80" alt="Scan QR">
-                </div>
-                <div class="phone-screen" id="screen2">
-                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80" alt="Validation">
-                </div>
-                <div class="phone-screen" id="screen3">
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Dashboard">
-                </div>
+            <div class="reveal delay-2">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80" alt="Validation" class="method-img" style="margin-bottom: 20px;">
+                <div class="badge-hero" style="background: var(--bg-gray); color: var(--text-main); margin-bottom: 10px;">Étape 2</div>
+                <h3>Validation Pro</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Le serveur valide les points d'un simple clic via notre outil sécurisé. Rapide, fluide et impossible à frauder.</p>
             </div>
-
-            <!-- Les textes qui s'affichent à côté du téléphone -->
-            <div class="showcase-text-container">
-                <div class="showcase-text text-left" id="text1">
-                    <div class="step-number-small">1</div>
-                    <h2>Scan à table</h2>
-                    <p>Le client flashe un QR Code Premium posé sur sa table pour s'inscrire au programme en quelques secondes.</p>
-                </div>
-                
-                <div class="showcase-text text-right" id="text2">
-                    <div class="step-number-small">2</div>
-                    <h2>Validation Pro</h2>
-                    <p>Le serveur valide les points d'un simple clic via notre outil sécurisé. Rapide, fluide et impossible à frauder.</p>
-                </div>
-                
-                <div class="showcase-text text-left" id="text3">
-                    <div class="step-number-small">3</div>
-                    <h2>Votre Espace</h2>
-                    <p>Connectez-vous à votre Espace Pro pour voir votre base grandir et exporter vos contacts. Relances automatisées incluses.</p>
-                </div>
+            
+            <div class="reveal delay-3">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Dashboard" class="method-img" style="margin-bottom: 20px;">
+                <div class="badge-hero" style="background: var(--bg-gray); color: var(--text-main); margin-bottom: 10px;">Étape 3</div>
+                <h3>Votre Espace</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Connectez-vous à votre Espace Pro pour voir votre base grandir et exporter vos contacts. Relances automatisées incluses.</p>
             </div>
         </div>
     </section>
 
-    <!-- SECTION TARIFS CONSERVÉE PRESQUE À L'IDENTIQUE (Adaptée pour GSAP) -->
-    <section id="tarifs" class="pricing-section container">
-        <div class="pricing-header" id="priceTitle">
+    <section id="tarifs" class="section container">
+        <div class="section-header reveal">
             <h2>Un modèle économique transparent</h2>
             <p>Votre base de données vous appartient à 100%. Aucun engagement caché.</p>
         </div>
         <div class="pricing-grid">
-            <div class="pricing-card" id="card1">
+            <div class="pricing-card reveal delay-1">
                 <div class="price-title">Installation</div>
                 <div class="price-amount">300 € <span>/ paiement unique</span></div>
                 <p class="price-desc">Mise en place complète et rapide de votre écosystème sur-mesure.</p>
@@ -188,7 +180,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </ul>
             </div>
 
-            <div class="pricing-card highlight" id="card2">
+            <div class="pricing-card highlight reveal delay-2">
                 <div class="badge-popular">Le plus choisi</div>
                 <div class="price-title">Abonnement Logiciel</div>
                 <div class="price-amount">99 € <span>/ mois</span></div>
@@ -205,9 +197,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </section>
 
-    <!-- TON FOOTER INTACT -->
     <footer class="site-footer">
-        <div class="container footer-content">
+        <div class="container footer-content reveal">
             <div class="footer-brand">
                 <div class="footer-logo">
                     <img src="flavicon.jpg" alt="Logo FYDELIO">
@@ -242,7 +233,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </footer>
 
-    <!-- TON MODAL INTACT -->
     <div id="loginModal" class="modal-overlay">
         <div class="modal-content">
             <button id="btnCloseModal" class="modal-close" aria-label="Fermer">&times;</button>
@@ -277,11 +267,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </div>
 
-    <!-- TES SCRIPTS -->
     <script src="fiddle-pro.js"></script>
-    <script src="animations.js"></script> <!-- Fichier que nous allons créer à l'étape suivante -->
     <script>
-        // Ton script original de menu Burger
+        // --- ANIMATIONS FLUIDES ET LÉGÈRES --- //
+        
+        // 1. Initialisation Lenis pour un scroll super doux (sans alourdir)
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // 2. Observer d'intersection pour les apparitions au défilement (Fade In Up)
+        // Beaucoup plus léger que GSAP !
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15 // Se déclenche quand 15% de l'élément est visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Ne s'anime qu'une seule fois
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // 3. Parallaxe léger sur l'image Hero
+        const heroImg = document.getElementById('heroParallax');
+        if(heroImg) {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.scrollY;
+                heroImg.style.transform = `translateY(${scrolled * 0.15}px)`; // Déplace légèrement l'image
+            });
+        }
+
+        // --- MENU BURGER --- //
         const menuToggle = document.querySelector('.menu-toggle');
         const navLinks = document.querySelector('.nav-links');
 
