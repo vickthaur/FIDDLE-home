@@ -16,344 +16,232 @@
     <meta name="description" content="FYDELIO est la carte de fidélité digitale simple et automatisée pour les restaurateurs du Vaucluse.">
     <link rel="icon" type="image/jpeg" href="flavicon.jpg">
 
-    <!-- Polices -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Polices Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Librairies pour les animations (Lenis + GSAP) -->
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Librairies Animations (Chargées en asynchrone pour la performance) -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    
+    <!-- Librairie Base de données -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 
-    <style>
-        /* ========================================================
-            VARIABLES & RESET
-           ======================================================== */
-        :root {
-            --dark: #050505;
-            --light: #F5F5F7;
-            --primary: #0F766E;
-            --primary-glow: rgba(15, 118, 110, 0.5);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--dark);
-            color: var(--light);
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        html.lenis { height: auto; }
-        .lenis.lenis-smooth { scroll-behavior: auto; }
-
-        /* HEADER PREMIUM */
-        header {
-            position: fixed; top: 0; width: 100%; z-index: 9999;
-            padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;
-            mix-blend-mode: difference; color: white;
-        }
-        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; display: flex; align-items: center; gap: 10px; }
-        .logo img { width: 32px; border-radius: 6px; }
-        .btn-nav {
-            pointer-events: auto; padding: 10px 25px; border-radius: 50px;
-            border: 1px solid white; background: transparent; color: white;
-            font-weight: 600; cursor: pointer; transition: 0.3s;
-        }
-        .btn-nav:hover { background: white; color: black; }
-
-        /* SECTION 1 : HERO SEQUENCE */
-        .hero-sequence { position: relative; height: 300vh; }
-        .hero-sticky {
-            position: sticky; top: 0; height: 100vh; width: 100%;
-            display: flex; justify-content: center; align-items: center;
-            overflow: hidden; background: var(--dark);
-        }
-        .hero-title {
-            position: absolute; text-align: center; z-index: 1;
-            transform: translateY(50px); opacity: 0; padding: 0 20px;
-        }
-        .hero-title h1 { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
-        .hero-title span { color: var(--primary); }
-        .hero-title p { font-size: 1.25rem; color: #888; max-width: 700px; margin: 0 auto; }
-
-        .hero-media {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;
-            clip-path: inset(0% 0% 0% 0% round 0px); 
-            will-change: clip-path, transform;
-        }
-        .hero-media img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.1); }
-        .hero-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); z-index: 3;
-        }
-
-        /* SECTION 2 : HORIZONTAL CONCEPT */
-        .horizontal-sequence { position: relative; height: 400vh; background: #000; }
-        .horizontal-sticky {
-            position: sticky; top: 0; height: 100vh; width: 100%;
-            overflow: hidden; display: flex; align-items: center;
-        }
-        .horizontal-container { display: flex; width: 400vw; height: 100%; will-change: transform; }
-        .h-panel {
-            width: 100vw; height: 100%; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; padding: 0 10vw; text-align: center; position: relative;
-        }
-        .h-panel h2 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 30px; color: white; position: relative; z-index: 2; }
-        .h-panel p { font-size: 1.25rem; color: #aaa; max-width: 800px; position: relative; z-index: 2; }
-        .h-number { font-size: 15rem; font-weight: 900; color: rgba(255,255,255,0.03); position: absolute; z-index: 0; }
-
-        /* SECTION 3 : SHOWCASE TÉLÉPHONE */
-        .showcase-sequence { position: relative; height: 400vh; background: var(--light); color: var(--dark); }
-        .showcase-sticky {
-            position: sticky; top: 0; height: 100vh; width: 100%;
-            display: flex; align-items: center; justify-content: center; overflow: hidden;
-        }
-        .phone-frame {
-            width: 300px; height: 620px; background: black; border-radius: 45px;
-            border: 10px solid #111; box-shadow: 0 30px 60px rgba(0,0,0,0.2);
-            position: relative; z-index: 10; overflow: hidden;
-            transform: translateY(100vh);
-        }
-        .phone-screen {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0; transform: scale(1.05); transition: all 0.6s ease;
-        }
-        .phone-screen img { width: 100%; height: 100%; object-fit: cover; }
-        .phone-screen.active { opacity: 1; transform: scale(1); }
-
-        .showcase-text { position: absolute; top: 50%; transform: translateY(-50%); width: 25vw; opacity: 0; }
-        .text-left { left: 10vw; text-align: right; }
-        .text-right { right: 10vw; text-align: left; }
-        .showcase-text h2 { font-size: 2.2rem; margin-bottom: 20px; color: var(--primary); }
-        .showcase-text p { font-size: 1.1rem; color: #555; line-height: 1.5; }
-
-        /* SECTION 4 : TARIFS */
-        .pricing-section { padding: 150px 5vw; background: var(--light); color: var(--dark); text-align: center; }
-        .pricing-grid { display: flex; gap: 30px; justify-content: center; margin-top: 60px; flex-wrap: wrap; }
-        .price-card {
-            background: white; padding: 50px; border-radius: 30px; width: 380px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05); opacity: 0; transform: translateY(50px);
-        }
-        .price-card.premium { background: var(--dark); color: white; transform: scale(1.05); box-shadow: 0 30px 60px var(--primary-glow); }
-        .price-amount { font-size: 3.5rem; font-weight: 800; margin: 20px 0; }
-        .price-card ul { list-style: none; text-align: left; margin-bottom: 40px; }
-        .price-card li { margin-bottom: 15px; border-bottom: 1px solid rgba(128,128,128,0.1); padding-bottom: 10px; }
-
-        .btn-main {
-            display: block; width: 100%; padding: 18px; background: var(--primary);
-            color: white; text-align: center; border-radius: 15px; font-weight: 800;
-            text-decoration: none; transition: 0.3s; border: none; cursor: pointer;
-        }
-        .btn-main:hover { filter: brightness(1.2); transform: translateY(-2px); }
-
-        /* FOOTER */
-        footer { padding: 100px 10vw 50px; background: #000; color: #666; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; max-width: 1200px; margin: 0 auto; }
-        .footer-bottom { text-align: center; margin-top: 80px; padding-top: 30px; border-top: 1px solid #111; font-size: 0.85rem; }
-
-        /* MODAL */
-        .modal-overlay {
-            display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); 
-            z-index:100000; justify-content:center; align-items:center;
-            backdrop-filter: blur(10px);
-        }
-    </style>
+    <!-- TON FICHIER CSS EXTERNE -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- GTM Noscript -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WTJPD5BL"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WTJPD5BL" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-    <header>
+    <!-- EN-TÊTE -->
+    <header id="main-header">
         <div class="logo">
-            <img src="flavicon.jpg" alt="Fydelio Logo">
+            <img src="flavicon.jpg" alt="Fydelio Logo" onerror="this.src='https://placehold.co/100x100/10B981/FFF?text=F'">
             FYDELIO
         </div>
-        <button class="btn-nav" id="btnOpenModal">Espace Restaurateur</button>
+        <!-- Menu Burger pour mobile (caché sur desktop via CSS) -->
+        <button class="menu-toggle mobile-only" aria-label="Ouvrir le menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <!-- Navigation -->
+        <nav class="nav-links">
+            <button class="btn-nav" id="btnOpenModal">Espace Restaurateur</button>
+        </nav>
     </header>
 
-    <!-- SECTION 1 : HERO CINÉMA -->
+    <!-- SECTION 1 : HERO CINÉMATIQUE -->
     <section class="hero-sequence">
         <div class="hero-sticky">
             <div class="hero-title" id="heroText">
-                <h1>Fidélisez vos clients<br><span>sans aucune friction.</span></h1>
-                <p>Ne perdez plus jamais un client après l'addition. Une solution automatisée pensée pour les restaurateurs du Vaucluse.</p>
+                <div class="badge-hero">🚀 Déployé dans le Vaucluse</div>
+                <h1>Fidélisez vos clients<br><span class="text-gradient">sans aucune friction.</span></h1>
+                <p>La première solution de capture de données à table qui tourne 100% en automatique. Ne laissez plus vos visiteurs de passage disparaître dans la nature.</p>
+                <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn-main mt-4">Réserver une démo gratuite</a>
             </div>
             <div class="hero-media" id="heroImage">
                 <div class="hero-overlay"></div>
-                <img src="ambiance.jpg" alt="Restaurant Ambiance">
+                <!-- Ton image locale, avec un lien de secours si elle n'est pas encore dans le dossier -->
+                <img src="ambiance.jpg" alt="Restaurant Ambiance" onerror="this.src='https://images.unsplash.com/photo-1514933651103-005eab06c04d?auto=format&fit=crop&w=1920&q=80'">
             </div>
         </div>
     </section>
 
-    <!-- SECTION 2 : CONCEPT HORIZONTAL -->
+    <!-- SECTION : PREUVE SOCIALE -->
+    <section class="social-proof reveal">
+        <p>Rejoignez la nouvelle norme de la restauration</p>
+        <div class="social-proof-grid">
+            <h3>+30% de rétention</h3>
+            <h3>Zéro application</h3>
+            <h3>100% Automatisé</h3>
+        </div>
+    </section>
+
+    <!-- SECTION 2 : LE CONCEPT (SCROLL HORIZONTAL) -->
     <section class="horizontal-sequence">
         <div class="horizontal-sticky">
             <div class="horizontal-container" id="horizontalContainer">
                 <div class="h-panel">
                     <span class="h-number">01</span>
                     <h2>Le problème</h2>
-                    <p>Un client vient, consomme et repart. Une fois la porte passée, il devient un fantôme. Vous n'avez aucun moyen de le faire revenir.</p>
+                    <p>Un client vient, consomme et repart. Une fois la porte passée, il devient un fantôme. Vous n'avez aucun moyen de le recontacter pour un événement spécial ou une soirée calme.</p>
                 </div>
                 <div class="h-panel">
                     <span class="h-number">02</span>
                     <h2>La dépendance</h2>
-                    <p>Sans base de données, vous dépendez des commissions écrasantes des plateformes de réservation pour remplir votre salle.</p>
+                    <p>Sans base de données propre, vous dépendez des commissions écrasantes des plateformes de réservation externes pour remplir votre propre salle.</p>
                 </div>
                 <div class="h-panel">
                     <span class="h-number">03</span>
                     <h2>Le manque de temps</h2>
-                    <p>Vos serveurs n'ont pas le temps de gérer des cartes papier. Vous avez besoin d'un système qui tourne seul pendant le service.</p>
+                    <p>Vos serveurs sont sous l'eau. Ils n'ont pas le temps de distribuer des cartes papier ou de demander des emails. Il vous faut un système invisible qui travaille pour vous.</p>
                 </div>
-                <div class="h-panel">
+                <div class="h-panel highlight-panel">
                     <span class="h-number">04</span>
-                    <h2>La Solution FYDELIO</h2>
-                    <p>Une capture de données fluide à table et un pilotage puissant depuis votre dashboard pro pour booster votre CA.</p>
+                    <h2>La Révolution FYDELIO</h2>
+                    <p>Une capture de données en 3 secondes à table, via un QR Code de luxe. Un pilotage puissant depuis votre dashboard pro pour booster votre chiffre d'affaires.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 3 : SHOWCASE TÉLÉPHONE -->
+    <!-- SECTION 3 : LA MÉTHODE (SHOWCASE TÉLÉPHONE) -->
     <section class="showcase-sequence">
         <div class="showcase-sticky">
             <div class="phone-frame" id="phoneMockup">
-                <div class="phone-screen active" id="screen1"><img src="etape-1.jpg" alt="Scan QR"></div>
-                <div class="phone-screen" id="screen2"><img src="etape-2.jpg" alt="Validation"></div>
-                <div class="phone-screen" id="screen3"><img src="etape-3.jpg" alt="Dashboard"></div>
+                <div class="phone-screen active" id="screen1"><img src="etape-1.jpg" alt="Étape 1 : Scan" onerror="this.src='https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=600&q=80'"></div>
+                <div class="phone-screen" id="screen2"><img src="etape-2.jpg" alt="Étape 2 : Validation" onerror="this.src='https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=600&q=80'"></div>
+                <div class="phone-screen" id="screen3"><img src="etape-3.jpg" alt="Étape 3 : Dashboard" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80'"></div>
             </div>
 
             <div class="showcase-text text-left" id="text1">
                 <h2>1. Le Scan Magique</h2>
-                <p>Le client flashe le QR Code Premium posé sur sa table. En 3 secondes, il est inscrit. Aucune application à télécharger.</p>
+                <p>Le client flashe le QR Code Premium gravé sur sa table. En 3 secondes chrono, il est inscrit. Aucune application lourde à télécharger depuis l'App Store.</p>
             </div>
             <div class="showcase-text text-right" id="text2">
-                <h2>2. Validation d'un clic</h2>
-                <p>Le serveur valide les points directement lors de l'encaissement. Fluide, rapide, et impossible à frauder.</p>
+                <h2>2. Validation Sécurisée</h2>
+                <p>Au moment de l'addition, le serveur valide les points directement. Le processus est fluide pour l'équipe, et crypté pour éviter toute tentative de fraude.</p>
             </div>
             <div class="showcase-text text-left" id="text3">
-                <h2>3. Espace Pilote</h2>
-                <p>Exportez vos contacts ou utilisez nos relances automatiques pour faire salle comble lors de vos événements.</p>
+                <h2>3. Votre Espace Pro</h2>
+                <p>Accédez à la data. Exportez vos contacts en un clic, analysez vos statistiques, ou utilisez nos relances automatiques pour faire salle comble.</p>
             </div>
         </div>
     </section>
 
     <!-- SECTION 4 : TARIFS -->
     <section class="pricing-section">
-        <h2 style="font-size: 3rem; margin-bottom: 20px;">Tarification Limpide.</h2>
-        <p style="color: #666; margin-bottom: 60px;">Votre base de données vous appartient à 100%. Sans engagement.</p>
-        
-        <div class="pricing-grid">
-            <div class="price-card" id="card1">
-                <h3>Installation</h3>
-                <div class="price-amount">300€ <span>/ unique</span></div>
-                <ul>
-                    <li>✓ Création du programme</li>
-                    <li>✓ Design & Impression QR</li>
-                    <li>✓ Configuration emails</li>
-                    <li>✓ Formation équipe</li>
-                </ul>
+        <div class="container">
+            <div class="pricing-header reveal">
+                <h2>Tarification Limpide.</h2>
+                <p>Votre base de données vous appartient à 100%. Sans engagement.</p>
             </div>
-            <div class="price-card premium" id="card2">
-                <h3>Abonnement</h3>
-                <div class="price-amount">99€ <span>/ mois</span></div>
-                <ul>
-                    <li>✓ Espace Restaurateur 24/7</li>
-                    <li>✓ Export illimité base clients</li>
-                    <li>✓ Automatisations incluses</li>
-                    <li>✓ Support local prioritaire</li>
-                </ul>
-                <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn-main">Réserver ma démo</a>
+            
+            <div class="pricing-grid">
+                <div class="price-card reveal delay-1" id="card1">
+                    <h3>Pack Installation</h3>
+                    <div class="price-amount">300€ <span>/ unique</span></div>
+                    <ul class="pricing-list">
+                        <li>Création de votre programme</li>
+                        <li>Design & Impression des QR Codes</li>
+                        <li>Configuration de la base de données</li>
+                        <li>Formation de votre équipe</li>
+                    </ul>
+                </div>
+                <div class="price-card premium reveal delay-2" id="card2">
+                    <div class="badge-popular">Le plus choisi</div>
+                    <h3>Licence Logicielle</h3>
+                    <div class="price-amount">99€ <span>/ mois</span></div>
+                    <ul class="pricing-list">
+                        <li>Accès Dashboard 24/7</li>
+                        <li>Capture de clients en illimité</li>
+                        <li>Export CSV de la data</li>
+                        <li>Support local & Maintenance</li>
+                    </ul>
+                    <a href="https://calendly.com/victordetroux2/30min" target="_blank" class="btn-main mt-4">Réserver ma démo</a>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-grid">
-            <div>
-                <h3 style="color: white; margin-bottom: 20px;">FYDELIO</h3>
-                <p>Le partenaire technologique des restaurateurs qui veulent transformer leurs clients de passage en habitués.</p>
+    <!-- SECTION 5 : FAQ -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="faq-header reveal">
+                <h2>Questions Fréquentes</h2>
+                <p>Tout ce que vous devez savoir sur FYDELIO.</p>
             </div>
-            <div>
-                <h4 style="color: white; margin-bottom: 20px;">Contact</h4>
-                <p>📍 Vaucluse (Cavaillon / L'Isle-sur-la-Sorgue)</p>
-                <p>✉️ <a href="mailto:victordetroux2@gmail.com" style="color: inherit; text-decoration: none;">victordetroux2@gmail.com</a></p>
+            <div class="faq-grid">
+                <div class="faq-item reveal delay-1">
+                    <h3>Y a-t-il un engagement de durée ?</h3>
+                    <p>Non, FYDELIO est une solution sans engagement de durée. Vous êtes libre d'arrêter l'abonnement mensuel quand vous le souhaitez. La data récoltée vous appartient toujours.</p>
+                </div>
+                <div class="faq-item reveal delay-2">
+                    <h3>Dois-je acheter des tablettes pour mes serveurs ?</h3>
+                    <p>Absolument pas. Le système est conçu pour fonctionner directement sur les smartphones personnels ou professionnels de votre équipe de salle, de manière 100% sécurisée.</p>
+                </div>
+                <div class="faq-item reveal delay-3">
+                    <h3>Est-ce compatible RGPD ?</h3>
+                    <p>Oui. La récolte des données se fait dans le strict respect des lois européennes (RGPD). Les clients donnent leur consentement explicite lors du scan du QR Code.</p>
+                </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            © 2026 FYDELIO. Tous droits réservés. | Conformité RGPD stricte.
+    </section>
+
+    <!-- PIED DE PAGE (FOOTER) -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid reveal">
+                <div class="footer-brand">
+                    <h3>FYDELIO</h3>
+                    <p>Le partenaire technologique des restaurateurs qui veulent transformer leurs clients de passage en habitués de manière 100% automatisée.</p>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>📍 Vaucluse (Cavaillon / L'Isle-sur-la-Sorgue)</li>
+                        <li>✉️ <a href="mailto:victordetroux2@gmail.com">victordetroux2@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 FYDELIO. Tous droits réservés. | Solution propulsée en Provence.</p>
+            </div>
         </div>
     </footer>
 
-    <!-- MODAL CONNEXION -->
+    <!-- MODALE DE CONNEXION SAAS -->
     <div id="loginModal" class="modal-overlay">
-        <div style="background:white; padding:50px; border-radius:30px; color:black; width:450px; position:relative; box-shadow: 0 50px 100px rgba(0,0,0,0.5);">
-            <button onclick="document.getElementById('loginModal').style.display='none'" style="position:absolute; top:25px; right:25px; border:none; background:#eee; width:35px; height:35px; border-radius:50%; cursor:pointer;">✕</button>
-            <h2 style="margin-bottom:30px; font-size: 2rem;">Espace Pro</h2>
+        <div class="modal-content">
+            <button id="btnCloseModal" class="modal-close" aria-label="Fermer">✕</button>
+            <div class="modal-header">
+                <h2>Espace Pro</h2>
+                <p>Pilotez votre programme de fidélité.</p>
+            </div>
             <form id="loginForm">
-                <div style="margin-bottom:20px;">
-                    <label style="display:block; font-weight:600; margin-bottom:8px;">Email Professionnel</label>
-                    <input type="email" id="restoEmail" placeholder="contact@votre-resto.fr" style="width:100%; padding:15px; border:1px solid #ddd; border-radius:12px; font-size:1rem;">
+                <div class="form-group">
+                    <label for="restoEmail">Email Professionnel</label>
+                    <input type="email" id="restoEmail" placeholder="contact@votre-resto.fr" required>
                 </div>
-                <div style="margin-bottom:30px;">
-                    <label style="display:block; font-weight:600; margin-bottom:8px;">Mot de passe</label>
-                    <input type="password" id="restoPwd" placeholder="••••••••" style="width:100%; padding:15px; border:1px solid #ddd; border-radius:12px; font-size:1rem;">
+                <div class="form-group">
+                    <label for="restoPwd">Mot de passe</label>
+                    <input type="password" id="restoPwd" placeholder="••••••••" required>
                 </div>
-                <div id="loginError" style="color:red; display:none; margin-bottom:20px; font-weight:600;">Identifiants incorrects.</div>
-                <button type="submit" id="btnSubmitLogin" class="btn-main">Se connecter au Dashboard</button>
+                <div id="loginError" class="alert-error">Identifiants incorrects. Veuillez réessayer.</div>
+                <button type="submit" id="btnSubmitLogin" class="btn-main mt-4 btn-full">
+                    <span class="btn-text">Se connecter au Dashboard</span>
+                    <span class="btn-spinner"></span>
+                </button>
             </form>
         </div>
     </div>
 
-    <!-- SCRIPTS -->
-    <script src="fiddle-pro.js"></script>
-    <script>
-        gsap.registerPlugin(ScrollTrigger);
-
-        // 1. LENIS SMOOTH SCROLL
-        const lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-        requestAnimationFrame(raf);
-        lenis.on('scroll', ScrollTrigger.update);
-        gsap.ticker.add((time)=>{ lenis.raf(time * 1000) });
-
-        // 2. HERO ANIMATION (L'image devient l'écran du téléphone)
-        const heroTl = gsap.timeline({ scrollTrigger: { trigger: ".hero-sequence", start: "top top", end: "bottom bottom", scrub: 1 }});
-        heroTl.to("#heroImage", { clipPath: "inset(20% 35% 20% 35% round 45px)", duration: 4, ease: "none" }, 0)
-              .to("#heroImage img", { scale: 1, duration: 4 }, 0)
-              .to("#heroText", { y: -50, opacity: 1, duration: 2 }, 1)
-              .to("#heroImage", { y: "-100vh", opacity: 0, duration: 2 }, 4);
-
-        // 3. HORIZONTAL SCROLL (CONCEPT)
-        const hContainer = document.getElementById("horizontalContainer");
-        gsap.to(hContainer, {
-            x: () => -(hContainer.scrollWidth - window.innerWidth),
-            ease: "none",
-            scrollTrigger: { trigger: ".horizontal-sequence", start: "top top", end: "bottom bottom", scrub: 1, invalidateOnRefresh: true }
-        });
-
-        // 4. PHONE SHOWCASE (MÉTHODE)
-        const showcaseTl = gsap.timeline({ scrollTrigger: { trigger: ".showcase-sequence", start: "top top", end: "bottom bottom", scrub: 1 }});
-        showcaseTl.to("#phoneMockup", { y: 0, duration: 1 })
-                  .to("#text1", { opacity: 1, y: -20, duration: 1 }).to("#text1", { opacity: 0, y: -40, duration: 1, delay: 1 })
-                  .add(() => { document.getElementById("screen1").classList.remove("active"); document.getElementById("screen2").classList.add("active"); })
-                  .to("#text2", { opacity: 1, y: -20, duration: 1 }).to("#text2", { opacity: 0, y: -40, duration: 1, delay: 1 })
-                  .add(() => { document.getElementById("screen2").classList.remove("active"); document.getElementById("screen3").classList.add("active"); })
-                  .to("#text3", { opacity: 1, y: -20, duration: 1 }).to("#text3", { opacity: 0, y: -40, duration: 1, delay: 1 })
-                  .to("#phoneMockup", { y: "100vh", duration: 1 });
-
-        // 5. PRICING REVEAL
-        gsap.to(".price-card", {
-            scrollTrigger: { trigger: ".pricing-section", start: "top 60%" },
-            y: 0, opacity: 1, duration: 1, stagger: 0.2
-        });
-
-        // MODAL TOGGLE
-        document.getElementById('btnOpenModal').onclick = () => document.getElementById('loginModal').style.display='flex';
-    </script>
+    <!-- TES FICHIERS JAVASCRIPT EXTERNES -->
+    <!-- Le moteur d'animations (Lenis + GSAP géré proprement) -->
+    <script src="animations.js" defer></script>
+    <!-- Ton fichier de logique métier (Supabase, formulaires, etc.) -->
+    <script src="fiddle-pro.js" defer></script>
 </body>
 </html>
