@@ -101,21 +101,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </section>
 
-  <section id="fonctionnement" class="section container">
+    <section id="fonctionnement" class="section container">
         <div class="section-header animate-on-scroll">
             <h2>La méthode FYDELIO</h2>
             <p>Un fonctionnement élégant pour le client, un pilotage puissant pour le patron.</p>
         </div>
         
-        <!-- 🚨 C'EST CETTE LIGNE QUI MANQUAIT ! Elle met les 2 blocs côte à côte -->
         <div class="method-split-layout">
             
-            <!-- COLONNE GAUCHE : Le texte qui défile -->
+            <!-- COLONNE GAUCHE : Le texte qui défile (et cartes sur mobile) -->
             <div class="method-text-column">
                 <div class="method-step" id="step-1">
+                    <!-- Ces 2 éléments n'apparaissent QUE sur Mobile avec l'icône 3D -->
                     <div class="step-number mobile-only-show">1</div>
                     <div class="step-image-container mobile-only-show">
-                        <img src="etape-1.png" alt="Scan" class="app-icon-image">
+                        <img src="etape-1.png" alt="Scan Mobile" class="app-icon-image">
                     </div>
                     <div class="step-badge">Étape 1</div>
                     <h3>Scan à table</h3>
@@ -125,7 +125,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div class="method-step" id="step-2">
                     <div class="step-number mobile-only-show">2</div>
                     <div class="step-image-container mobile-only-show">
-                        <img src="etape-2.png" alt="Validation" class="app-icon-image">
+                        <img src="etape-2.png" alt="Validation Mobile" class="app-icon-image">
                     </div>
                     <div class="step-badge">Étape 2</div>
                     <h3>Validation Pro</h3>
@@ -135,7 +135,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div class="method-step" id="step-3">
                     <div class="step-number mobile-only-show">3</div>
                     <div class="step-image-container mobile-only-show">
-                        <img src="etape-3.png" alt="Espace" class="app-icon-image">
+                        <img src="etape-3.png" alt="Espace Mobile" class="app-icon-image">
                     </div>
                     <div class="step-badge">Étape 3</div>
                     <h3>Votre Espace</h3>
@@ -143,19 +143,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
             </div>
 
-            <!-- COLONNE DROITE : Le Téléphone fixe -->
+            <!-- COLONNE DROITE : Le Téléphone fixe (PC Uniquement) -->
             <div class="method-phone-column mobile-only-hide">
                 <div class="phone-mockup">
                     <div class="phone-notch"></div>
                     <div class="phone-screen">
-                        <img src="etape-1.png" alt="Scan" class="phone-img active" id="phone-img-1">
-                        <img src="etape-2.png" alt="Validation" class="phone-img" id="phone-img-2">
-                        <img src="etape-3.png" alt="Espace" class="phone-img" id="phone-img-3">
+                        <!-- ICI, on utilise les captures d'écran de l'app -->
+                        <img src="screen-1.png" alt="Interface Scan" class="phone-img active" id="phone-img-1">
+                        <img src="screen-2.png" alt="Interface Validation" class="phone-img" id="phone-img-2">
+                        <img src="screen-3.png" alt="Interface Espace Pro" class="phone-img" id="phone-img-3">
                     </div>
                 </div>
             </div>
 
-        </div> <!-- 🚨 FIN DE LA BOÎTE (Celle qui manquait aussi) -->
+        </div> 
     </section>
 
     <section id="tarifs" class="section container">
