@@ -397,30 +397,49 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
         opacity: 1 !important; 
         transform: none !important; 
         background: var(--surface); 
-        padding: 50px 40px; 
+        padding: 40px 30px; /* Ajusté pour bien respirer sur mobile */
         border-radius: 32px;
         border: 1px solid var(--border) !important; 
         box-shadow: var(--shadow-md) !important;
         position: relative; 
-        overflow: visible !important;
+        overflow: hidden !important; /* CRUCIAL : Coupe le chiffre s'il déborde */
     }
     
-    /* Le chiffre gigantesque en fond sur mobile */
+    /* Le chiffre gigantesque en fond sur mobile : Redimensionné et calé à droite */
     .step-number { 
-        position: absolute; top: 10px; left: 30px; 
-        font-size: 150px; font-weight: 900; 
-        color: var(--primary); opacity: 0.06 !important; /* Très discret sur mobile */
-        line-height: 1; z-index: 0; pointer-events: none; 
+        position: absolute; 
+        top: -10px; 
+        right: 15px; 
+        left: auto; /* Annule l'ancienne position à gauche */
+        font-size: 110px; /* Taille élégante pour mobile */
+        font-weight: 900; 
+        color: var(--primary); 
+        opacity: 0.05 !important; /* Très discret */
+        line-height: 1; 
+        z-index: 0; 
+        pointer-events: none; 
     }
     
-    /* L'image 3D lévitante sur mobile */
+    /* Le conteneur de l'image 3D */
     .step-image-container { 
-        height: 220px; 
-        margin-bottom: 30px; 
+        height: 160px; /* Hauteur bloquée pour éviter les déformations */
+        width: 100%;
+        margin-bottom: 25px; 
         background: transparent !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
     }
+    
+    /* L'image 3D lévitante sur mobile : ZÉRO DÉFORMATION */
     .app-icon-image { 
-        width: 170px; 
+        width: auto; 
+        height: 100%; /* L'image s'adapte à la hauteur sans s'écraser */
+        max-width: 140px; 
+        object-fit: contain; /* LE CORRECTIF MAGIQUE CONTRE LA DÉFORMATION */
+        mix-blend-mode: multiply; /* Fusion parfaite avec le fond */
         filter: drop-shadow(0 20px 30px rgba(15, 118, 110, 0.2));
     }
     
