@@ -1,176 +1,192 @@
 /* ==========================================================================
-   ✨ FYDELIO ANIMATION ENGINE (3D, Scroll & Micro-interactions)
+   🍏 FYDELIO ENGINE - APPLE-STYLE SCROLL (GSAP + ScrollTrigger)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialisation conditionnelle pour éviter les erreurs selon la page
-    initScrollAnimations();
-    init3DTiltEffect();
-    initParallaxBackground();
-    initDynamicCounters();
-    initMagneticButtons();
+    // On s'assure que GSAP est bien chargé
+    if (typeof gsap !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+        initAppleAnimations();
+        initParallaxBackground();
+        // On garde nos petits effets utilitaires
+        initMagneticButtons();
+        initDynamicCounters();
+    }
 });
 
-// ==========================================================================
-// 1. APPARITION AU SCROLL (Intersection Observer)
-// ==========================================================================
-function initScrollAnimations() {
-    const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
-    if (elementsToAnimate.length === 0) return;
+function initAppleAnimations() {
+    // Si on est sur mobile, on fait plus simple pour l'ergonomie
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Ajoute la classe qui déclenchera l'animation CSS
-                entry.target.classList.add('is-visible');
-                // On cesse d'observer pour que l'animation ne se joue qu'une fois
-                observer.unobserve(entry.target); 
-            }
-        });
-    }, {
-        threshold: 0.1, // Se déclenche quand 10% de l'élément est visible à l'écran
-        rootMargin: "0px 0px -50px 0px"
+    // ---------------------------------------------------
+    // EFFET 1 : LE HERO QUI "PLONGE"
+    // Quand on scrolle, le Hero reste fixe, se rétrécit et s'estompe
+    // ---------------------------------------------------
+    gsap.to(".hero", {
+        scrollTrigger: {
+            trigger: ".hero",
+            start: "top top", // Commence quand le haut du hero touche le haut de l'écran
+            end: "bottom top", // Finit quand le bas du hero touche le haut
+            scrub: true, // L'animation est liée à la molette (Apple style)
+            pin: true, // Fixe la section pendant l'animation
+            pinSpacing: false
+        },
+        scale: 0.85,
+        opacity: 0,
+        y: -50,
+        ease: "none"
     });
 
-    elementsToAnimate.forEach(el => observer.observe(el));
-}
+    // ---------------------------------------------------
+    // EFFET 2 : LE TEXTE QUI S'ALLUME (Section Concept)
+    // ---------------------------------------------------
+    // Remplaçons le texte du h2 par des lettres individuelles si on veut aller très loin, 
+    // mais un simple fade-up avec scrub donne un effet lourd.
+    gsap.from("#concept .section-header", {
+        scrollTrigger: {
+            trigger: "#concept",
+            start: "top 80%",
+            end: "top 40%",
+            scrub: 1 // scrub: 1 ajoute un léger lissage "beurre" d'une seconde
+        },
+        y: 100,
+        opacity: 0
+    });
 
-// ==========================================================================
-// 2. EFFET 3D (TILT) SUR LES CARTES
-// ==========================================================================
-function init3DTiltEffect() {
-    // Cible les cartes de la vitrine et du dashboard
-    const cards = document.querySelectorAll('.card, .pricing-card, .kpi-card');
-    
-    // Si on est sur mobile, on désactive la 3D pour éviter les conflits tactiles
-    if (window.matchMedia("(max-width: 768px)").matches) return;
+    // Les 3 cartes du Concept apparaissent une à une en décalé
+    gsap.from("#concept .card", {
+        scrollTrigger: {
+            trigger: "#concept .grid-3",
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+        },
+        y: 80,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2, // Délai entre chaque carte
+        ease: "back.out(1.5)" // Effet rebond très qualitatif
+    });
 
-    cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left; 
-            const y = e.clientY - rect.top;  
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            // Calcul de l'angle (diviseur plus grand = effet plus subtil)
-            const rotateX = ((y - centerY) / centerY) * -8; 
-            const rotateY = ((x - centerX) / centerX) * 8;
+    // ---------------------------------------------------
+    // EFFET 3 : SCROLL HORIZONTAL (Section Méthode)
+    // ---------------------------------------------------
+    if (!isMobile) {
+        const methodSection = document.querySelector("#fonctionnement");
+        const scrollWrapper = document.querySelector(".horizontal-scroll-wrapper");
+        
+        if (scrollWrapper) {
+            // Calcule la distance de défilement horizontal
+            const scrollDistance = scrollWrapper.scrollWidth - window.innerWidth;
 
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-            card.style.transition = 'none'; 
-        });
+            gsap.to(scrollWrapper, {
+                x: -scrollDistance, // Déplace le conteneur vers la gauche
+                ease: "none",
+                scrollTrigger: {
+                    trigger: methodSection,
+                    start: "center center", // On commence quand la section est au milieu
+                    end: () => "+=" + scrollDistance, // La durée du scroll égale la largeur
+                    pin: true, // On fige l'écran ! L'utilisateur scrolle vers le bas, mais ça va à droite
+                    scrub: 1, // Lissage
+                    invalidateOnRefresh: true // Recalcule si on redimensionne la fenêtre
+                }
+            });
+        }
+    }
 
-        // Retour à la normale fluide quand la souris part
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-            card.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-        });
+    // ---------------------------------------------------
+    // EFFET 4 : MISE EN AVANT DU PRIX (Section Tarifs)
+    // La carte "Abonnement" s'agrandit de manière spectaculaire
+    // ---------------------------------------------------
+    gsap.from(".pricing-card:not(.highlight)", {
+        scrollTrigger: {
+            trigger: "#tarifs",
+            start: "top 70%",
+        },
+        x: -50,
+        opacity: 0,
+        duration: 0.8
+    });
+
+    gsap.from(".pricing-card.highlight", {
+        scrollTrigger: {
+            trigger: "#tarifs",
+            start: "top 70%",
+        },
+        scale: 0.8,
+        opacity: 0,
+        duration: 1,
+        ease: "elastic.out(1, 0.7)", // Effet élastique subtil
+        delay: 0.2
     });
 }
 
-// ==========================================================================
-// 3. PARALLAXE SUR LES FORMES DE FOND (Vitrine)
-// ==========================================================================
+// ---------------------------------------------------
+// UTILITAIRES CONSERVÉS (Parallaxe Fond, Compteurs, Boutons)
+// ---------------------------------------------------
 function initParallaxBackground() {
     const bg1 = document.querySelector('.bg-shape-1');
     const bg2 = document.querySelector('.bg-shape-2');
 
     if (bg1 && bg2 && !window.matchMedia("(max-width: 768px)").matches) {
         window.addEventListener('mousemove', (e) => {
-            // Calcul de la position relative de la souris par rapport au centre de l'écran
             const mouseX = (e.clientX / window.innerWidth) - 0.5;
             const mouseY = (e.clientY / window.innerHeight) - 0.5;
-
-            // Mouvements inversés pour un effet de profondeur
-            bg1.style.transform = `translate(${mouseX * -50}px, ${mouseY * -50}px)`;
-            bg2.style.transform = `translate(${mouseX * 70}px, ${mouseY * 70}px)`;
+            // Un peu de GSAP pour lisser le mouvement de la souris (plus propre que transition CSS)
+            gsap.to(bg1, { x: mouseX * -100, y: mouseY * -100, duration: 1, ease: "power2.out" });
+            gsap.to(bg2, { x: mouseX * 120, y: mouseY * 120, duration: 1.5, ease: "power2.out" });
         });
     }
 }
 
-// ==========================================================================
-// 4. ANIMATION DES COMPTEURS KPI (Dashboard)
-// ==========================================================================
-function initDynamicCounters() {
-    const kpiValues = document.querySelectorAll('.kpi-value');
-    if (kpiValues.length === 0) return;
-
-    // Fonction d'animation qui fait défiler les nombres
-    const countUp = (element, finalValue, duration) => {
-        let startTimestamp = null;
-        const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            
-            // Courbe d'accélération (démarre vite, finit lentement)
-            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-            element.innerText = Math.floor(easeOutQuart * finalValue);
-            
-            if (progress < 1) {
-                window.requestAnimationFrame(step);
-            } else {
-                element.innerText = finalValue; // Sécurité pour afficher le nombre exact à la fin
-            }
-        };
-        window.requestAnimationFrame(step);
-    };
-
-    kpiValues.forEach(kpi => {
-        // On écoute les changements injectés par Supabase (fiddle-pro.js)
-        const observer = new MutationObserver((mutationsList, obs) => {
-            for (let mutation of mutationsList) {
-                if (mutation.type === 'childList' || mutation.type === 'characterData') {
-                    const text = kpi.innerText;
-                    
-                    // On ignore les états par défaut ou le texte "Optimisé"
-                    if (text === '-' || text === 'Optimisé') return; 
-                    
-                    // On extrait le nombre (ex: "1 250" devient 1250)
-                    const finalValue = parseInt(text.replace(/\s/g, ''), 10);
-                    
-                    if (!isNaN(finalValue) && finalValue > 0 && !kpi.dataset.animating) {
-                        kpi.dataset.animating = 'true'; // Marqueur pour ne pas relancer l'animation
-                        obs.disconnect(); // On arrête d'écouter pour éviter une boucle infinie
-                        countUp(kpi, finalValue, 2000); // Animation sur 2 secondes
-                    }
-                }
-            }
-        });
-        
-        // Configuration du MutationObserver
-        observer.observe(kpi, { childList: true, characterData: true, subtree: true });
-    });
-}
-
-// ==========================================================================
-// 5. BOUTONS MAGNÉTIQUES (Call to actions)
-// ==========================================================================
 function initMagneticButtons() {
-    // Cible uniquement les gros boutons d'action
     const buttons = document.querySelectorAll('.btn-large');
     if (window.matchMedia("(max-width: 768px)").matches) return;
 
     buttons.forEach(btn => {
         btn.addEventListener('mousemove', (e) => {
             const rect = btn.getBoundingClientRect();
-            // Calcule la distance de la souris par rapport au centre du bouton
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
             
-            // Force d'attraction (0.2 = subtil)
-            const pullX = x * 0.2;
-            const pullY = y * 0.2;
-            
-            btn.style.transform = `translate(${pullX}px, ${pullY}px)`;
-            btn.style.transition = 'none';
+            gsap.to(btn, { x: x * 0.2, y: y * 0.2, duration: 0.3, ease: "power2.out" });
         });
-        
-        // Relâche le bouton quand la souris sort
         btn.addEventListener('mouseleave', () => {
-            btn.style.transform = `translate(0px, 0px)`;
-            btn.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            gsap.to(btn, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.3)" });
         });
+    });
+}
+
+function initDynamicCounters() {
+    // (Même code que précédemment pour faire tourner les compteurs du dashboard)
+    const kpiValues = document.querySelectorAll('.kpi-value');
+    if (kpiValues.length === 0) return;
+
+    kpiValues.forEach(kpi => {
+        const observer = new MutationObserver((mutationsList, obs) => {
+            for (let mutation of mutationsList) {
+                if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                    const text = kpi.innerText;
+                    if (text === '-' || text === 'Optimisé') return; 
+                    
+                    const finalValue = parseInt(text.replace(/\s/g, ''), 10);
+                    if (!isNaN(finalValue) && finalValue > 0 && !kpi.dataset.animating) {
+                        kpi.dataset.animating = 'true';
+                        obs.disconnect(); 
+                        
+                        // GSAP s'occupe du compteur de façon beaucoup plus fluide
+                        let start = { val: 0 };
+                        gsap.to(start, {
+                            val: finalValue,
+                            duration: 2,
+                            ease: "power3.out",
+                            onUpdate: () => {
+                                kpi.innerText = Math.floor(start.val);
+                            }
+                        });
+                    }
+                }
+            }
+        });
+        observer.observe(kpi, { childList: true, characterData: true, subtree: true });
     });
 }
