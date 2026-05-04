@@ -463,3 +463,46 @@ body { overflow-x: hidden; }
     -webkit-text-fill-color: transparent;
     transition: background-position 0.1s ease;
 }
+/* ==========================================================================
+   📸 IMAGES DES ÉTAPES & RESPONSIVE MOBILE
+   ========================================================================== */
+
+/* Design du conteneur d'image */
+.step-image-container {
+    width: 100%;
+    height: 220px; /* Hauteur fixe pour que les 3 cartes soient identiques */
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 2; /* Reste au-dessus du grand chiffre en fond */
+    border: 1px solid var(--border);
+}
+
+/* L'image elle-même */
+.step-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Remplit parfaitement le cadre sans se déformer */
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Petit effet zoom élégant sur l'image quand on survole la carte */
+.step-card:hover .step-image {
+    transform: scale(1.08); 
+}
+
+/* 📱 CORRECTION RESPONSIVE : Tablette & Mobile */
+@media (max-width: 992px) {
+    /* On annule la largeur de 300% et on empile les cartes */
+    .horizontal-scroll-wrapper {
+        flex-direction: column; 
+        width: 100%; 
+        gap: 40px;
+        padding: 0;
+    }
+    
+    .horizontal-scroll-wrapper .card {
+        width: 100%; /* La carte prend 100% de l'écran mobile */
+    }
+}
