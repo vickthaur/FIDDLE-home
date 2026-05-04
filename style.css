@@ -136,14 +136,15 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
 .method-step h3 { font-size: 2.2rem; margin-bottom: 15px; }
 .method-step p { font-size: 1.15rem; color: var(--text-muted); line-height: 1.8; max-width: 90%; }
 
-/* --- COLONNE TÉLÉPHONE FIXE --- */
+/* --- COLONNE TÉLÉPHONE FIXE (CENTRAGE PARFAIT) --- */
 .method-phone-column {
     flex: 1;
     position: sticky;
-    top: 15vh; /* Se bloque à 15% du haut de l'écran */
+    top: 0; /* S'accroche tout en haut de la fenêtre */
+    height: 100vh; /* Prend 100% de la hauteur de l'écran */
     display: flex;
-    justify-content: center;
-    height: 70vh;
+    align-items: center; /* LA MAGIE EST ICI : centre le téléphone verticalement */
+    justify-content: center; /* Centre le téléphone horizontalement */
 }
 
 /* Le faux iPhone codé en CSS */
