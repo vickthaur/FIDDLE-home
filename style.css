@@ -5,11 +5,11 @@
 /* --- 1. VARIABLES GLOBALES (LUXURY THEMING) --- */
 :root {
     --bg-main: #FAFAFA;
-    --bg-gray: #F4F5F7; /* Un gris légèrement plus bleuté pour un côté plus moderne */
+    --bg-gray: #F4F5F7;
     --surface: #FFFFFF;
-    --border: rgba(0, 0, 0, 0.05); /* Bordure encore plus discrète */
+    --border: rgba(0, 0, 0, 0.05);
     
-    --text-main: #0F172A; /* Texte presque noir, plus doux que #111827 */
+    --text-main: #0F172A;
     --text-muted: #64748B;
     --text-light: #94A3B8;
     
@@ -23,13 +23,13 @@
     --danger: #EF4444;
     --danger-light: #FEF2F2;
 
-    /* Ombres façon Apple / Stripe - Diffuses et profondes */
+    /* Ombres Premium Apple/Stripe */
     --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03);
     --shadow-md: 0 10px 24px rgba(0, 0, 0, 0.04);
     --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.05);
     --shadow-xl: 0 30px 60px rgba(0, 0, 0, 0.08);
     
-    /* Transition "beurre" (smooth butter) */
+    /* Transition fluide */
     --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -60,21 +60,14 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
     padding: 14px 28px; border-radius: 14px; font-size: 15px; font-weight: 700; 
     text-decoration: none; cursor: pointer; transition: var(--transition); 
     border: none; gap: 10px; font-family: inherit; 
-    will-change: transform, box-shadow; /* Optimisation pour la fluidité */
+    will-change: transform, box-shadow; 
 }
 .btn-large { padding: 18px 36px; font-size: 16px; border-radius: 16px; }
 .btn-sm { padding: 10px 20px; font-size: 13px; border-radius: 10px; }
 .btn-full { width: 100%; }
 
-.btn-primary { 
-    background: var(--primary); color: white; 
-    box-shadow: 0 8px 24px rgba(15, 118, 110, 0.2); 
-}
-.btn-primary:hover { 
-    background: var(--primary-hover); 
-    transform: translateY(-4px) scale(1.01); /* Léger scale de luxe */
-    box-shadow: 0 14px 32px rgba(15, 118, 110, 0.3); 
-}
+.btn-primary { background: var(--primary); color: white; box-shadow: 0 8px 24px rgba(15, 118, 110, 0.2); }
+.btn-primary:hover { background: var(--primary-hover); transform: translateY(-4px) scale(1.01); box-shadow: 0 14px 32px rgba(15, 118, 110, 0.3); }
 .btn-primary:active { transform: translateY(-1px) scale(0.98); }
 
 .btn-outline { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
@@ -93,8 +86,8 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
 /* HEADER & NAVIGATION */
 #main-header { 
     position: fixed; top: 0; width: 100%; z-index: 1000; 
-    background: rgba(255, 255, 255, 0.75); /* Plus transparent pour un meilleur effet glass */
-    backdrop-filter: blur(24px) saturate(180%); /* Saturation ajoutée, typique d'iOS */
+    background: rgba(255, 255, 255, 0.75); 
+    backdrop-filter: blur(24px) saturate(180%); 
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     border-bottom: 1px solid rgba(0,0,0,0.03); 
     padding: 16px 0; transition: var(--transition); 
@@ -123,15 +116,11 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
 .card { 
     background: var(--surface); border: 1px solid var(--border); border-radius: 32px; 
     padding: 50px 40px; transition: var(--transition); box-shadow: var(--shadow-sm); 
-    position: relative; overflow: hidden; /* Pour un pseudo-élément éventuel */
+    position: relative; overflow: hidden;
 }
-.card:hover { 
-    transform: translateY(-10px); 
-    border-color: rgba(15, 118, 110, 0.15); 
-    box-shadow: var(--shadow-xl); 
-}
+.card:hover { transform: translateY(-10px); border-color: rgba(15, 118, 110, 0.15); box-shadow: var(--shadow-xl); }
 .card-icon { width: 68px; height: 68px; background: var(--primary-light); color: var(--primary); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 30px; transition: var(--transition); }
-.card:hover .card-icon { transform: scale(1.1); background: var(--primary); color: white; } /* Micro-interaction de luxe */
+.card:hover .card-icon { transform: scale(1.1); background: var(--primary); color: white; } 
 .card h3 { font-size: 1.5rem; margin-bottom: 14px; }
 .card p { color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; }
 
@@ -161,7 +150,7 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
     display: flex;
     flex-direction: column;
     justify-content: center;
-    opacity: 0.15; /* Un peu plus effacé quand inactif */
+    opacity: 0.15; 
     transform: translateX(-40px);
     transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
@@ -184,7 +173,7 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
 .method-step h3 { font-size: 2.6rem; margin-bottom: 20px; }
 .method-step p { font-size: 1.2rem; color: var(--text-muted); line-height: 1.8; max-width: 95%; }
 
-/* --- COLONNE TÉLÉPHONE FIXE (DROITE) --- */
+/* --- COLONNE TÉLÉPHONE FIXE (DROITE PC) --- */
 .method-phone-column {
     flex: 1;
     position: sticky;
@@ -198,9 +187,9 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
 .phone-mockup {
     width: 340px;
     height: 690px;
-    background: #ffffff;
-    border-radius: 55px; /* Arrondis d'iPhone modernes */
-    border: 16px solid #0F172A; /* Noir plus profond */
+    background: #0F172A; /* Fond noir du téléphone */
+    border-radius: 55px; 
+    border: 16px solid #0F172A; 
     box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.25), inset 0 0 0 2px rgba(255,255,255,0.15);
     position: relative;
     overflow: hidden;
@@ -213,25 +202,36 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
     border-bottom-left-radius: 22px; border-bottom-right-radius: 22px; z-index: 10;
 }
 
+/* Écran du téléphone adapté pour de vraies captures (PC) */
 .phone-screen {
-    width: 100%; height: 100%;
-    background: linear-gradient(145deg, #F8FAFC 0%, #E2E8F0 100%);
-    position: relative; display: flex; align-items: center; justify-content: center;
+    width: 100%; 
+    height: 100%;
+    background: #ffffff;
+    position: relative; 
+    border-radius: 38px; /* Arrondi interne pour suivre la coque */
+    overflow: hidden; /* Coupe la capture dans les angles */
 }
 
+/* L'image de capture d'écran (PC) */
 .phone-img {
-    position: absolute; width: 78%; height: auto; object-fit: contain; 
-    mix-blend-mode: multiply; 
-    filter: drop-shadow(0 35px 55px rgba(15, 118, 110, 0.2)); 
-    opacity: 0; transform: translateY(50px) scale(0.9);
-    transition: all 0.9s cubic-bezier(0.2, 0.8, 0.2, 1); /* Transition ultra-fluide */
+    position: absolute; 
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; /* Remplissage parfait bord à bord */
+    opacity: 0; 
+    transform: translateY(30px) scale(0.95);
+    transition: all 0.9s cubic-bezier(0.2, 0.8, 0.2, 1); 
     will-change: transform, opacity;
 }
 
 .phone-img.active {
-    opacity: 1; transform: translateY(0) scale(1);
+    opacity: 1; 
+    transform: translateY(0) scale(1);
 }
 
+/* Cache les éléments mobiles sur PC */
 .mobile-only-show { display: none !important; }
 
 /* ==========================================================================
@@ -243,7 +243,7 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
     padding: 60px 50px; position: relative; box-shadow: var(--shadow-md); transition: var(--transition); 
 }
 .pricing-card.highlight { 
-    background: linear-gradient(160deg, var(--primary) 0%, var(--primary-hover) 100%); /* Dégradé très subtil */
+    background: linear-gradient(160deg, var(--primary) 0%, var(--primary-hover) 100%); 
     color: white; border: none; transform: scale(1.03); box-shadow: var(--shadow-xl); 
 }
 .badge-popular { position: absolute; top: -16px; right: 40px; background: var(--accent); color: white; padding: 8px 24px; border-radius: 100px; font-size: 12px; font-weight: 800; text-transform: uppercase; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4); letter-spacing: 0.05em; }
@@ -264,7 +264,7 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
 /* ==========================================================================
    🌐 FOOTER
    ========================================================================== */
-.site-footer { background-color: #080D1A; /* Noir très profond et chic */ color: var(--text-light); padding-top: 100px; margin-top: 80px; }
+.site-footer { background-color: #080D1A; color: var(--text-light); padding-top: 100px; margin-top: 80px; }
 .footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; padding-bottom: 80px; border-bottom: 1px solid rgba(255,255,255,0.05); }
 .footer-logo { display: flex; align-items: center; gap: 15px; font-size: 26px; font-weight: 800; color: white; margin-bottom: 25px; }
 .footer-logo img { width: 44px; height: 44px; border-radius: 12px; }
@@ -273,7 +273,7 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
 .footer-links ul, .footer-contact ul { list-style: none; }
 .footer-links li, .footer-contact li { margin-bottom: 18px; }
 .footer-links a, .footer-contact a { color: var(--text-light); text-decoration: none; transition: var(--transition); font-weight: 500; }
-.footer-links a:hover { color: white; transform: translateX(5px); display: inline-block; } /* Micro-interaction lien */
+.footer-links a:hover { color: white; transform: translateX(5px); display: inline-block; }
 .footer-bottom { padding: 30px 0; text-align: center; font-size: 0.95rem; opacity: 0.5; }
 
 /* ==========================================================================
@@ -282,7 +282,7 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(8, 13, 26, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 2000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s ease; }
 .modal-overlay.active { display: flex; opacity: 1; }
 .modal-content { 
-    background: rgba(255, 255, 255, 0.95); /* Presque opaque */
+    background: rgba(255, 255, 255, 0.95); 
     padding: 60px 50px; border-radius: 36px; width: 90%; max-width: 480px; position: relative; 
     transform: translateY(40px) scale(0.95); transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
     box-shadow: 0 50px 100px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(255,255,255,0.5); 
@@ -383,7 +383,7 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
 @media (max-width: 992px) {
     /* 1. Fin du Sticky Phone, retour aux cartes sublimes sur mobile */
     .method-split-layout { flex-direction: column; gap: 40px; }
-    .mobile-only-hide { display: none !important; } /* On cache l'iPhone géant */
+    .mobile-only-hide { display: none !important; } /* On cache l'iPhone géant PC */
     .method-text-column { padding: 0; }
     
     /* On force l'affichage des éléments internes de la carte (Chiffres et 3D) */
@@ -397,7 +397,7 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
         opacity: 1 !important; 
         transform: none !important; 
         background: var(--surface); 
-        padding: 40px 30px; /* Ajusté pour bien respirer sur mobile */
+        padding: 40px 30px; 
         border-radius: 32px;
         border: 1px solid var(--border) !important; 
         box-shadow: var(--shadow-md) !important;
@@ -410,11 +410,11 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
         position: absolute; 
         top: -10px; 
         right: 15px; 
-        left: auto; /* Annule l'ancienne position à gauche */
-        font-size: 110px; /* Taille élégante pour mobile */
+        left: auto; 
+        font-size: 110px; 
         font-weight: 900; 
         color: var(--primary); 
-        opacity: 0.05 !important; /* Très discret */
+        opacity: 0.05 !important; 
         line-height: 1; 
         z-index: 0; 
         pointer-events: none; 
@@ -436,7 +436,7 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
     /* L'image 3D lévitante sur mobile : ZÉRO DÉFORMATION */
     .app-icon-image { 
         width: auto; 
-        height: 100%; /* L'image s'adapte à la hauteur sans s'écraser */
+        height: 100%; 
         max-width: 140px; 
         object-fit: contain; /* LE CORRECTIF MAGIQUE CONTRE LA DÉFORMATION */
         mix-blend-mode: multiply; /* Fusion parfaite avec le fond */
