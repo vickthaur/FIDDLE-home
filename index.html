@@ -101,40 +101,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </section>
 
-   <section id="fonctionnement" class="section container">
+  <section id="fonctionnement" class="section container">
         <div class="section-header animate-on-scroll">
             <h2>La méthode FYDELIO</h2>
             <p>Un fonctionnement élégant pour le client, un pilotage puissant pour le patron.</p>
         </div>
         
-        <div class="horizontal-scroll-wrapper">
-            <div class="card step-card animate-on-scroll">
-                <div class="step-number">1</div>
-                <!-- Le nouvel "App Icon" -->
-                <div class="app-icon-container">
-                    <!-- Utilise un .png transparent idéalement -->
-                    <img src="etape-1.png" alt="Étape 1" class="app-icon-image"> 
+        <div class="method-split-layout">
+            <!-- COLONNE GAUCHE : Le texte qui défile -->
+            <div class="method-text-column">
+                <div class="method-step" id="step-1">
+                    <div class="step-badge">Étape 1</div>
+                    <h3>Scan à table</h3>
+                    <p>Le client flashe un QR Code Premium posé sur sa table pour s'inscrire au programme en quelques secondes. Plus besoin de dicter son numéro ou de télécharger une application lourde.</p>
                 </div>
-                <h3>Scan à table</h3>
-                <p>Le client flashe un QR Code Premium posé sur sa table pour s'inscrire au programme en quelques secondes.</p>
+                
+                <div class="method-step" id="step-2">
+                    <div class="step-badge">Étape 2</div>
+                    <h3>Validation Pro</h3>
+                    <p>Le serveur valide les points d'un simple clic via notre outil sécurisé. Le processus est conçu pour être ultra-rapide en plein service, fluide et surtout impossible à frauder.</p>
+                </div>
+                
+                <div class="method-step" id="step-3">
+                    <div class="step-badge">Étape 3</div>
+                    <h3>Votre Espace</h3>
+                    <p>Connectez-vous à votre Espace Pro pour voir votre base de données grandir jour après jour. Exportez vos contacts et profitez de nos relances automatisées pour faire revenir vos clients.</p>
+                </div>
             </div>
-            
-            <div class="card step-card animate-on-scroll">
-                <div class="step-number">2</div>
-                <div class="app-icon-container">
-                    <img src="etape-2.png" alt="Étape 2" class="app-icon-image">
+
+            <!-- COLONNE DROITE : Le Téléphone fixe -->
+            <div class="method-phone-column mobile-only-hide">
+                <div class="phone-mockup">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <!-- Les 3 images superposées (elles changeront au scroll) -->
+                        <img src="etape-1.png" alt="Scan" class="phone-img active" id="phone-img-1">
+                        <img src="etape-2.png" alt="Validation" class="phone-img" id="phone-img-2">
+                        <img src="etape-3.png" alt="Espace" class="phone-img" id="phone-img-3">
+                    </div>
                 </div>
-                <h3>Validation Pro</h3>
-                <p>Le serveur valide les points d'un simple clic via notre outil sécurisé. Rapide, fluide et impossible à frauder.</p>
-            </div>
-            
-            <div class="card step-card animate-on-scroll">
-                <div class="step-number">3</div>
-                <div class="app-icon-container">
-                    <img src="etape-3.png" alt="Étape 3" class="app-icon-image">
-                </div>
-                <h3>Votre Espace</h3>
-                <p>Connectez-vous à votre Espace Pro pour voir votre base grandir et exporter vos contacts. Relances automatisées incluses.</p>
             </div>
         </div>
     </section>
