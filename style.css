@@ -257,20 +257,77 @@ body { overflow-x: hidden; }
     padding: 0 24px;
 }
 
-#fonctionnement {
-    overflow: hidden;
-    padding: 100px 0;
+#fonctionnement { 
+    overflow: hidden; 
+    padding: 120px 0; 
 }
 
-.reveal-text {
-    background: linear-gradient(to right, var(--text-main) 50%, var(--text-light) 50%);
-    background-size: 200% 100%;
-    background-position: 100% 0;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    transition: background-position 0.1s ease;
+.horizontal-scroll-wrapper { 
+    display: flex; 
+    flex-wrap: nowrap; 
+    width: 300%; 
+    gap: 60px; 
+    padding: 0 40px; 
 }
 
+.step-card { 
+    background: var(--surface); 
+    border-radius: 32px; 
+    padding: 60px 45px; 
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important; 
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.02) !important;
+    transition: var(--transition); 
+    overflow: visible !important; /* Permet à l'image de "sortir" de la carte au survol */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 500px;
+}
+
+/* Chiffre de l'étape : Enfin visible (Opacity 0.12) */
+.step-number { 
+    position: absolute; 
+    top: 10px; 
+    left: 30px; 
+    font-size: 150px; 
+    font-weight: 900; 
+    color: var(--primary); 
+    opacity: 0.12 !important; /* Ratio parfait : visible mais reste en arrière-plan */
+    line-height: 1; 
+    z-index: 0; 
+    pointer-events: none; 
+}
+
+/* Conteneur d'image : Suppression totale du rectangle blanc/gris */
+.step-image-container {
+    width: 100%; 
+    height: 220px; 
+    margin-bottom: 30px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    background: transparent !important; /* On force la transparence ici */
+    border: none !important; 
+    position: relative; 
+    z-index: 2;
+}
+
+/* L'image 3D : Effet de lueur et de profondeur */
+.app-icon-image {
+    width: 180px; 
+    height: auto; 
+    object-fit: contain; 
+    mix-blend-mode: multiply; /* Fusionne parfaitement tes JPG avec le fond */
+    filter: drop-shadow(0 25px 40px rgba(15, 118, 110, 0.25)); /* Ombre colorée Fydelio */
+    transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Animation de lévitation au survol */
+.step-card:hover .app-icon-image { 
+    transform: translateY(-20px) scale(1.12) rotate(2deg); 
+    filter: drop-shadow(0 40px 65px rgba(15, 118, 110, 0.35)); 
+}
 /* ==========================================================================
    📱 ÉTAPES MÉTHODE : LE LOOK "FLOATING 3D" (STYLE APPLE/STRIPE)
    ========================================================================== */
@@ -399,22 +456,31 @@ body { overflow-x: hidden; }
    📱 RESPONSIVE STRICT (MERGED & PRO)
    ========================================================================== */
 @media (max-width: 992px) {
-    /* On empile les cartes et on bloque les transformations de scroll horizontal */
-    .horizontal-scroll-wrapper {
+    /* On désactive le scroll horizontal GSAP pour empiler les cartes proprement */
+    .horizontal-scroll-wrapper { 
         flex-direction: column !important; 
         width: 100% !important; 
-        gap: 40px !important;
-        padding: 0 !important;
-        transform: none !important; /* Force GSAP à ne pas bouger le bloc */
+        gap: 40px !important; 
+        transform: none !important; /* Bloque le mouvement latéral */
+        padding: 0 !important; 
     }
     
-    .horizontal-scroll-wrapper .card {
-        width: 100% !important;
+    .step-card { 
+        min-height: auto; 
+        padding: 40px 30px; 
     }
     
-    /* On réduit légèrement la hauteur du piédestal sur mobile */
-    .step-image-container {
-        height: 200px;
-        padding: 15px;
+    .step-number { 
+        font-size: 100px; 
+        top: 10px; 
+        left: 20px; 
+    }
+    
+    .step-image-container { 
+        height: 180px; 
+    }
+    
+    .app-icon-image { 
+        width: 140px; 
     }
 }
