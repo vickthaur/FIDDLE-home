@@ -3,10 +3,10 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // On réactive l'apparition classique du texte (LE CORRECTIF EST ICI)
+    // 1. On réactive l'apparition classique du texte
     initScrollAnimations();
 
-    // On lance la magie GSAP si la librairie est bien chargée
+    // 2. On lance la magie GSAP si la librairie est bien chargée
     if (typeof gsap !== 'undefined') {
         gsap.registerPlugin(ScrollTrigger);
         initAppleAnimations();
@@ -26,7 +26,7 @@ function initScrollAnimations() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible'); // Remet l'opacité à 1
+                entry.target.classList.add('is-visible'); 
                 observer.unobserve(entry.target); 
             }
         });
@@ -39,7 +39,7 @@ function initScrollAnimations() {
 }
 
 // ---------------------------------------------------
-// EFFETS "APPLE" GSAP (AVEC GESTION MOBILE PARFAITE)
+// 📱 EFFETS GSAP : HERO, STICKY PHONE ET PRIX
 // ---------------------------------------------------
 function initAppleAnimations() {
     
@@ -62,38 +62,47 @@ function initAppleAnimations() {
     // --- GESTION RESPONSIVE AVEC GSAP MATCHMEDIA ---
     let mm = gsap.matchMedia();
 
-    // 💻 POUR ORDINATEUR ET GRANDE TABLETTE (Au-dessus de 992px)
+    // 💻 POUR ORDINATEUR : LA MAGIE DU "STICKY PHONE"
     mm.add("(min-width: 993px)", () => {
         
-        // SCROLL HORIZONTAL (Section Méthode)
-        const methodSection = document.querySelector("#fonctionnement");
-        const scrollWrapper = document.querySelector(".horizontal-scroll-wrapper");
-        
-        if (scrollWrapper) {
-            const scrollDistance = scrollWrapper.scrollWidth - window.innerWidth;
+        const steps = document.querySelectorAll('.method-step');
+        const images = document.querySelectorAll('.phone-img');
 
-            gsap.to(scrollWrapper, {
-                x: -scrollDistance, 
-                ease: "none",
-                scrollTrigger: {
-                    trigger: methodSection,
-                    start: "center center", 
-                    end: () => "+=" + scrollDistance, 
-                    pin: true, 
-                    scrub: 1, 
-                    invalidateOnRefresh: true 
-                }
+        if(steps.length > 0 && images.length > 0) {
+            
+            // Fonction pour activer l'étape en cours
+            function activateStep(index) {
+                // On retire la classe 'active' partout
+                steps.forEach(s => s.classList.remove('active'));
+                images.forEach(i => i.classList.remove('active'));
+                
+                // On met 'active' sur l'étape et l'image qui correspondent
+                if(steps[index]) steps[index].classList.add('active');
+                if(images[index]) images[index].classList.add('active');
+            }
+
+            // On crée un déclencheur pour chaque bloc de texte
+            steps.forEach((step, index) => {
+                ScrollTrigger.create({
+                    trigger: step,
+                    start: "top 50%", // S'active quand le haut du texte arrive au milieu de l'écran
+                    end: "bottom 50%",
+                    onEnter: () => activateStep(index),
+                    onEnterBack: () => activateStep(index),
+                });
             });
+            
+            // Initialisation de la première étape par défaut
+            activateStep(0);
         }
     });
 
-    // 📱 POUR MOBILE ET PETITE TABLETTE (En-dessous de 992px)
+    // 📱 POUR MOBILE : APPARITION EN CASCADE CLASSIQUE
     mm.add("(max-width: 992px)", () => {
-        // Sur mobile, pas de scroll horizontal. On fait juste apparaître les cartes une par une vers le haut.
-        gsap.from(".step-card", {
+        gsap.from(".method-step", {
             scrollTrigger: {
                 trigger: "#fonctionnement",
-                start: "top 80%",
+                start: "top 85%",
             },
             y: 50,
             opacity: 0,
@@ -114,8 +123,9 @@ function initAppleAnimations() {
         scale: 0.8, opacity: 0, duration: 1, ease: "elastic.out(1, 0.7)", delay: 0.2, clearProps: "all"
     });
 }
+
 // ---------------------------------------------------
-// UTILITAIRES CONSERVÉS
+// UTILITAIRES CONSERVÉS (Parallaxe, Boutons, Compteurs)
 // ---------------------------------------------------
 function initParallaxBackground() {
     const bg1 = document.querySelector('.bg-shape-1');
