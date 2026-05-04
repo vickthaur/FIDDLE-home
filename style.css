@@ -373,3 +373,63 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
         gap: 20px !important;
     }
 }
+/* ==========================================================================
+   ✨ ANIMATIONS & 3D (Classes liées à animations.js)
+   ========================================================================== */
+
+/* --- 1. APPARITION AU SCROLL --- */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(40px); /* L'élément part de 40px plus bas */
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform; /* Optimisation pour le navigateur */
+}
+
+/* Classe ajoutée par le JS quand l'élément est visible */
+.animate-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Effet d'escalier (cascade) pour les grilles : le 2ème élément arrive un peu après le 1er */
+.grid-3 > div.animate-on-scroll:nth-child(1) { transition-delay: 0.1s; }
+.grid-3 > div.animate-on-scroll:nth-child(2) { transition-delay: 0.2s; }
+.grid-3 > div.animate-on-scroll:nth-child(3) { transition-delay: 0.3s; }
+
+.pricing-grid > div.animate-on-scroll:nth-child(1) { transition-delay: 0.1s; }
+.pricing-grid > div.animate-on-scroll:nth-child(2) { transition-delay: 0.25s; }
+
+/* --- 2. FORMES DE FOND (Parallaxe Vitrine) --- */
+/* Tes div bg-shape existaient dans le HTML mais n'étaient pas stylisées */
+.bg-shape-1, .bg-shape-2 {
+    position: fixed; /* Reste en fond même en scrollant */
+    border-radius: 50%;
+    filter: blur(100px); /* Effet de lueur douce */
+    z-index: -1;
+    pointer-events: none; /* Empêche de bloquer les clics sur les boutons */
+    will-change: transform;
+}
+
+.bg-shape-1 {
+    width: 500px;
+    height: 500px;
+    background: var(--primary-light);
+    top: -150px;
+    right: -150px;
+}
+
+.bg-shape-2 {
+    width: 600px;
+    height: 600px;
+    background: var(--accent-light);
+    bottom: -200px;
+    left: -200px;
+    opacity: 0.6;
+}
+
+/* --- 3. OPTIMISATIONS FLUIDITÉ 3D --- */
+/* Prévient les bugs visuels quand le JS manipule ces éléments */
+.card, .pricing-card, .btn-large {
+    will-change: transform;
+    transform-style: preserve-3d;
+}
