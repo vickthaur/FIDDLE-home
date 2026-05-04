@@ -425,3 +425,59 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
     .table-header-row { flex-direction: column; align-items: flex-start; gap: 10px; }
     .qr-section { flex-direction: column; text-align: center; padding: 24px !important; gap: 20px !important; }
 }
+/* ==========================================================================
+   📱 GESTION HYBRIDE PC / MOBILE (MÉTHODE)
+   ========================================================================== */
+
+/* Par défaut (sur PC), on cache les images internes car on utilise le "Sticky Phone" à droite */
+.mobile-only-show { display: none !important; }
+
+@media (max-width: 992px) {
+    /* Sur mobile, on affiche les images internes des cartes */
+    .step-image-container.mobile-only-show { display: flex !important; }
+    .step-number.mobile-only-show { display: block !important; }
+    
+    /* On redonne le style exact de "l'ancienne prez" aux cartes sur mobile */
+    .method-step { 
+        min-height: auto; 
+        margin-bottom: 40px; 
+        opacity: 1 !important; /* Toujours visible sur mobile */
+        transform: none !important; 
+        background: var(--surface);
+        padding: 50px 30px;
+        border-radius: 24px;
+        border: 1px solid rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03) !important;
+        position: relative;
+        overflow: visible !important;
+    }
+
+    /* Le chiffre en arrière plan sur mobile */
+    .step-number { 
+        position: absolute; 
+        top: 10px; 
+        left: 20px; 
+        font-size: 120px; 
+        font-weight: 900; 
+        color: var(--primary); 
+        opacity: 0.12 !important; 
+        line-height: 1; 
+        z-index: 0; 
+        pointer-events: none; 
+    }
+
+    /* L'image flottante sur mobile */
+    .step-image-container { 
+        height: 180px; 
+        margin-bottom: 25px;
+    }
+    .app-icon-image { 
+        width: 140px; 
+    }
+    
+    /* On s'assure que le texte passe au-dessus du chiffre */
+    .step-badge, .method-step h3, .method-step p {
+        position: relative;
+        z-index: 3;
+    }
+}
