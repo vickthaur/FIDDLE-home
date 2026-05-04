@@ -75,13 +75,13 @@
             <div class="dashboard-content">
                 
                 <div id="view-clients">
-                    <div class="page-title-group">
+                    <div class="page-title-group animate-on-scroll">
                         <h1>Vue d'ensemble</h1>
                         <p>Suivez l'évolution de votre programme de fidélité en temps réel.</p>
                     </div>
 
                     <div class="kpi-grid">
-                        <div class="kpi-card">
+                        <div class="kpi-card animate-on-scroll">
                             <div class="kpi-header">
                                 <h3>Total Inscrits</h3>
                                 <div class="kpi-icon blue">👥</div>
@@ -90,7 +90,7 @@
                             <p class="kpi-trend positive">La base de données s'agrandit</p>
                         </div>
                         
-                        <div class="kpi-card">
+                        <div class="kpi-card animate-on-scroll">
                             <div class="kpi-header">
                                 <h3>Points Distribués</h3>
                                 <div class="kpi-icon orange">⭐</div>
@@ -99,7 +99,7 @@
                             <p class="kpi-trend">Points en circulation</p>
                         </div>
 
-                        <div class="kpi-card">
+                        <div class="kpi-card animate-on-scroll">
                             <div class="kpi-header">
                                 <h3>Taux de capture</h3>
                                 <div class="kpi-icon green">📈</div>
@@ -109,7 +109,7 @@
                         </div>
                     </div>
 
-                    <div class="table-container">
+                    <div class="table-container animate-on-scroll">
                         <div class="table-header-row">
                             <h2>Répertoire Clients</h2>
                             <span class="badge-live">🟢 Live</span>
@@ -137,12 +137,12 @@
                 </div>
 
                 <div id="view-qrcodes" style="display: none;">
-                    <div class="page-title-group">
+                    <div class="page-title-group animate-on-scroll">
                         <h1>Matériel de communication</h1>
                         <p>Générez et téléchargez le QR Code officiel de votre établissement.</p>
                     </div>
 
-                    <div class="qr-section" style="background: white; border-radius: 16px; padding: 40px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 40px; border: 1px solid #e2e8f0; max-width: 800px;">
+                    <div class="qr-section animate-on-scroll" style="background: white; border-radius: 16px; padding: 40px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 40px; border: 1px solid #e2e8f0; max-width: 800px;">
                         <div id="qr-code-container" style="min-width: 200px; min-height: 200px; background: #f8fafc; border-radius: 12px; display: flex; justify-content: center; align-items: center;">
                             <span class="spinner" style="border-color: var(--primary); border-top-color: transparent;"></span>
                         </div>
@@ -162,6 +162,8 @@
         </main>
     </div>
 
+    <!-- MOTEURS JAVASCRIPT -->
     <script src="fiddle-pro.js"></script>
+    <script src="animations.js"></script> <!-- Le moteur d'animations est branché ici -->
 </body>
 </html>
