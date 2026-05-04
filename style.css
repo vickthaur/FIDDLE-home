@@ -433,3 +433,33 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
     will-change: transform;
     transform-style: preserve-3d;
 }
+/* ==========================================================================
+   🍏 APPLE-STYLE SCROLL TWEAKS
+   ========================================================================== */
+/* On cache l'overflow horizontal pour éviter les bugs de scroll */
+body { overflow-x: hidden; }
+
+/* Conteneur pour le défilement horizontal (Section Méthode) */
+.horizontal-scroll-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 300%; /* 3 cartes = 300% de la largeur de l'écran */
+    gap: 50px;
+    padding: 0 24px;
+}
+
+/* La section méthode doit pouvoir se fixer (pin) */
+#fonctionnement {
+    overflow: hidden;
+    padding: 100px 0;
+}
+
+/* Le texte qui s'allume au scroll (Section Concept) */
+.reveal-text {
+    background: linear-gradient(to right, var(--text-main) 50%, var(--text-light) 50%);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: background-position 0.1s ease;
+}
