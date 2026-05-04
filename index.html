@@ -107,15 +107,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <p>Un fonctionnement élégant pour le client, un pilotage puissant pour le patron.</p>
         </div>
         
-        <!-- COLONNE GAUCHE : Le texte qui défile (et les cartes sur mobile) -->
+        <!-- 🚨 C'EST CETTE LIGNE QUI MANQUAIT ! Elle met les 2 blocs côte à côte -->
+        <div class="method-split-layout">
+            
+            <!-- COLONNE GAUCHE : Le texte qui défile -->
             <div class="method-text-column">
                 <div class="method-step" id="step-1">
-                    <!-- Ces 2 éléments n'apparaîtront QUE sur mobile -->
                     <div class="step-number mobile-only-show">1</div>
                     <div class="step-image-container mobile-only-show">
                         <img src="etape-1.png" alt="Scan" class="app-icon-image">
                     </div>
-                    
                     <div class="step-badge">Étape 1</div>
                     <h3>Scan à table</h3>
                     <p>Le client flashe un QR Code Premium posé sur sa table pour s'inscrire au programme en quelques secondes. Plus besoin de dicter son numéro ou de télécharger une application lourde.</p>
@@ -126,7 +127,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="step-image-container mobile-only-show">
                         <img src="etape-2.png" alt="Validation" class="app-icon-image">
                     </div>
-
                     <div class="step-badge">Étape 2</div>
                     <h3>Validation Pro</h3>
                     <p>Le serveur valide les points d'un simple clic via notre outil sécurisé. Le processus est conçu pour être ultra-rapide en plein service, fluide et surtout impossible à frauder.</p>
@@ -137,7 +137,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="step-image-container mobile-only-show">
                         <img src="etape-3.png" alt="Espace" class="app-icon-image">
                     </div>
-
                     <div class="step-badge">Étape 3</div>
                     <h3>Votre Espace</h3>
                     <p>Connectez-vous à votre Espace Pro pour voir votre base de données grandir jour après jour. Exportez vos contacts et profitez de nos relances automatisées pour faire revenir vos clients.</p>
@@ -149,14 +148,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div class="phone-mockup">
                     <div class="phone-notch"></div>
                     <div class="phone-screen">
-                        <!-- Les 3 images superposées (elles changeront au scroll) -->
                         <img src="etape-1.png" alt="Scan" class="phone-img active" id="phone-img-1">
                         <img src="etape-2.png" alt="Validation" class="phone-img" id="phone-img-2">
                         <img src="etape-3.png" alt="Espace" class="phone-img" id="phone-img-3">
                     </div>
                 </div>
             </div>
-        </div>
+
+        </div> <!-- 🚨 FIN DE LA BOÎTE (Celle qui manquait aussi) -->
     </section>
 
     <section id="tarifs" class="section container">
