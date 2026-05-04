@@ -2,9 +2,8 @@
    🎨 FIDDLE BRO'S - DESIGN SYSTEM & STYLES PREMIUM (AGENCE & SAAS)
    ========================================================================== */
 
-/* --- 1. VARIABLES GLOBALES (Le cœur de ton image de marque) --- */
+/* --- 1. VARIABLES GLOBALES --- */
 :root {
-    /* Palette de Couleurs */
     --bg-main: #FAFAFA;
     --bg-gray: #F3F4F6;
     --surface: #FFFFFF;
@@ -14,17 +13,16 @@
     --text-muted: #4B5563;
     --text-light: #9CA3AF;
     
-    --primary: #0F766E;        /* Vert Fiddle */
+    --primary: #0F766E;
     --primary-hover: #0D655E;
     --primary-light: rgba(15, 118, 110, 0.1);
     
-    --accent: #D97706;         /* Orange Doré */
+    --accent: #D97706;
     --accent-light: rgba(217, 119, 6, 0.1);
     
     --danger: #EF4444;
     --danger-light: #FEF2F2;
 
-    /* Ombres (Effet 3D SaaS) */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -42,8 +40,6 @@ img { max-width: 100%; height: auto; }
 h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
 .text-gradient { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .mt-4 { margin-top: 1.5rem; }
-
-/* Masquer par défaut les éléments réservés au mobile */
 .mobile-only { display: none; }
 
 /* --- 3. BOUTONS GLOBAUX --- */
@@ -56,17 +52,14 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
 .btn-outline { background: transparent; color: var(--text-main); border: 1px solid var(--border); }
 .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
 
-/* Loader Bouton */
 .btn-loader .btn-spinner { display: none; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; animation: spin 1s linear infinite; }
 .btn.loading .btn-spinner { display: inline-block; }
 .btn.loading .btn-text { display: none; }
-
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ==========================================================================
    🌐 PARTIE 1 : LE SITE VITRINE (Page d'accueil)
    ========================================================================== */
-
 #main-header { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 15px 0; }
 .nav-inner { display: flex; justify-content: space-between; align-items: center; }
 .logo { font-size: 22px; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; }
@@ -146,55 +139,42 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
 /* ==========================================================================
    💻 PARTIE 2 : LOGICIEL SAAS (Le Dashboard Pro)
    ========================================================================== */
-
 .dashboard-body { margin: 0; background-color: var(--bg-gray); height: 100vh; overflow: hidden; }
-
-/* LAYOUT PRINCIPAL */
 .dashboard-layout { display: flex; height: 100vh; width: 100vw; }
 
-/* 1. SIDEBAR (Panneau Latéral) */
 .sidebar { width: 260px; background-color: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; }
 .sidebar-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
 .sidebar-logo-img { width: 32px; height: 32px; border-radius: 8px; }
 .sidebar-logo-text { font-weight: 800; font-size: 1.1rem; color: var(--text-main); }
-
 .sidebar-nav { flex: 1; padding: 24px 16px; overflow-y: auto; }
 .sidebar-title { font-size: 0.75rem; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; padding-left: 12px; }
-
 .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: var(--text-muted); font-weight: 600; border-radius: 12px; transition: var(--transition); margin-bottom: 4px; font-size: 0.95rem; }
 .nav-item:hover:not(.disabled) { background-color: var(--bg-gray); color: var(--text-main); }
 .nav-item.active { background-color: var(--primary-light); color: var(--primary); }
 .nav-item.disabled { opacity: 0.5; cursor: not-allowed; justify-content: space-between; }
 .nav-icon { font-size: 1.2rem; }
 .badge-soon { background: var(--bg-gray); color: var(--text-muted); font-size: 0.65rem; padding: 3px 8px; border-radius: 100px; font-weight: 700; text-transform: uppercase; }
-
 .sidebar-footer { padding: 20px; border-top: 1px solid var(--border); }
 .user-profile { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
 .avatar { width: 40px; height: 40px; background: var(--primary-light); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
 .user-info { overflow: hidden; }
 .user-role { font-size: 0.8rem; font-weight: 700; color: var(--text-main); }
 .user-email-text { font-size: 0.75rem; color: var(--text-muted); text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
-
 .btn-logout-sidebar { width: 100%; display: flex; align-items: center; justify-content: center; padding: 10px; background: transparent; border: 1px solid var(--border); color: var(--danger); font-weight: 600; font-size: 0.9rem; border-radius: 10px; cursor: pointer; transition: var(--transition); }
 .btn-logout-sidebar:hover { background: var(--danger-light); border-color: #FCA5A5; }
 
-/* 2. MAIN CONTENT (Zone Centrale) */
 .dashboard-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-
-/* Topbar */
 .topbar { height: 72px; background-color: var(--surface); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 32px; flex-shrink: 0; }
 .topbar-search { position: relative; width: 350px; }
 .topbar-search .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-light); }
 .search-input-top { width: 100%; padding: 10px 16px 10px 45px; background: var(--bg-gray); border: 1px solid transparent; border-radius: 10px; font-family: inherit; font-size: 0.9rem; transition: var(--transition); }
 .search-input-top:focus { background: white; border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px var(--primary-light); }
 
-/* Contenu Scrolable */
 .dashboard-content { padding: 32px; overflow-y: auto; flex: 1; }
 .page-title-group { margin-bottom: 32px; }
 .page-title-group h1 { font-size: 1.8rem; margin-bottom: 4px; }
 .page-title-group p { color: var(--text-muted); font-size: 0.95rem; }
 
-/* 3. KPI CARDS (Les stats en haut) */
 .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
 .kpi-card { background: var(--surface); padding: 24px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); transition: transform 0.2s; }
 .kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
@@ -208,7 +188,6 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
 .kpi-trend { font-size: 0.8rem; color: var(--text-muted); }
 .kpi-trend.positive { color: #10B981; font-weight: 600; }
 
-/* 4. TABLEAU CLIENTS PRO */
 .table-container { background: var(--surface); border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); overflow: hidden; display: flex; flex-direction: column; }
 .table-header-row { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 15px; background: white; }
 .table-header-row h2 { font-size: 1.1rem; margin: 0; }
@@ -224,237 +203,65 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
 .badge-points { background: var(--primary-light); color: var(--primary); padding: 4px 12px; border-radius: 100px; font-weight: 800; font-size: 0.85rem; display: inline-block; border: 1px solid rgba(15, 118, 110, 0.2); }
 .empty-state { text-align: center; padding: 60px !important; color: var(--text-muted) !important; font-size: 0.95rem; }
 
-/* 5. LOADER SÉCURITÉ */
 .loader-overlay { position: fixed; inset: 0; background: rgba(255, 255, 255, 0.95); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.3s ease; }
 .loader-text { font-weight: 700; color: var(--text-muted); font-size: 0.9rem; margin-top: 15px; }
 
 /* ==========================================================================
-   📱 NAVIGATION STYLE APP + DASHBOARD RESPONSIVE (MERGED & PRO)
-   ========================================================================== */
-
-@media (max-width: 768px) {
-    /* Afficher les éléments spécifiques au mobile */
-    .mobile-only {
-        display: block !important;
-    }
-
-    /* --- 1. VITRINE : NAVIGATION STYLE APP --- */
-    #main-header { padding: 10px 0; }
-    .nav-inner { position: relative; }
-
-    .nav-links {
-        position: fixed;
-        top: 0;
-        right: -100%; /* Menu caché */
-        height: 100vh;
-        width: 85%;
-        max-width: 320px;
-        background: var(--surface);
-        flex-direction: column;
-        justify-content: flex-start;
-        padding: 100px 30px;
-        gap: 25px !important;
-        box-shadow: -15px 0 40px rgba(0,0,0,0.15);
-        transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        z-index: 999;
-    }
-
-    .nav-links.active { right: 0; }
-
-    .nav-links a.link-text {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--text-main);
-        width: 100%;
-        padding-bottom: 15px;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .btn-nav {
-        width: 100%;
-        margin-top: 30px;
-        padding: 20px !important;
-        background: var(--primary) !important;
-        color: white !important;
-        font-size: 16px !important;
-        border-radius: 18px !important;
-        box-shadow: 0 10px 20px rgba(15, 118, 110, 0.2) !important;
-        justify-content: center;
-    }
-
-    .menu-toggle {
-        display: flex !important;
-        flex-direction: column;
-        gap: 5px;
-        background: var(--bg-gray);
-        border: none;
-        cursor: pointer;
-        padding: 10px;
-        border-radius: 12px;
-        z-index: 1001;
-    }
-
-    .bar { width: 22px; height: 2px; background-color: var(--primary); transition: 0.3s; border-radius: 2px; }
-    .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
-    .menu-toggle.active .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .menu-toggle.active .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* --- 2. VITRINE : CONTENU --- */
-    .hero { padding: 130px 0 60px; }
-    .hero h1 { font-size: 2.3rem; }
-    .grid-3, .pricing-grid, .footer-content { grid-template-columns: 1fr !important; gap: 30px; }
-    .pricing-card.highlight { transform: none; margin-top: 20px; }
-    .footer-content { text-align: center; }
-
-    /* --- 3. DASHBOARD PRO : RESPONSIVE SÉCURISÉ --- */
-    .dashboard-layout { flex-direction: column; }
-    
-    /* La sidebar devient un menu glissant (Off-canvas) sur mobile */
-    .sidebar {
-        position: fixed;
-        left: -100%; /* Caché hors de l'écran par défaut */
-        top: 0;
-        bottom: 0;
-        z-index: 9999;
-        width: 280px;
-        background: var(--surface);
-        box-shadow: 4px 0 24px rgba(0,0,0,0.15);
-        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border-right: 1px solid var(--border);
-        /* On remet le flex en colonne pour voir le menu */
-        flex-direction: column; 
-        align-items: stretch;
-        justify-content: flex-start;
-        padding: 0;
-    }
-
-    /* Classe ajoutée par le JS pour ouvrir le menu */
-    .sidebar.mobile-open {
-        left: 0; 
-    }
-    
-    .sidebar-header { border-bottom: 1px solid var(--border); padding: 24px; }
-    .sidebar-nav { display: block; } 
-    .sidebar-footer { display: block; }
-    
-    /* Ajustement de la Topbar pour accueillir le bouton Menu (☰) */
-    .topbar { 
-        flex-direction: row; 
-        flex-wrap: wrap;
-        height: auto; 
-        padding: 15px; 
-        gap: 15px; 
-        justify-content: space-between;
-    }
-    
-    .topbar-search { 
-        width: 100%; 
-        order: 3; /* Passe en dessous du bouton menu et exporter */
-    }
-
-    #mobileMenuBtn {
-        order: 1; /* Tout à gauche */
-    }
-
-    .topbar-actions {
-        order: 2; /* À droite du bouton menu */
-    }
-    
-    .kpi-grid { grid-template-columns: 1fr !important; }
-    .dashboard-content { padding: 15px; }
-    
-    .table-header-row { flex-direction: column; align-items: flex-start; gap: 10px; }
-
-    /* Adaptation de la vue QR Code sur mobile */
-    .qr-section {
-        flex-direction: column;
-        text-align: center;
-        padding: 24px !important;
-        gap: 20px !important;
-    }
-}
-/* ==========================================================================
    ✨ ANIMATIONS & 3D (Classes liées à animations.js)
    ========================================================================== */
-
-/* --- 1. APPARITION AU SCROLL --- */
 .animate-on-scroll {
     opacity: 0;
-    transform: translateY(40px); /* L'élément part de 40px plus bas */
+    transform: translateY(40px);
     transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: opacity, transform; /* Optimisation pour le navigateur */
+    will-change: opacity, transform;
 }
 
-/* Classe ajoutée par le JS quand l'élément est visible */
 .animate-on-scroll.is-visible {
     opacity: 1;
     transform: translateY(0);
 }
 
-/* Effet d'escalier (cascade) pour les grilles : le 2ème élément arrive un peu après le 1er */
 .grid-3 > div.animate-on-scroll:nth-child(1) { transition-delay: 0.1s; }
 .grid-3 > div.animate-on-scroll:nth-child(2) { transition-delay: 0.2s; }
 .grid-3 > div.animate-on-scroll:nth-child(3) { transition-delay: 0.3s; }
-
 .pricing-grid > div.animate-on-scroll:nth-child(1) { transition-delay: 0.1s; }
 .pricing-grid > div.animate-on-scroll:nth-child(2) { transition-delay: 0.25s; }
 
-/* --- 2. FORMES DE FOND (Parallaxe Vitrine) --- */
-/* Tes div bg-shape existaient dans le HTML mais n'étaient pas stylisées */
 .bg-shape-1, .bg-shape-2 {
-    position: fixed; /* Reste en fond même en scrollant */
+    position: fixed;
     border-radius: 50%;
-    filter: blur(100px); /* Effet de lueur douce */
+    filter: blur(100px);
     z-index: -1;
-    pointer-events: none; /* Empêche de bloquer les clics sur les boutons */
+    pointer-events: none;
     will-change: transform;
 }
 
-.bg-shape-1 {
-    width: 500px;
-    height: 500px;
-    background: var(--primary-light);
-    top: -150px;
-    right: -150px;
-}
+.bg-shape-1 { width: 500px; height: 500px; background: var(--primary-light); top: -150px; right: -150px; }
+.bg-shape-2 { width: 600px; height: 600px; background: var(--accent-light); bottom: -200px; left: -200px; opacity: 0.6; }
 
-.bg-shape-2 {
-    width: 600px;
-    height: 600px;
-    background: var(--accent-light);
-    bottom: -200px;
-    left: -200px;
-    opacity: 0.6;
-}
-
-/* --- 3. OPTIMISATIONS FLUIDITÉ 3D --- */
-/* Prévient les bugs visuels quand le JS manipule ces éléments */
 .card, .pricing-card, .btn-large {
     will-change: transform;
     transform-style: preserve-3d;
 }
+
 /* ==========================================================================
    🍏 APPLE-STYLE SCROLL TWEAKS
    ========================================================================== */
-/* On cache l'overflow horizontal pour éviter les bugs de scroll */
 body { overflow-x: hidden; }
 
-/* Conteneur pour le défilement horizontal (Section Méthode) */
 .horizontal-scroll-wrapper {
     display: flex;
     flex-wrap: nowrap;
-    width: 300%; /* 3 cartes = 300% de la largeur de l'écran */
+    width: 300%;
     gap: 50px;
     padding: 0 24px;
 }
 
-/* La section méthode doit pouvoir se fixer (pin) */
 #fonctionnement {
     overflow: hidden;
     padding: 100px 0;
 }
 
-/* Le texte qui s'allume au scroll (Section Concept) */
 .reveal-text {
     background: linear-gradient(to right, var(--text-main) 50%, var(--text-light) 50%);
     background-size: 200% 100%;
@@ -463,56 +270,96 @@ body { overflow-x: hidden; }
     -webkit-text-fill-color: transparent;
     transition: background-position 0.1s ease;
 }
-/* ==========================================================================
-   📸 IMAGES DES ÉTAPES & RESPONSIVE MOBILE (Adapté Illustrations 3D)
-   ========================================================================== */
 
-/* Design du conteneur d'image */
+/* ==========================================================================
+   📸 IMAGES DES ÉTAPES (ILLUSTRATIONS 3D)
+   ========================================================================== */
 .step-image-container {
     width: 100%;
     height: 220px; 
-    border-radius: 12px;
-    overflow: hidden;
     margin-bottom: 24px;
     position: relative;
     z-index: 2;
-    /* On enlève la bordure et on met un fond gris très clair pour faire ressortir la 3D */
-    background-color: var(--bg-gray); 
-    border: none;
-    /* On ajoute un peu de marge interne pour que l'image respire */
-    padding: 20px; 
+    background-color: transparent; /* Fond transparent pour éviter la boîte grise */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* L'image elle-même */
 .step-image {
     width: 100%;
     height: 100%;
-    /* MAGIC TOUCH : 'contain' empêche l'image d'être rognée */
     object-fit: contain; 
+    mix-blend-mode: multiply; /* Fait disparaître le fond blanc de l'image */
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    /* Optionnel : petit effet d'ombre sous l'image pour accentuer la 3D */
-    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.05));
 }
 
-/* Petit effet zoom élégant sur l'image quand on survole la carte */
 .step-card:hover .step-image {
     transform: scale(1.08) translateY(-5px); 
 }
 
-/* 📱 CORRECTION RESPONSIVE : Tablette & Mobile */
+/* ==========================================================================
+   📱 RESPONSIVE (VITRINE ET DASHBOARD MERGÉS)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .mobile-only { display: block !important; }
+
+    /* Navigation vitrine mobile */
+    #main-header { padding: 10px 0; }
+    .nav-inner { position: relative; }
+    .nav-links {
+        position: fixed; top: 0; right: -100%; height: 100vh; width: 85%; max-width: 320px;
+        background: var(--surface); flex-direction: column; justify-content: flex-start;
+        padding: 100px 30px; gap: 25px !important; box-shadow: -15px 0 40px rgba(0,0,0,0.15);
+        transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 999;
+    }
+    .nav-links.active { right: 0; }
+    .nav-links a.link-text { font-size: 1.25rem; font-weight: 700; color: var(--text-main); width: 100%; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+    .btn-nav { width: 100%; margin-top: 30px; padding: 20px !important; background: var(--primary) !important; color: white !important; font-size: 16px !important; border-radius: 18px !important; box-shadow: 0 10px 20px rgba(15, 118, 110, 0.2) !important; justify-content: center; }
+    .menu-toggle { display: flex !important; flex-direction: column; gap: 5px; background: var(--bg-gray); border: none; cursor: pointer; padding: 10px; border-radius: 12px; z-index: 1001; }
+    .bar { width: 22px; height: 2px; background-color: var(--primary); transition: 0.3s; border-radius: 2px; }
+    .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
+    .menu-toggle.active .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle.active .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Contenu vitrine mobile */
+    .hero { padding: 130px 0 60px; }
+    .hero h1 { font-size: 2.3rem; }
+    .grid-3, .pricing-grid, .footer-content { grid-template-columns: 1fr !important; gap: 30px; }
+    .pricing-card.highlight { transform: none; margin-top: 20px; }
+    .footer-content { text-align: center; }
+
+    /* Dashboard mobile */
+    .dashboard-layout { flex-direction: column; }
+    .sidebar { position: fixed; left: -100%; top: 0; bottom: 0; z-index: 9999; width: 280px; background: var(--surface); box-shadow: 4px 0 24px rgba(0,0,0,0.15); transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid var(--border); flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 0; }
+    .sidebar.mobile-open { left: 0; }
+    .sidebar-header { border-bottom: 1px solid var(--border); padding: 24px; }
+    .sidebar-nav, .sidebar-footer { display: block; }
+    .topbar { flex-direction: row; flex-wrap: wrap; height: auto; padding: 15px; gap: 15px; justify-content: space-between; }
+    .topbar-search { width: 100%; order: 3; }
+    #mobileMenuBtn { order: 1; }
+    .topbar-actions { order: 2; }
+    .kpi-grid { grid-template-columns: 1fr !important; }
+    .dashboard-content { padding: 15px; }
+    .table-header-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .qr-section { flex-direction: column; text-align: center; padding: 24px !important; gap: 20px !important; }
+}
+
+/* 📱 CORRECTION RESPONSIVE STRICTE (Désactive Apple Scroll sur Mobile) */
 @media (max-width: 992px) {
-    /* On annule la largeur de 300% et on empile les cartes */
     .horizontal-scroll-wrapper {
-        flex-direction: column; 
-        width: 100%; 
-        gap: 40px;
-        padding: 0;
+        flex-direction: column !important; 
+        width: 100% !important; 
+        gap: 40px !important;
+        padding: 0 !important;
+        transform: none !important; /* Force GSAP à ne pas bouger le bloc */
     }
     
     .horizontal-scroll-wrapper .card {
-        width: 100%; /* La carte prend 100% de l'écran mobile */
+        width: 100% !important;
+    }
+    
+    .step-image-container {
+        height: 180px;
     }
 }
