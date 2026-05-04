@@ -39,12 +39,11 @@ function initScrollAnimations() {
 }
 
 // ---------------------------------------------------
-// EFFETS "APPLE" GSAP
+// EFFETS "APPLE" GSAP (AVEC GESTION MOBILE PARFAITE)
 // ---------------------------------------------------
 function initAppleAnimations() {
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-    // 1. LE HERO QUI "PLONGE"
+    
+    // 1. LE HERO QUI "PLONGE" (Actif partout)
     gsap.to(".hero", {
         scrollTrigger: {
             trigger: ".hero",
@@ -60,8 +59,13 @@ function initAppleAnimations() {
         ease: "none"
     });
 
-    // 2. SCROLL HORIZONTAL (Section Méthode)
-    if (!isMobile) {
+    // --- GESTION RESPONSIVE AVEC GSAP MATCHMEDIA ---
+    let mm = gsap.matchMedia();
+
+    // 💻 POUR ORDINATEUR ET GRANDE TABLETTE (Au-dessus de 992px)
+    mm.add("(min-width: 993px)", () => {
+        
+        // SCROLL HORIZONTAL (Section Méthode)
         const methodSection = document.querySelector("#fonctionnement");
         const scrollWrapper = document.querySelector(".horizontal-scroll-wrapper");
         
@@ -81,34 +85,35 @@ function initAppleAnimations() {
                 }
             });
         }
-    }
+    });
 
-    // 3. MISE EN AVANT DU PRIX (Section Tarifs)
+    // 📱 POUR MOBILE ET PETITE TABLETTE (En-dessous de 992px)
+    mm.add("(max-width: 992px)", () => {
+        // Sur mobile, pas de scroll horizontal. On fait juste apparaître les cartes une par une vers le haut.
+        gsap.from(".step-card", {
+            scrollTrigger: {
+                trigger: "#fonctionnement",
+                start: "top 80%",
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            clearProps: "all"
+        });
+    });
+
+    // 3. MISE EN AVANT DU PRIX (Section Tarifs - Actif partout)
     gsap.from(".pricing-card:not(.highlight)", {
-        scrollTrigger: {
-            trigger: "#tarifs",
-            start: "top 70%",
-        },
-        x: -50,
-        opacity: 0,
-        duration: 0.8,
-        clearProps: "all" // Évite les conflits avec le CSS
+        scrollTrigger: { trigger: "#tarifs", start: "top 70%" },
+        x: -50, opacity: 0, duration: 0.8, clearProps: "all"
     });
 
     gsap.from(".pricing-card.highlight", {
-        scrollTrigger: {
-            trigger: "#tarifs",
-            start: "top 70%",
-        },
-        scale: 0.8,
-        opacity: 0,
-        duration: 1,
-        ease: "elastic.out(1, 0.7)", 
-        delay: 0.2,
-        clearProps: "all"
+        scrollTrigger: { trigger: "#tarifs", start: "top 70%" },
+        scale: 0.8, opacity: 0, duration: 1, ease: "elastic.out(1, 0.7)", delay: 0.2, clearProps: "all"
     });
 }
-
 // ---------------------------------------------------
 // UTILITAIRES CONSERVÉS
 // ---------------------------------------------------
