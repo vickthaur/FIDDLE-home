@@ -86,7 +86,7 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
 .card p { color: var(--text-muted); font-size: 0.95rem; }
 
 /* ==========================================================================
-   📱 SECTION MÉTHODE : LE "STICKY PHONE" SAAS
+   📱 SECTION MÉTHODE : LE "STICKY PHONE" SAAS (ET VERSION MOBILE HYBRIDE)
    ========================================================================== */
 #fonctionnement { overflow: hidden; padding: 100px 0; }
 
@@ -97,18 +97,18 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
     position: relative;
 }
 
-/* --- COLONNE TEXTE --- */
+/* --- COLONNE TEXTE (PC) --- */
 .method-text-column {
     flex: 1;
-    padding: 10vh 0 20vh 0; /* Ajoute de l'espace pour scroller */
+    padding: 10vh 0 20vh 0; /* Espace pour scroller sur PC */
 }
 
 .method-step {
-    min-height: 50vh; /* Chaque étape prend la moitié de l'écran en hauteur */
+    min-height: 50vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    opacity: 0.25; /* Grisé par défaut */
+    opacity: 0.25;
     transform: translateX(-20px);
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -136,30 +136,28 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
 .method-step h3 { font-size: 2.2rem; margin-bottom: 15px; }
 .method-step p { font-size: 1.15rem; color: var(--text-muted); line-height: 1.8; max-width: 90%; }
 
-/* --- COLONNE TÉLÉPHONE FIXE (CENTRAGE PARFAIT) --- */
+/* --- COLONNE TÉLÉPHONE FIXE (PC) --- */
 .method-phone-column {
     flex: 1;
     position: sticky;
-    top: 0; /* S'accroche tout en haut de la fenêtre */
-    height: 100vh; /* Prend 100% de la hauteur de l'écran */
+    top: 0;
+    height: 100vh;
     display: flex;
-    align-items: center; /* LA MAGIE EST ICI : centre le téléphone verticalement */
-    justify-content: center; /* Centre le téléphone horizontalement */
+    align-items: center;
+    justify-content: center;
 }
 
-/* Le faux iPhone codé en CSS */
 .phone-mockup {
     width: 320px;
     height: 650px;
     background: #ffffff;
     border-radius: 45px;
-    border: 14px solid #1f2937; /* Contour noir du téléphone */
+    border: 14px solid #1f2937;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), inset 0 0 0 2px rgba(255,255,255,0.1);
     position: relative;
     overflow: hidden;
 }
 
-/* L'encoche en haut de l'iPhone */
 .phone-notch {
     position: absolute;
     top: 0; left: 50%;
@@ -171,7 +169,6 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
     z-index: 10;
 }
 
-/* L'écran du téléphone */
 .phone-screen {
     width: 100%; height: 100%;
     background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%);
@@ -181,14 +178,13 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
     justify-content: center;
 }
 
-/* Les images dans l'écran (avec le style 3D) */
 .phone-img {
     position: absolute;
     width: 80%; 
     height: auto; 
     object-fit: contain; 
-    mix-blend-mode: multiply; /* Rend le blanc du JPG transparent */
-    filter: drop-shadow(0 25px 40px rgba(15, 118, 110, 0.25)); /* Lueur verte */
+    mix-blend-mode: multiply;
+    filter: drop-shadow(0 25px 40px rgba(15, 118, 110, 0.25));
     opacity: 0;
     transform: translateY(30px) scale(0.95);
     transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -198,6 +194,9 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
     opacity: 1;
     transform: translateY(0) scale(1);
 }
+
+/* Éléments internes des cartes (Chiffre de fond et Image flottante) - Cachés sur PC */
+.mobile-only-show { display: none !important; }
 
 /* ==========================================================================
    💰 TARIFS & PRICING
@@ -322,17 +321,8 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
 /* ==========================================================================
    ✨ ANIMATIONS & 3D (Classes liées à animations.js)
    ========================================================================== */
-.animate-on-scroll {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: opacity, transform;
-}
-
-.animate-on-scroll.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-}
+.animate-on-scroll { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); will-change: opacity, transform; }
+.animate-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
 
 .grid-3 > div.animate-on-scroll:nth-child(1) { transition-delay: 0.1s; }
 .grid-3 > div.animate-on-scroll:nth-child(2) { transition-delay: 0.2s; }
@@ -340,61 +330,52 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
 .pricing-grid > div.animate-on-scroll:nth-child(1) { transition-delay: 0.1s; }
 .pricing-grid > div.animate-on-scroll:nth-child(2) { transition-delay: 0.25s; }
 
-.bg-shape-1, .bg-shape-2 {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(100px);
-    z-index: -1;
-    pointer-events: none;
-    will-change: transform;
-}
-
+.bg-shape-1, .bg-shape-2 { position: fixed; border-radius: 50%; filter: blur(100px); z-index: -1; pointer-events: none; will-change: transform; }
 .bg-shape-1 { width: 500px; height: 500px; background: var(--primary-light); top: -150px; right: -150px; }
 .bg-shape-2 { width: 600px; height: 600px; background: var(--accent-light); bottom: -200px; left: -200px; opacity: 0.6; }
 
-.card, .pricing-card, .btn-large {
-    will-change: transform;
-    transform-style: preserve-3d;
-}
+.card, .pricing-card, .btn-large { will-change: transform; transform-style: preserve-3d; }
 
 /* ==========================================================================
-   📱 RESPONSIVE (MERGED : VITRINE, DASHBOARD ET TÉLÉPHONE COLLANT)
+   📱 RESPONSIVE GLOBAL (MERGED : VITRINE, DASHBOARD, STICKY PHONE)
    ========================================================================== */
+
+/* --- TABLETTE ET MOBILE (992px max) --- */
 @media (max-width: 992px) {
-    /* Responsive pour la méthode "Sticky Phone" */
+    /* 1. Gestion de la section Méthode (Fin du Sticky Phone, retour aux cartes) */
     .method-split-layout { flex-direction: column; gap: 40px; }
-    
-    .mobile-only-hide { display: none !important; /* On cache le gros faux téléphone sur mobile */ }
-    
+    .mobile-only-hide { display: none !important; }
     .method-text-column { padding: 0; }
     
-    /* Sur mobile, le texte redevient des cartes classiques */
+    .step-image-container.mobile-only-show { display: flex !important; }
+    .step-number.mobile-only-show { display: block !important; }
+    
     .method-step { 
-        min-height: auto; 
-        margin-bottom: 40px; 
-        opacity: 1; 
-        transform: none; 
-        background: var(--surface);
-        padding: 30px;
-        border-radius: 24px;
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow-sm);
+        min-height: auto; margin-bottom: 40px; opacity: 1 !important; transform: none !important; 
+        background: var(--surface); padding: 50px 30px; border-radius: 24px;
+        border: 1px solid rgba(0, 0, 0, 0.05) !important; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03) !important;
+        position: relative; overflow: visible !important;
     }
+    
     .method-step p { max-width: 100%; }
+
+    .step-number { position: absolute; top: 10px; left: 20px; font-size: 120px; font-weight: 900; color: var(--primary); opacity: 0.12 !important; line-height: 1; z-index: 0; pointer-events: none; }
+    .step-image-container { height: 180px; margin-bottom: 25px; }
+    .app-icon-image { width: 140px; }
+    .step-badge, .method-step h3, .method-step p { position: relative; z-index: 3; }
+
+    /* 2. Autres sections Vitrine */
+    .pricing-grid { grid-template-columns: 1fr; }
 }
 
+/* --- SMARTPHONE (768px max) --- */
 @media (max-width: 768px) {
     .mobile-only { display: block !important; }
 
-    /* Navigation vitrine mobile */
+    /* 1. Vitrine Navigation & Contenu */
     #main-header { padding: 10px 0; }
     .nav-inner { position: relative; }
-    .nav-links {
-        position: fixed; top: 0; right: -100%; height: 100vh; width: 85%; max-width: 320px;
-        background: var(--surface); flex-direction: column; justify-content: flex-start;
-        padding: 100px 30px; gap: 25px !important; box-shadow: -15px 0 40px rgba(0,0,0,0.15);
-        transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 999;
-    }
+    .nav-links { position: fixed; top: 0; right: -100%; height: 100vh; width: 85%; max-width: 320px; background: var(--surface); flex-direction: column; justify-content: flex-start; padding: 100px 30px; gap: 25px !important; box-shadow: -15px 0 40px rgba(0,0,0,0.15); transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 999; }
     .nav-links.active { right: 0; }
     .nav-links a.link-text { font-size: 1.25rem; font-weight: 700; color: var(--text-main); width: 100%; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
     .btn-nav { width: 100%; margin-top: 30px; padding: 20px !important; background: var(--primary) !important; color: white !important; font-size: 16px !important; border-radius: 18px !important; box-shadow: 0 10px 20px rgba(15, 118, 110, 0.2) !important; justify-content: center; }
@@ -403,15 +384,15 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
     .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
     .menu-toggle.active .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .menu-toggle.active .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* Contenu vitrine mobile */
+    
     .hero { padding: 130px 0 60px; }
     .hero h1 { font-size: 2.3rem; }
-    .grid-3, .pricing-grid, .footer-content { grid-template-columns: 1fr !important; gap: 30px; }
+    .grid-3 { grid-template-columns: 1fr !important; gap: 30px; }
     .pricing-card.highlight { transform: none; margin-top: 20px; }
-    .footer-content { text-align: center; }
+    .footer-content { grid-template-columns: 1fr; text-align: center; }
+    .footer-logo { justify-content: center; }
 
-    /* Dashboard mobile */
+    /* 2. Dashboard Logiciel */
     .dashboard-layout { flex-direction: column; }
     .sidebar { position: fixed; left: -100%; top: 0; bottom: 0; z-index: 9999; width: 280px; background: var(--surface); box-shadow: 4px 0 24px rgba(0,0,0,0.15); transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid var(--border); flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 0; }
     .sidebar.mobile-open { left: 0; }
@@ -424,61 +405,4 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.2; color: var(--text-main); }
     .kpi-grid { grid-template-columns: 1fr !important; }
     .dashboard-content { padding: 15px; }
     .table-header-row { flex-direction: column; align-items: flex-start; gap: 10px; }
-    .qr-section { flex-direction: column; text-align: center; padding: 24px !important; gap: 20px !important; }
-}
-/* ==========================================================================
-   📱 GESTION HYBRIDE PC / MOBILE (MÉTHODE)
-   ========================================================================== */
-
-/* Par défaut (sur PC), on cache les images internes car on utilise le "Sticky Phone" à droite */
-.mobile-only-show { display: none !important; }
-
-@media (max-width: 992px) {
-    /* Sur mobile, on affiche les images internes des cartes */
-    .step-image-container.mobile-only-show { display: flex !important; }
-    .step-number.mobile-only-show { display: block !important; }
-    
-    /* On redonne le style exact de "l'ancienne prez" aux cartes sur mobile */
-    .method-step { 
-        min-height: auto; 
-        margin-bottom: 40px; 
-        opacity: 1 !important; /* Toujours visible sur mobile */
-        transform: none !important; 
-        background: var(--surface);
-        padding: 50px 30px;
-        border-radius: 24px;
-        border: 1px solid rgba(0, 0, 0, 0.05) !important;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03) !important;
-        position: relative;
-        overflow: visible !important;
-    }
-
-    /* Le chiffre en arrière plan sur mobile */
-    .step-number { 
-        position: absolute; 
-        top: 10px; 
-        left: 20px; 
-        font-size: 120px; 
-        font-weight: 900; 
-        color: var(--primary); 
-        opacity: 0.12 !important; 
-        line-height: 1; 
-        z-index: 0; 
-        pointer-events: none; 
-    }
-
-    /* L'image flottante sur mobile */
-    .step-image-container { 
-        height: 180px; 
-        margin-bottom: 25px;
-    }
-    .app-icon-image { 
-        width: 140px; 
-    }
-    
-    /* On s'assure que le texte passe au-dessus du chiffre */
-    .step-badge, .method-step h3, .method-step p {
-        position: relative;
-        z-index: 3;
-    }
 }
