@@ -194,7 +194,7 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
     position: relative;
     overflow: hidden;
     will-change: transform;
-    /* On ajoute une transition douce si la taille de la fenêtre change */
+    /* Transition douce si la taille de la fenêtre change */
     transition: transform 0.3s ease; 
 }
 
@@ -208,11 +208,11 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
 .phone-screen {
     width: 100%; 
     height: 100%;
-    /* On s'assure que le fond de l'écran est blanc pour fusionner avec tes captures */
+    /* Fond blanc pour fusionner avec la capture */
     background: #ffffff;
     position: relative; 
-    border-radius: 38px; /* Arrondi interne pour suivre la coque */
-    overflow: hidden; /* Coupe la capture dans les angles */
+    border-radius: 38px; 
+    overflow: hidden; 
 }
 
 /* L'image de capture d'écran (PC) */
@@ -223,9 +223,9 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
     width: 100%; 
     height: 100%; 
     
-    /* 🚨 LE CORRECTIF ANTI-COUPURE EST LÀ : */
-    object-fit: contain; /* S'assure que toute l'image rentre sans JAMAIS être rognée */
-    object-position: center; /* Centre parfaitement la capture */
+    /* 🚨 S'assure que l'image rentre sans JAMAIS être rognée */
+    object-fit: contain; 
+    object-position: center; 
     
     opacity: 0; 
     transform: translateY(30px) scale(0.95);
@@ -238,18 +238,16 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
     transform: translateY(0) scale(1);
 }
 
+/* Cache les éléments mobiles sur PC */
+.mobile-only-show { display: none !important; }
+
 /* 🚨 LE CORRECTIF ANTI-PETITS ÉCRANS PC (Laptops) : */
-/* Si l'écran fait moins de 850px de haut (PC portable standard), on réduit le téléphone de 15% */
 @media (min-width: 993px) and (max-height: 850px) {
     .phone-mockup { transform: scale(0.85); }
 }
-/* Si l'écran fait moins de 700px de haut (Petit PC), on réduit le téléphone de 25% */
 @media (min-width: 993px) and (max-height: 700px) {
     .phone-mockup { transform: scale(0.75); }
 }
-
-/* Cache les éléments mobiles sur PC */
-.mobile-only-show { display: none !important; }
 
 /* ==========================================================================
    💰 TARIFS & PRICING
@@ -422,7 +420,7 @@ h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
         overflow: hidden !important; /* CRUCIAL : Coupe le chiffre s'il déborde */
     }
     
-    /* Le chiffre gigantesque en fond sur mobile : Redimensionné et calé à droite */
+    /* Le chiffre gigantesque en fond sur mobile */
     .step-number { 
         position: absolute; 
         top: -10px; 
